@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+
+    <color name="defaultBackground">#303030</color>
+    <color name="defaultPrimaryTextColor">#EFEFEF</color>
+    <color name="defaultSecondaryTextColor">#A1A1A1</color>
+
+    <color name="tabTextColorNormal">#A1A1A1</color>
+    <color name="tabTextColorSelect">#EFEFEF</color>
+    <color name="tabBgColorSupply">#bf5a12</color>
+    <color name="tabBgColorExpedition">#1183c6</color>
+    <color name="tabBgColorBadlyDamage">#b61313</color>
+    <color name="tabBgColorBattle">#484848</color>
+    <color name="tabBgColorNormal">#17b458</color>
+
+    <color name="bloodBarColorBackground">#484848</color>
+    <color name="bloodBarColorRetreat">#797979</color>
+    <color name="bloodBarColorNoDamage">#1d5317</color>
+    <color name="bloodBarColorSlightDamage">#766f12</color>
+    <color name="bloodBarColorHalfDamage">#7b4519</color>
+    <color name="bloodBarColorBadlyDamage">#801c1c</color>
+
+    <color name="condColorNormal">#A1A1A1</color>
+    <color name="condColorKira">#c6bc34</color>
+    <color name="condColorOrange">#c67634</color>
+    <color name="condColorRed">#c63634</color>
+
+    <color name="timerBgNormal">#1183c6</color>
+    <color name="timerBgHalf">#bf5a12</color>
+    <color name="timerBgDone">#17b458</color>
+</resources>

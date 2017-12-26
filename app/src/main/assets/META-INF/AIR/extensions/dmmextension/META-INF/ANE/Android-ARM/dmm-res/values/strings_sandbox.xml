@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ログイン画面 -->
+    <string name="sandbox_login_title">ログイン</string>
+    <string name="sandbox_login_btn_close">閉じる</string>
+    <string name="sandbox_login_id_guide">ユーザーID</string>
+    <string name="sandbox_login_pw_guide">パスワード</string>
+    <string name="sandbox_login_id_hint">ユーザーID</string>
+    <string name="sandbox_login_pw_hint">パスワード</string>
+    <string name="sandbox_login_img_description">ログイン画面の画像</string>
+    <string name="sandbox_login_save_id">ユーザーIDを保存する</string>
+    <string name="sandbox_login_save_pass">パスワードを保存する</string>
+    <string name="sandbox_login_announce">サンドボックス環境へログインします。</string>
+    <string name="sandbox_guest_login_announce">ゲスト対応サンドボックス環境へログインします。</string>
+
+    <string name="sandbox_login_empty">ユーザーIDまたはパスワードが入力されていません。</string>
+    <string name="sandbox_login_error">ユーザーIDまたはパスワードが正しくありません。</string>
+
+    <string name="error_system_message">アプリケーションエラーが発生しました。しばらく時間をおいてお試しください。</string>
+    <string name="error_network_message">通信環境をお確かめいただき、しばらく時間をおいてお試しください。</string>
+
+    <!-- ダイアログ -->
+    <string name="sandbox_dialog_msg_loading">Loading...</string>
+    <string name="sandbox_dialog_title_logout">ログアウト</string>
+    <string name="sandbox_dialog_msg_logout">ログアウトします。</string>
+
+    <!-- エラーメッセージ -->
+    <string name="sandbox_error_network_message">通信環境をお確かめいただき、しばらく時間をおいてお試しください。</string>
+    <string name="sandbox_error_system_message">アプリケーションエラーが発生しました。しばらく時間をおいてお試しください。</string>
+
+    <string name="sandbox_error_grade_check_title">グレード確認エラー</string>
+    <string name="sandbox_error_grade_check_member">このアカウントはDMM会員アカウントです。</string>
+    <string name="sandbox_error_grade_check_guest">このアカウントはゲストアカウントです。</string>
+
+</resources>

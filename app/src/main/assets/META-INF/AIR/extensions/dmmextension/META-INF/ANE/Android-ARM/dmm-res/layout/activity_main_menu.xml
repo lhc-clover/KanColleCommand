@@ -1,0 +1,205 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    tools:context=".MainMenuActivity" >
+
+    <RelativeLayout
+        android:id="@+id/title_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp" >
+
+            <RelativeLayout
+                android:id="@+id/menu_list_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_menu_border" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/menu_setting"
+                        android:layout_width="fill_parent"
+                        android:layout_height="48dp" >
+
+                        <TextView
+                            android:id="@+id/text_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
+
+                        <ImageView
+                            android:id="@+id/ImageView01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="16dp"
+                            android:src="@drawable/menu_icon" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerVertical="true"
+                            android:background="#CCCCCC"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+                    </RelativeLayout>
+                    
+                    <RelativeLayout
+                        android:id="@+id/menu_terms"
+                        android:layout_width="fill_parent"
+                        android:layout_height="48dp" >
+
+                        <TextView
+                            android:id="@+id/text_terms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
+
+                        <ImageView
+                            android:id="@+id/ImageView02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="16dp"
+                            android:src="@drawable/menu_icon" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerVertical="true"
+                            android:background="#CCCCCC"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/menu_inquiry"
+                        android:layout_width="fill_parent"
+                        android:layout_height="48dp" >
+
+                        <TextView
+                            android:id="@+id/text_inquiry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
+
+                        <ImageView
+                            android:id="@+id/ImageView03"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="16dp"
+                            android:src="@drawable/menu_icon" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerVertical="true"
+                            android:background="#CCCCCC"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/menu_point"
+                        android:layout_width="fill_parent"
+                        android:layout_height="48dp" >
+
+                        <TextView
+                            android:id="@+id/text_point"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="16dp"
+                            android:src="@drawable/menu_icon" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/menu_list_body" >
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/main_menu_copyright"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>

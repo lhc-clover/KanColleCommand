@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>
+    <declare-styleable name="DmmUIWidget">
+		<attr name="themeColor" format="integer">
+		    <enum name="white" value="0" />
+		    <enum name="black" value="1" />
+		</attr>
+	</declare-styleable>
+
+	<declare-styleable name="DmmDrawerLayout">
+		<attr name="slideEnabled" format="boolean" />
+	</declare-styleable>
+</resources>

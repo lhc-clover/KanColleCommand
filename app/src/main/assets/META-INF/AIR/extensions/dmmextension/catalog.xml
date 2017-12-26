@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding ="utf-8"?>
+<swc xmlns="http://www.adobe.com/flash/swccatalog/9">
+  <versions>
+    <swc version="1.2" />
+    <flex version="4.14.1" build="20150325" minimumSupportedVersion="3.0.0" />
+  </versions>
+  <features>
+    <feature-script-deps />
+    <feature-files />
+  </features>
+  <libraries>
+    <library path="library.swf">
+      <script name="com/dmm/asdk/air/entities/DMMExtensionEntity" mod="1487127300000" signatureChecksum="3273348612" >
+        <def id="com.dmm.asdk.air.entities:DMMExtensionEntity" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/MakeRequest" mod="1487127300000" signatureChecksum="3393340508" >
+        <def id="com.dmm.asdk.air.entities:MakeRequest" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/Person" mod="1487127300000" signatureChecksum="3491005017" >
+        <def id="com.dmm.asdk.air.entities:Person" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/UserText" mod="1487127300000" signatureChecksum="2209203344" >
+        <def id="com.dmm.asdk.air.entities:UserText" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/DMMConstants" mod="1493025290000" signatureChecksum="1963757444" >
+        <def id="com.dmm.asdk.air:DMMConstants" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/PersonList" mod="1487127300000" signatureChecksum="2117167754" >
+        <def id="com.dmm.asdk.air.entities:PersonList" /> 
+        <dep id="com.dmm.asdk.air.entities:Person" type="s" /> 
+        <dep id="__AS3__.vec:Vector" type="s" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/DMMExtension" mod="1493025290000" signatureChecksum="2516854448" >
+        <def id="com.dmm.asdk.air:DMMExtension" /> 
+        <dep id="com.dmm.asdk.air.entities:PaymentResult" type="e" /> 
+        <dep id="com.dmm.asdk.air:DMMConstants" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:UserText" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:Person" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:Thumbnail" type="e" /> 
+        <dep id="flash.events:StatusEvent" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:PersonList" type="e" /> 
+        <dep id="flash.external:ExtensionContext" type="e" /> 
+        <dep id="Error" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:MakeRequest" type="e" /> 
+        <dep id="com.dmm.asdk.air.entities:PaymentResult" type="s" /> 
+        <dep id="com.dmm.asdk.air.entities:UserText" type="s" /> 
+        <dep id="com.dmm.asdk.air.entities:Person" type="s" /> 
+        <dep id="com.dmm.asdk.air.entities:Thumbnail" type="s" /> 
+        <dep id="flash.events:StatusEvent" type="s" /> 
+        <dep id="com.dmm.asdk.air.entities:PersonList" type="s" /> 
+        <dep id="flash.external:ExtensionContext" type="s" /> 
+        <dep id="com.dmm.asdk.air.ui:Widget" type="s" /> 
+        <dep id="com.dmm.asdk.air.entities:MakeRequest" type="s" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.events:EventDispatcher" type="i" /> 
+      </script>
+      <script name="_489d478d282e11dc113e53e32faae5dd23022159dca1ce21a3be6184c09f6999_flash_display_Sprite" mod="1494483741477" signatureChecksum="1033665061" >
+        <def id="_489d478d282e11dc113e53e32faae5dd23022159dca1ce21a3be6184c09f6999_flash_display_Sprite" /> 
+        <dep id="flash.system:Security" type="e" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.display:Sprite" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/ui/Widget" mod="1487127300000" signatureChecksum="2145398529" >
+        <def id="com.dmm.asdk.air.ui:Widget" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/PaymentResult" mod="1487127300000" signatureChecksum="2821147228" >
+        <def id="com.dmm.asdk.air.entities:PaymentResult" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <script name="com/dmm/asdk/air/entities/Thumbnail" mod="1487127300000" signatureChecksum="2579198190" >
+        <def id="com.dmm.asdk.air.entities:Thumbnail" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <digests>
+        <digest type="SHA-256" signed="false" value="058037959a807712e3af1a7380e4977a154d578c01645b5397744b56cbd4f47c"   />
+      </digests>
+    </library>
+  </libraries>
+  <files>
+  </files>
+</swc>

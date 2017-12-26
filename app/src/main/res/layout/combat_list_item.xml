@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlHardcoded">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="ship1"
+            type="cn.cctech.kccommand.entities.Ship" />
+
+        <variable
+            name="ship2"
+            type="cn.cctech.kccommand.entities.Ship" />
+
+        <variable
+            name="combined"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <cn.cctech.kccommand.widgets.BloodBar
+                android:id="@+id/npb_combat_item_hp1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bar_state="@{ship1}"
+                app:progress_current="@{ship1.hpFixed}"
+                app:progress_max="@{ship1.maxHp}"
+                app:progress_reached_bar_height="20dp"
+                app:progress_reached_color="@color/bloodBarColorNoDamage"
+                app:progress_text_visibility="invisible"
+                app:progress_unreached_bar_height="20dp"
+                app:progress_unreached_color="@color/bloodBarColorBackground" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/npb_combat_item_hp1"
+                android:layout_alignTop="@id/npb_combat_item_hp1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="4"
+                    android:ellipsize="end"
+                    android:ems="8"
+                    android:maxLines="1"
+                    android:text='@{ship1.name + " " + ship1.yomi}'
+                    android:textColor="@color/defaultPrimaryTextColor"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:text='@{ship1.hpDisplay}'
+                    android:textColor="@color/defaultSecondaryTextColor"
+                    android:textSize="12sp" />
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="4dp"-->
+                <!--android:layout_weight="3"-->
+                <!--android:gravity="right"-->
+                <!--android:text="@{@string/ship_condition(ship1.condition)}"-->
+                <!--android:textColor="@{ship1.getCondColor(context)}"-->
+                <!--android:textSize="12sp" />-->
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:visibility="@{combined ? View.VISIBLE : View.GONE}" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="@{combined ? View.VISIBLE : View.GONE}">
+
+            <cn.cctech.kccommand.widgets.BloodBar
+                android:id="@+id/npb_combat_item_hp2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bar_state="@{ship2}"
+                app:progress_current="@{ship2.hpFixed}"
+                app:progress_max="@{ship2.maxHp}"
+                app:progress_reached_bar_height="20dp"
+                app:progress_reached_color="@color/bloodBarColorNoDamage"
+                app:progress_text_visibility="invisible"
+                app:progress_unreached_bar_height="20dp"
+                app:progress_unreached_color="@color/bloodBarColorBackground" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/npb_combat_item_hp2"
+                android:layout_alignTop="@id/npb_combat_item_hp2"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="4"
+                    android:ellipsize="end"
+                    android:ems="8"
+                    android:maxLines="1"
+                    android:text="@{ship2.name}"
+                    android:textColor="@color/defaultPrimaryTextColor"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:text='@{ship2.hpDisplay}'
+                    android:textColor="@color/defaultSecondaryTextColor"
+                    android:textSize="12sp" />
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="4dp"-->
+                <!--android:layout_weight="3"-->
+                <!--android:gravity="right"-->
+                <!--android:text="@{@string/ship_condition(ship2.condition)}"-->
+                <!--android:textColor="@{ship2.getCondColor(context)}"-->
+                <!--android:textSize="12sp" />-->
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

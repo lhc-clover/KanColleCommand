@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.cctech.kccommand"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="0.1.1">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="cn.cctech.kccommand.KccApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.NoShadow">
+
+        <activity
+            android:name="cn.cctech.kccommand.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="user"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="namespaceVersion"
+                android:value="21.0" />
+            <meta-data
+                android:name="airDownloadURL"
+                android:value="https://market.android.com/details?id=com.adobe.air" />
+            <meta-data
+                android:name="aspectRatio"
+                android:value="landscape" />
+            <meta-data
+                android:name="autoOrients"
+                android:value="true" />
+            <meta-data
+                android:name="fullScreen"
+                android:value="true" />
+            <meta-data
+                android:name="uniqueappversionid"
+                android:value="954af663-2535-474e-bf25-72cc87cbadb8" />
+            <meta-data
+                android:name="initialcontent"
+                android:value="AppMain.swf" />
+            <meta-data
+                android:name="containsVideo"
+                android:value="false" />
+            <meta-data
+                android:name="webContentsDebuggingEnabled"
+                android:value="false" />
+        </activity>
+        <activity android:name="com.dmm.asdk.AuthActivity" />
+
+        <service
+            android:name="cn.cctech.kccommand.proxy.VpnService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="cn.cctech.kccommand.managers.NotifyManager$MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+    </application>
+
+</manifest>

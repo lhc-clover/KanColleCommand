@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/guestLoginImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        />
+
+    <ImageButton
+        android:id="@+id/guestLoginButton"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="11dp"
+        android:background="@color/transparent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/guest_imgbtn_description"
+        android:src="@drawable/btn_guest_play_bl"/>
+
+    <ImageButton
+        android:id="@+id/loginButton"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/guestLoginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:background="@color/transparent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/guest_imgbtn_description"
+        android:src="@drawable/btn_member_play_bl"/>
+</RelativeLayout>

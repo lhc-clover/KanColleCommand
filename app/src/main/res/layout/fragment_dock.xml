@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlHardcoded">
+
+    <data>
+
+        <variable
+            name="expedition1"
+            type="cn.cctech.kccommand.entities.Expedition" />
+
+        <variable
+            name="expedition2"
+            type="cn.cctech.kccommand.entities.Expedition" />
+
+        <variable
+            name="expedition3"
+            type="cn.cctech.kccommand.entities.Expedition" />
+
+        <variable
+            name="repair1"
+            type="cn.cctech.kccommand.entities.RepairDock" />
+
+        <variable
+            name="repair2"
+            type="cn.cctech.kccommand.entities.RepairDock" />
+
+        <variable
+            name="repair3"
+            type="cn.cctech.kccommand.entities.RepairDock" />
+
+        <variable
+            name="repair4"
+            type="cn.cctech.kccommand.entities.RepairDock" />
+
+        <variable
+            name="build1"
+            type="cn.cctech.kccommand.entities.BuildDock" />
+
+        <variable
+            name="build2"
+            type="cn.cctech.kccommand.entities.BuildDock" />
+
+        <variable
+            name="build3"
+            type="cn.cctech.kccommand.entities.BuildDock" />
+
+        <variable
+            name="build4"
+            type="cn.cctech.kccommand.entities.BuildDock" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/ll_dock_block_expedition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/dock_block_border"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{expedition1.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{expedition1.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{expedition2.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{expedition2.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{expedition3.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{expedition3.getFormatCountDown(context)}" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ll_dock_block_expedition"
+                android:layout_marginLeft="8dp"
+                android:background="@color/defaultBackground"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/dock_expedition_panel_title"
+                android:textColor="@color/defaultSecondaryTextColor" />
+
+            <LinearLayout
+                android:id="@+id/ll_dock_block_repair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_dock_block_expedition"
+                android:layout_margin="8dp"
+                android:background="@drawable/dock_block_border"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{repair1.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{repair1.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{repair2.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{repair2.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{repair3.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{repair3.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{repair4.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{repair4.getFormatCountDown(context)}" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ll_dock_block_repair"
+                android:layout_below="@id/ll_dock_block_expedition"
+                android:layout_marginLeft="8dp"
+                android:background="@color/defaultBackground"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/dock_repair_panel_title"
+                android:textColor="@color/defaultSecondaryTextColor" />
+
+            <LinearLayout
+                android:id="@+id/ll_dock_block_build"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_dock_block_repair"
+                android:layout_margin="8dp"
+                android:background="@drawable/dock_block_border"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{build1.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{build1.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{build2.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{build2.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{build3.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{build3.getFormatCountDown(context)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@{build4.getTitle(context)}" />
+
+                    <TextView
+                        style="@style/DockItemStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="right"
+                        android:text="@{build4.getFormatCountDown(context)}" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ll_dock_block_build"
+                android:layout_below="@id/ll_dock_block_repair"
+                android:layout_marginLeft="8dp"
+                android:background="@color/defaultBackground"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/dock_build_panel_title"
+                android:textColor="@color/defaultSecondaryTextColor" />
+        </RelativeLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="basic"
+            type="cn.cctech.kccommand.entities.Basic" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:id="@+id/tv_main_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{basic.nickname}"
+            android:textColor="@color/defaultSecondaryTextColor" />
+
+        <TextView
+            android:id="@+id/tv_main_info_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_main_info_name"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/tv_main_info_name"
+            android:text='@{"Lv." + basic.level}'
+            android:textColor="@color/defaultSecondaryTextColor"
+            android:textSize="12sp" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_main_info_grade"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@id/tv_main_info_name"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_toRightOf="@id/tv_main_info_level"-->
+        <!--android:text="[新米提督]"-->
+        <!--android:textColor="@color/defaultSecondaryTextColor" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_main_info_exp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@id/tv_main_info_name"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_toRightOf="@id/tv_main_info_grade"-->
+        <!--android:text="Next."-->
+        <!--android:textColor="@color/defaultSecondaryTextColor"-->
+        <!--android:textSize="12sp" />-->
+
+        <LinearLayout
+            android:id="@+id/ll_main_info_cell_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_main_info_name"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="6"
+                android:gravity="left"
+                android:text='@{"舰娘：" + basic.shipCount + "/" + basic.shipMax}'
+                android:textColor="@color/defaultSecondaryTextColor" />
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ems="6"
+                android:gravity="left"
+                android:text='@{"装备：" + basic.slotCount + "/" + basic.slotMax}'
+                android:textColor="@color/defaultSecondaryTextColor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_info_cell_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/ll_main_info_cell_1"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/ll_main_info_cell_1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/material_fuel"
+                android:ems="5"
+                android:text="@{String.valueOf(basic.fuel)}" />
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@drawable/material_bull"
+                android:ems="5"
+                android:text="@{String.valueOf(basic.ammo)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_info_cell_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/ll_main_info_cell_2"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/ll_main_info_cell_2"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/material_steel"
+                android:ems="5"
+                android:text="@{String.valueOf(basic.metal)}" />
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@drawable/material_baux"
+                android:ems="5"
+                android:text="@{String.valueOf(basic.bauxite)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_info_cell_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/ll_main_info_cell_3"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/ll_main_info_cell_3"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/material_develop"
+                android:ems="4"
+                android:text="@{String.valueOf(basic.research)}" />
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@drawable/material_cons"
+                android:ems="4"
+                android:text="@{String.valueOf(basic.burner)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_info_cell_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/ll_main_info_cell_4"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/ll_main_info_cell_4"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/material_repair"
+                android:ems="4"
+                android:text="@{String.valueOf(basic.bucket)}" />
+
+            <TextView
+                style="@style/MainInfoMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@drawable/material_improve"
+                android:ems="4"
+                android:text="@{String.valueOf(basic.improve)}" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

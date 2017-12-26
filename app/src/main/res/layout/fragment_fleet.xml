@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/fleet_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_margin="4dp"
+        android:layout_alignParentTop="true" />
+
+    <!--<cn.cctech.poi.widgets.CustomViewPager-->
+        <!--android:id="@+id/pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_below="@id/indicator" />-->
+
+    <FrameLayout
+        android:id="@+id/fleet_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/fleet_indicator" />
+
+</RelativeLayout>

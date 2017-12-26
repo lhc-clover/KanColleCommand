@@ -1,0 +1,168 @@
+<android.support.design.widget.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/drawerGray">
+
+        <!-- Header -->
+        <!-- DMMゲームストア -->
+        <RelativeLayout
+            android:id="@+id/navigation_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="1dp"
+            android:clickable="true"
+            android:background="@drawable/drawer_list_item">
+            <ImageView
+                android:id="@+id/drawer_store_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ico_gamestore_black" />
+            <TextView
+                android:id="@+id/drawer_list_0"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/drawer_store_icon"
+                android:paddingLeft="25dp"
+                android:gravity="center_vertical"
+                android:layout_margin="2dp"
+                android:text="@string/config_title_store"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/navigation_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/navigation_header"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/drawer_point"
+                    style="@style/drawer_item_button"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/config_title_point"
+                    android:drawableLeft="@drawable/ico_point_black"/>
+
+                <Button
+                    android:id="@+id/drawer_mygame"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_point"
+                    android:text="@string/config_title_mygame"
+                    android:drawableLeft="@drawable/ico_mygame_black"/>
+
+                <Button
+                    android:id="@+id/drawer_community"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_mygame"
+                    android:text="@string/config_title_community"
+                    android:drawableLeft="@drawable/ico_community_black"/>
+
+                <Button
+                    android:id="@+id/drawer_setting"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_community"
+                    android:text="@string/config_title_setting"
+                    android:drawableLeft="@drawable/ico_setting_black" />
+
+                <Button
+                    android:id="@+id/drawer_term"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_setting"
+                    android:text="@string/config_title_term"
+                    android:drawableLeft="@drawable/ico_kiyaku_black"/>
+
+                <Button
+                    android:id="@+id/drawer_inquiry"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_term"
+                    android:text="@string/config_title_inquiry"
+                    android:drawableLeft="@drawable/ico_mail_black" />
+
+                <Button
+                    android:id="@+id/drawer_announce"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_inquiry"
+                    android:text="@string/config_title_announce"
+                    android:drawableLeft="@drawable/ico_fukidashi_black"/>
+
+                <Button
+                    android:id="@+id/drawer_sandbox_logout"
+                    style="@style/drawer_item_button"
+                    android:layout_below="@id/drawer_announce"
+                    android:text="@string/config_title_logout_sandbox"
+                    android:visibility="gone"/>
+
+                <!-- Footer -->
+                <RelativeLayout
+                    android:id="@+id/navigation_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/drawer_sandbox_logout"
+                    android:layout_marginBottom="1dp"
+                    android:background="@color/drawerGray"
+                    android:visibility="gone"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/recommend_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:gravity="center"
+                        android:text="@string/config_title_recommend"
+                        android:textColor="@android:color/black"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:background="@color/white"/>
+
+                    <LinearLayout
+                        android:id="@+id/recommend_list_root"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recommend_title"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:background="@color/white">
+
+                        <include
+                            android:id="@+id/reccomend_game_1"
+                            layout="@layout/parts_recommend_applist_column"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp" />
+
+                        <include
+                            android:id="@+id/reccomend_game_2"
+                            layout="@layout/parts_recommend_applist_column"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.NavigationView>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/web_view_error_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="left|center"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
+        <!-- タイトル文言表示 -->
+        <TextView
+            android:id="@+id/web_view_error_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textSize="20sp"
+            android:padding="10dp" />
+
+        <!-- メッセージ文言表示 -->
+        <TextView
+            android:id="@+id/web_view_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkGray"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp"
+        android:gravity="bottom|center">
+
+        <!-- リロードボタン表示 -->
+        <Button
+            android:id="@+id/web_view_error_button_reload"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/web_view_error_button_reload"
+            android:background="@drawable/bg_web_view_button"
+            android:textColor="@color/darkGray" />
+
+    </LinearLayout>
+
+</FrameLayout>

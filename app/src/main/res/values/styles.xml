@@ -1,0 +1,37 @@
+<resources>
+
+    <style name="Theme.NoShadow" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="MainInfoMaterial">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/defaultSecondaryTextColor</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="CombatShipItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/combat_item_height</item>
+    </style>
+
+    <style name="CombatShipNameStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="DockItemStyle">
+        <item name="android:textColor">@color/defaultSecondaryTextColor</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+</resources>

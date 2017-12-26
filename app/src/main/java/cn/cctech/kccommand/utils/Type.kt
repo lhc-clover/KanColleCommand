@@ -1,0 +1,61 @@
+package cn.cctech.kccommand.utils
+
+val GUN_SMALL = 1 //小口径主砲
+val GUN_MEDIUM = 2 //中口径主砲
+val GUN_LARGE = 3 //大口径主砲
+val SUB_GUN = 4 //副砲
+val TORPEDO = 5 //魚雷
+val FIGHTER = 6 //艦上戦闘機
+val BOMBER = 7 //艦上爆撃機
+val TORPEDO_BOMBER = 8 //艦上攻撃機
+val SCOUT = 9 //艦上偵察機
+val SEA_SCOUT = 10 //水上偵察機
+val SEA_BOMBER = 11 //水上爆撃機
+val RADAR_SMALL = 12 //小型電探
+val RADAR_LARGE = 13 //大型電探
+val SONAR = 14 //ソナー
+val DEPTH_CHARGE = 15 //爆雷
+val EXT_ARMOR = 16 //追加装甲
+val TURBINE = 17 //機関部強化
+val SANSHIKIDAN = 18 //対空強化弾
+val AP_SHELL = 19 //対艦強化弾
+val VT_FUZE = 20 //VT信管
+val MACHINE_GUN = 21 //対空機銃
+val KOHYOTEKI = 22 //特殊潜航艇
+val DAMECON = 23 //応急修理要員
+val LANDING_CRAFT = 24 //上陸用舟艇
+val AUTOGYRO = 25 //オートジャイロ
+val ANTISUB_PATROL = 26 //対潜哨戒機
+val EXT_ARMOR_M = 27 //追加装甲中型
+val EXT_ARMOR_L = 28 //追加装甲大型
+val SEARCHLIGHT = 29 //探照灯
+val DRUM_CAN = 30 //簡易輸送部材
+val REPAIR_INFRA = 31 //艦艇修理施設
+val SS_TORPEDO = 32 //潜水艦魚雷
+val STAR_SHELL = 33 //照明弾
+val COMMAND_FAC = 34 //司令部施設
+val AVI_PERSONNEL = 35 //航空要員
+val ANTI_AIR_DEVICE = 36 //高射装置
+val ANTI_GROUND_EQIP = 37 //対地装備
+val GUN_LARGE_II = 38 //大口径主砲II
+val SHIP_PERSONNEL = 39 //水上艦要員
+val SONAR_LARGE = 40 //大型ソナー
+val FLYING_BOAT = 41 //大型飛行艇
+val SEARCHLIGHT_LARGE = 42 //大型探照灯
+val COMBAT_FOOD = 43 //戦闘糧食
+val SUPPLIES = 44 //補給物資
+val SEA_FIGHTER = 45 //水上戦闘機
+val AMP_TANK = 46 //特型内火艇
+val LBA_AIRCRAFT = 47 //陸上攻撃機
+val ITCP_FIGHTER = 48 //局地戦闘機
+
+val SAIUN_PART = 50 //輸送機材
+val SUBMARINE_RADER = 51 //潜水艦装備
+
+val JET_FIGHTER = 56 //噴式戦闘機
+val JET_BOMBER = 57 //噴式戦闘爆撃機
+val JET_TORPEDO_BOMBER = 58 //噴式攻撃機
+val JET_SCOUT = 59 //噴式偵察機
+
+val RADER_LARGE_II = 93 //大型電探II
+val SCOUT_II = 94 //艦上偵察機II

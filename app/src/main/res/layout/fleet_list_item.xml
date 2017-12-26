@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="ship"
+            type="cn.cctech.kccommand.entities.Ship" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded,contentDescription">
+
+        <cn.cctech.kccommand.widgets.BloodBar
+            android:id="@+id/npb_blood_bar_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:bar_state="@{ship}"
+            app:progress_current="@{ship.hpFixed}"
+            app:progress_max="@{ship.maxHp}"
+            app:progress_reached_bar_height="40dp"
+            app:progress_reached_color="@color/bloodBarColorNoDamage"
+            app:progress_text_visibility="invisible"
+            app:progress_unreached_bar_height="40dp"
+            app:progress_unreached_color="@color/bloodBarColorBackground" />
+
+        <TextView
+            android:id="@+id/tv_fleet_item_name"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{ship.name}"
+            android:textColor="@color/defaultPrimaryTextColor" />
+
+        <TextView
+            android:id="@+id/tv_fleet_item_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_fleet_item_name"
+            android:layout_below="@id/tv_fleet_item_name"
+            android:lines="1"
+            android:text="@{@string/ship_level(ship.level)}"
+            android:textColor="@color/defaultSecondaryTextColor"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_fleet_item_cond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tv_fleet_item_level"
+            android:layout_marginRight="4dp"
+            android:maxLines="1"
+            android:text="@{@string/ship_condition(ship.condition)}"
+            android:textColor="@{ship.getCondColor(context)}"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_fleet_item_tag"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tv_fleet_item_name"
+            android:layout_marginRight="4dp"
+            android:src="@{ship.tagImage}" />
+
+        <LinearLayout
+            android:id="@+id/ll_fleet_item_eq_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignTop="@id/tv_fleet_item_name"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/iv_fleet_item_tag"
+            android:layout_toRightOf="@id/tv_fleet_item_name">
+
+            <TextView
+                android:id="@+id/iv_fleet_item_eq_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/defaultSecondaryTextColor"
+                app:ship_entity="@{ship}"
+                app:slot_index="@{0}" />
+
+            <TextView
+                android:id="@+id/iv_fleet_item_eq_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/defaultSecondaryTextColor"
+                app:ship_entity="@{ship}"
+                app:slot_index="@{1}" />
+
+            <TextView
+                android:id="@+id/iv_fleet_item_eq_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/defaultSecondaryTextColor"
+                app:ship_entity="@{ship}"
+                app:slot_index="@{2}" />
+
+            <TextView
+                android:id="@+id/iv_fleet_item_eq_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/defaultSecondaryTextColor"
+                app:ship_entity="@{ship}"
+                app:slot_index="@{3}" />
+
+            <TextView
+                android:id="@+id/iv_fleet_item_eq_ex"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/defaultSecondaryTextColor"
+                app:ship_entity="@{ship}"
+                app:slot_index="@{4}" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/ll_fleet_item_eq_bar"
+            android:layout_alignTop="@id/tv_fleet_item_level"
+            android:layout_toLeftOf="@id/tv_fleet_item_cond"
+            android:text='@{ship.hpFixed + " / " + ship.maxHp}'
+            android:textColor="@color/defaultSecondaryTextColor"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</layout>

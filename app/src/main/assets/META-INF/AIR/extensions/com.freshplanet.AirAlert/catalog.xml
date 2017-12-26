@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<swc xmlns="http://www.adobe.com/flash/swccatalog/9">
+    <versions>
+        <swc version="1.2"/>
+        <compiler name="ActionScript Compiler" version="2.0.0" build="354143"/>
+    </versions>
+    <features>
+        <feature-script-deps/>
+    </features>
+    <libraries>
+        <library path="library.swf">
+            <script name="com/freshplanet/ane/AirAlert/AirAlert" mod="1403037752000">
+                <def id="com.freshplanet.ane.AirAlert:AirAlert"/>
+                <dep id="Boolean" type="s"/>
+                <dep id="Error" type="e"/>
+                <dep id="Function" type="s"/>
+                <dep id="String" type="s"/>
+                <dep id="flash.events:EventDispatcher" type="i"/>
+                <dep id="flash.events:StatusEvent" type="s"/>
+                <dep id="flash.external:ExtensionContext" type="s"/>
+                <dep id="flash.system:Capabilities" type="e"/>
+            </script>
+            <digests>
+                <digest type="SHA-256" signed="false" value="abc3864f6b87931548d342e06d6a143f7233e1a1f8a83d1cbcc0c4d61025bba0"/>
+            </digests>
+        </library>
+    </libraries>
+</swc>
