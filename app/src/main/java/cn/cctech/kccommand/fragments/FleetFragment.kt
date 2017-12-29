@@ -124,7 +124,7 @@ class FleetFragment : BaseFragment() {
                 if (i == mPosition) {
                     canvas?.drawRect(positionData.mLeft.toFloat() + 1, positionData.mTop.toFloat(), positionData.mRight.toFloat() - 1, positionData.mBottom.toFloat(), mPaint)
                 } else {
-                    canvas?.drawRect(positionData.mLeft.toFloat() + 1, positionData.mBottom - 2f, positionData.mRight.toFloat() - 1, positionData.mBottom.toFloat(), mPaint)
+                    canvas?.drawRect(positionData.mLeft.toFloat() + 1, positionData.mBottom - 4f, positionData.mRight.toFloat() - 1, positionData.mBottom.toFloat(), mPaint)
                 }
             }
         }
@@ -138,7 +138,7 @@ class FleetFragment : BaseFragment() {
     private class FleetPagerTitleView(context: Context?) : SimplePagerTitleView(context) {
         init {
             val padding = UIUtil.dip2px(context, 4.0)
-            setPadding(padding, 0, padding, 0);
+            setPadding(padding, 0, padding, 0)
         }
     }
 }

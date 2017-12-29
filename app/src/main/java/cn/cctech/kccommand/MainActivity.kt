@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import cn.cctech.kccommand.databinding.InfoPanelBinding
 import cn.cctech.kccommand.events.ui.BasicRefresh
 import cn.cctech.kccommand.fragments.BattleFragment
@@ -43,6 +44,11 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
     private var mViewPager: ViewPager? = null
     private var mInfoPanelBinding: InfoPanelBinding? = null
     private var mEventObserver = EventObserver()
+
+    private var mCollapseAll: ImageButton? = null
+    private var mExpandAll: ImageButton? = null
+    private var mInfoPanel: View? = null
+    private var mMainPanel: View? = null
 
     override fun setContentView(view: View) {
         super.setContentView(R.layout.activity_main)
@@ -128,6 +134,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
                 colorTransitionPagerTitleView.normalColor = ResourcesCompat.getColor(resources, R.color.tabTextColorNormal, theme)
                 colorTransitionPagerTitleView.selectedColor = ResourcesCompat.getColor(resources, R.color.tabTextColorSelect, theme)
                 colorTransitionPagerTitleView.text = mTabs?.get(index)
+                colorTransitionPagerTitleView.textSize = 12f
                 colorTransitionPagerTitleView.setOnClickListener { mViewPager?.currentItem = index }
                 return colorTransitionPagerTitleView
             }
@@ -146,6 +153,27 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
         val infoPanelGroup = findView<FrameLayout>(R.id.fl_info_panel)
         mInfoPanelBinding = DataBindingUtil.inflate(layoutInflater, R.layout.info_panel, infoPanelGroup, true)
+
+        mInfoPanel = findView(R.id.fl_info_panel)
+        mMainPanel = findView(R.id.rl_main_panel)
+        mCollapseAll = findView(R.id.btn_collapse_all)
+        mCollapseAll?.setOnClickListener { collapseAll() }
+        mExpandAll = findView(R.id.btn_expand_all)
+        mExpandAll?.setOnClickListener { expandAll() }
+    }
+
+    private fun collapseAll() {
+        mCollapseAll?.visibility = View.GONE
+        mInfoPanel?.visibility = View.GONE
+        mMainPanel?.visibility = View.GONE
+        mExpandAll?.visibility = View.VISIBLE
+    }
+
+    private fun expandAll() {
+        mCollapseAll?.visibility = View.VISIBLE
+        mInfoPanel?.visibility = View.VISIBLE
+        mMainPanel?.visibility = View.VISIBLE
+        mExpandAll?.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
