@@ -59,7 +59,7 @@
                     android:ellipsize="end"
                     android:ems="8"
                     android:maxLines="1"
-                    android:text='@{ship1.name + " " + ship1.yomi}'
+                    android:text='@{ship1.getShipNameFixed()}'
                     android:textColor="@color/defaultPrimaryTextColor"
                     android:textSize="12sp" />
 
@@ -125,7 +125,7 @@
                     android:ellipsize="end"
                     android:ems="8"
                     android:maxLines="1"
-                    android:text="@{ship2.name}"
+                    android:text="@{ship2.getShipNameFixed()}"
                     android:textColor="@color/defaultPrimaryTextColor"
                     android:textSize="12sp" />
 

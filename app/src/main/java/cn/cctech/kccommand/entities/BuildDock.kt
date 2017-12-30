@@ -2,10 +2,10 @@ package cn.cctech.kccommand.entities
 
 import android.content.Context
 import cn.cctech.kccommand.R
+import cn.cctech.kccommand.cache.ApiCacheHelper
 import cn.cctech.kccommand.events.api.GetShip
 import cn.cctech.kccommand.events.api.Kdock
 import cn.cctech.kccommand.managers.BasicManager
-import cn.cctech.kccommand.managers.ShipManager
 import com.orhanobut.logger.Logger
 
 class BuildDock {
@@ -55,15 +55,9 @@ class BuildDock {
 
     fun getTitle(context: Context): String {
         val count = BasicManager.basic.kDockCount
-//        return try {
-//            val none = if (id <= count) "未使用" else "未解锁"
-//            ShipManager.getShipById(shipId)?.name ?: none
-//        } catch (e: Exception) {
-//            "未知"
-//        }
         return if (id in 1..count) {
-            ShipManager.getShipById(shipId)?.name ?: "未使用"
-        } else "未解锁"
+            ApiCacheHelper.getShip(shipId)?.api_name ?: context.getString(R.string.dock_build_idle)
+        } else context.getString(R.string.dock_build_lock)
     }
 
     fun getFormatCountDown(context: Context): String {

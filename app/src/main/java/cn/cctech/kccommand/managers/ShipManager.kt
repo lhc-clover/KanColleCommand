@@ -313,6 +313,53 @@ object ShipManager : IManager() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onPractice(event: Practice) {
+        if (event.api_result == 1) {
+            val fleetIndex = try {
+                event.api_data.api_deck_id - 1
+            } catch (e: Exception) {
+                null
+            }
+            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+
+            calcOrdinalDamage(fleetIndex, event.api_data?.api_kouku?.api_stage3?.api_fdam)
+
+            calcTargetDamage(fleetIndex, event.api_data?.api_opening_taisen?.api_df_list,
+                    event.api_data?.api_opening_taisen?.api_damage,
+                    event.api_data?.api_opening_taisen?.api_at_eflag)
+            calcOrdinalDamage(fleetIndex, event.api_data?.api_opening_atack?.api_fdam)
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki1?.api_df_list,
+                    event.api_data?.api_hougeki1?.api_damage,
+                    event.api_data?.api_hougeki1?.api_at_eflag)
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki2?.api_df_list,
+                    event.api_data?.api_hougeki2?.api_damage,
+                    event.api_data?.api_hougeki2?.api_at_eflag)
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki3?.api_df_list,
+                    event.api_data?.api_hougeki3?.api_damage,
+                    event.api_data?.api_hougeki3?.api_at_eflag)
+            calcOrdinalDamage(fleetIndex, event.api_data?.api_raigeki?.api_fdam)
+            notifyFleetRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onPracticeNight(event: PracticeNight) {
+        if (event.api_result == 1) {
+            val fleetIndex = try {
+                event.api_data.api_deck_id.minus(1)
+            } catch (e: Exception) {
+                null
+            }
+            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+            notifyFleetRefresh()
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun calcTargetDamage(index: Int?, targetList: MutableList<Any>?, damageList: MutableList<Any>?, flagList: MutableList<Int>?) {
         if (targetList == null || damageList == null || index == null || flagList == null) return

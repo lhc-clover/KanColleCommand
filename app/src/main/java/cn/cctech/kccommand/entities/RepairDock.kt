@@ -54,15 +54,9 @@ class RepairDock {
 
     fun getTitle(context: Context): String {
         val count = BasicManager.basic.nDockCount
-//        return try {
-//            val none = if (id <= count) "未使用" else "未解锁"
-//            ShipManager.getShipById(shipId)?.name ?: none
-//        } catch (e: Exception) {
-//            "未知"
-//        }
         return if (id in 1..count) {
-            ShipManager.getShipById(shipId)?.name ?: "未使用"
-        } else "未解锁"
+            ShipManager.getShipById(shipId)?.name ?: context.getString(R.string.dock_repair_idle)
+        } else context.getString(R.string.dock_repair_lock)
     }
 
     fun getFormatCountDown(context: Context): String {

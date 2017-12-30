@@ -619,7 +619,7 @@ public class Ship3 extends JsonEvent {
             private String api_name;
             private String api_name_id;
             private String api_flagship;
-            private List<Integer> api_mission;
+            private List<Long> api_mission;
             private List<Integer> api_ship;
 
             public int getApi_member_id() {
@@ -662,11 +662,11 @@ public class Ship3 extends JsonEvent {
                 this.api_flagship = api_flagship;
             }
 
-            public List<Integer> getApi_mission() {
+            public List<Long> getApi_mission() {
                 return api_mission;
             }
 
-            public void setApi_mission(List<Integer> api_mission) {
+            public void setApi_mission(List<Long> api_mission) {
                 this.api_mission = api_mission;
             }
 

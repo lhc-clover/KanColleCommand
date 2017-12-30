@@ -120,44 +120,48 @@ object NotifyManager : IManager() {
             var title = ""
             var content = ""
             var largeIconRes = -1
-            when (jobId.div(100000)) {
-                1 -> {
-                    title = callback!!.getContext().getString(R.string.notify_expedition_title)
-                    val id = jobId - sExpeditionMask - 1
-                    val expedition = DockManager.expeditionList[id]
-                    content = callback!!.getContext().getString(R.string.notify_expedition_content,
-                            expedition.fleetIndex, ShipManager.getFleetName(expedition.fleetIndex - 1),
-                            expedition.mission(), expedition.description())
-                    largeIconRes = R.drawable.expedition
+            try {
+                when (jobId.div(100000)) {
+                    1 -> {
+                        title = callback!!.getContext().getString(R.string.notify_expedition_title)
+                        val id = jobId - sExpeditionMask - 1
+                        val expedition = DockManager.expeditionList[id]
+                        content = callback!!.getContext().getString(R.string.notify_expedition_content,
+                                expedition.fleetIndex, ShipManager.getFleetName(expedition.fleetIndex - 1),
+                                expedition.mission(), expedition.description())
+                        largeIconRes = R.drawable.expedition
+                    }
+                    5 -> {
+                        title = callback!!.getContext().getString(R.string.notify_repair_title)
+                        val id = jobId - sRepairMask - 1
+                        val repair = DockManager.repairDockList[id]
+                        val ship = ShipManager.getShipById(repair.shipId)
+                        content = callback!!.getContext().getString(R.string.notify_repair_content, ship?.name)
+                        largeIconRes = R.drawable.repair
+                    }
+                    9 -> {
+                        title = callback!!.getContext().getString(R.string.notify_build_title)
+                        val id = jobId - sBuildMask - 1
+                        val build = DockManager.buildDockList[id]
+                        val ship = ShipManager.getShipById(build.shipId)
+                        content = callback!!.getContext().getString(R.string.notify_build_content, ship?.name)
+                        largeIconRes = R.drawable.build
+                    }
                 }
-                5 -> {
-                    title = callback!!.getContext().getString(R.string.notify_repair_title)
-                    val id = jobId - sRepairMask - 1
-                    val repair = DockManager.repairDockList[id]
-                    val ship = ShipManager.getShipById(repair.shipId)
-                    content = callback!!.getContext().getString(R.string.notify_repair_content, ship?.name)
-                    largeIconRes = R.drawable.repair
+                if (title.isNotEmpty() && content.isNotEmpty() && largeIconRes > 0) {
+                    val largeIcon = (ContextCompat.getDrawable(this, largeIconRes) as BitmapDrawable).bitmap
+                    val pendingIntent = PendingIntent.getActivity(this, jobId,
+                            Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+                    JNotify.build(callback?.getContext()!!).setContentTitle(title).setContentText(content)
+                            .setSmallIcon(R.drawable.ic_notify_small)
+                            .setLargeIcon(largeIcon)
+                            .setDefaultVibrate()
+                            .setDefaultSound()
+                            .setContentIntent(pendingIntent)
+                            .notify(jobId)
                 }
-                9 -> {
-                    title = callback!!.getContext().getString(R.string.notify_build_title)
-                    val id = jobId - sBuildMask - 1
-                    val build = DockManager.buildDockList[id]
-                    val ship = ShipManager.getShipById(build.shipId)
-                    content = callback!!.getContext().getString(R.string.notify_build_content, ship?.name)
-                    largeIconRes = R.drawable.build
-                }
-            }
-            if (title.isNotEmpty() && content.isNotEmpty() && largeIconRes > 0) {
-                val largeIcon = (ContextCompat.getDrawable(this, largeIconRes) as BitmapDrawable).bitmap
-                val pendingIntent = PendingIntent.getActivity(this, jobId,
-                        Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
-                JNotify.build(callback?.getContext()!!).setContentTitle(title).setContentText(content)
-                        .setSmallIcon(R.drawable.ic_notify_small)
-                        .setLargeIcon(largeIcon)
-                        .setDefaultVibrate()
-                        .setDefaultSound()
-                        .setContentIntent(pendingIntent)
-                        .notify(jobId)
+            } catch (e: Exception) {
+
             }
         }
 

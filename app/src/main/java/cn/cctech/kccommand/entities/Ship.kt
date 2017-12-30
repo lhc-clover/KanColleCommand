@@ -10,6 +10,7 @@ import cn.cctech.kccommand.utils.*
 import com.orhanobut.logger.Logger
 import java.util.*
 
+@Suppress("MemberVisibilityCanPrivate")
 class Ship {
 
     var id: Int = 0
@@ -50,7 +51,6 @@ class Ship {
             maxFuel = rawShip.api_fuel_max
             maxBullet = rawShip.api_bull_max
             name = rawShip.api_name
-//            yomi = rawShip.api_yomi
         }
     }
 
@@ -147,6 +147,10 @@ class Ship {
     fun getTagImage(): Int {
         return if (DockManager.isShipRepairing(id)) R.drawable.tag_repair
         else -1
+    }
+
+    fun getShipNameFixed(): String {
+        return if (yomi.contains("flagship") || yomi.contains("elite")) "$name $yomi" else name
     }
 
 }

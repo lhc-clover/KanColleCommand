@@ -26,6 +26,7 @@ object ApiParser {
         val map = HashMap<String, String>()
         form.split("&")
                 .map { it.replace("%5F", "_") }
+                .map { it.replace("%2D", "-") }
                 .map { it.split("=") }
                 .forEach {
                     map.put(it[0], it[1])

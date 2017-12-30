@@ -58,6 +58,10 @@
     <string name="dock_expedition_idle">未远征</string>
     <string name="dock_expedition_description">(%1$02d)%2$s</string>
     <string name="dock_expedition_lock">未解锁</string>
+    <string name="dock_build_idle">未使用</string>
+    <string name="dock_build_lock">未解锁</string>
+    <string name="dock_repair_idle">未使用</string>
+    <string name="dock_repair_lock">未解锁</string>
 
     <string name="notify_expedition_title">远征完成</string>
     <string name="notify_expedition_content">[%1$d]%2$s，远征(%3$02d)%4$s归来</string>

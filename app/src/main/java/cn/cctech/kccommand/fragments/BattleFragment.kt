@@ -64,11 +64,13 @@ class BattleFragment : BaseFragment() {
         enemyFleetListView.setAdapter(mEnemyAdapter)
     }
 
+    @Suppress("unused", "UNUSED_PARAMETER")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFleetRefresh(event: FleetRefresh) {
         setMineFleet()
     }
 
+    @Suppress("unused", "UNUSED_PARAMETER")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBattleRefresh(event: BattleRefresh) {
         setEnemyFleet()
@@ -112,23 +114,29 @@ class BattleFragment : BaseFragment() {
             } catch (e: Exception) {
                 -1
             }
-            if (heading != -1) infoStrBuilder.append("/").append(getString(heading))
+            if (heading != -1) appendWithJoiner(infoStrBuilder, getString(heading))
             // 制空
             val airCommand = try {
                 kAirCommandMap[BattleManager.mAirCommand]!!
             } catch (e: Exception) {
                 -1
             }
-            if (airCommand != -1) infoStrBuilder.append("/").append(getString(airCommand))
+            if (airCommand != -1) appendWithJoiner(infoStrBuilder, getString(airCommand))
             // 评价
             val rank = BattleManager.mRank
-            if (rank.isNotEmpty()) infoStrBuilder.append("/").append(rank)
+            if (rank.isNotEmpty()) appendWithJoiner(infoStrBuilder, rank)
             // 罗盘剧透
             val next = BattleManager.mNext
-            if (next != -1) infoStrBuilder.append("/").append(getString(R.string.battle_next, next.toString()))
+            if (next != -1) appendWithJoiner(infoStrBuilder, getString(R.string.battle_next, next.toString()))
         }
         if (infoStrBuilder.isEmpty()) infoStrBuilder.append(getString(R.string.battle_idle))
         mCombatInfo.text = infoStrBuilder.toString()
+    }
+
+    private fun appendWithJoiner(builder: StringBuilder, str: String?) {
+        if (str.isNullOrEmpty()) return
+        if (builder.isNotEmpty()) builder.append("/")
+        builder.append(str)
     }
 
     private class CombatAdapter : UltimateViewAdapter<DataBindingHolder>() {

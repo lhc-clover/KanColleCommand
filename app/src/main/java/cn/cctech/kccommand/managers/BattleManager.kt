@@ -144,6 +144,7 @@ object BattleManager : IManager() {
         } else {
             rank = "D"
         }
+        Logger.d("Calc rank : $rank")
         return rank
     }
 
@@ -257,6 +258,7 @@ object BattleManager : IManager() {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPort(event: Port) {
         mArea = -1
@@ -279,6 +281,69 @@ object BattleManager : IManager() {
             mGet = event.api_data?.api_get_ship?.api_ship_name ?: ""
             Logger.d("Get ship $mGet")
             mRank = event.api_data?.api_win_rank ?: "D"
+            notifyBattleRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onPractice(event: Practice) {
+        if (event.api_result == 1) {
+            try {
+                mFleet = event.api_data?.api_deck_id?.minus(1) ?: -1
+                mMineFormation = event.api_data?.api_formation?.get(0) ?: -1
+                mEnemyFormation = event.api_data?.api_formation?.get(1) ?: -1
+                mHeading = event.api_data?.api_formation?.get(2) ?: -1
+                mAirCommand = event.api_data?.api_kouku?.api_stage1?.api_disp_seiku ?: -1
+
+                mEnemyList.clear()
+                val enemies: MutableList<Int>? = event.api_data?.api_ship_ke
+                enemies?.forEachIndexed { index, id ->
+                    kotlin.run {
+                        val rawShip = ApiCacheHelper.getShip(id)
+                        val ship = Ship(rawShip)
+                        ship.level = event.api_data?.api_ship_lv?.get(index) ?: 0
+                        ship.nowHp = event.api_data?.api_e_nowhps?.get(index) ?: 0
+                        ship.maxHp = event.api_data?.api_e_maxhps?.get(index) ?: 0
+                        ship.items.addAll(event.api_data?.api_eSlot?.get(index) ?: emptyList())
+                        mEnemyList.add(ship)
+                    }
+                }
+            } catch (e: Exception) {
+                Logger.e(e, e.message)
+            }
+            calcOrdinalDamage(event.api_data?.api_kouku?.api_stage3?.api_edam)
+            calcTargetDamage(event.api_data?.api_opening_taisen?.api_df_list,
+                    event.api_data?.api_opening_taisen?.api_damage,
+                    event.api_data?.api_opening_taisen?.api_at_eflag)
+            calcOrdinalDamage(event.api_data?.api_opening_atack?.api_edam)
+            calcTargetDamage(event.api_data?.api_hougeki1?.api_df_list,
+                    event.api_data?.api_hougeki1?.api_damage,
+                    event.api_data?.api_hougeki1?.api_at_eflag)
+            calcTargetDamage(event.api_data?.api_hougeki2?.api_df_list,
+                    event.api_data?.api_hougeki2?.api_damage,
+                    event.api_data?.api_hougeki2?.api_at_eflag)
+            calcTargetDamage(event.api_data?.api_hougeki3?.api_df_list,
+                    event.api_data?.api_hougeki3?.api_damage,
+                    event.api_data?.api_hougeki3?.api_at_eflag)
+            calcOrdinalDamage(event.api_data?.api_raigeki?.api_edam)
+
+            mRank = calcRank()
+
+            notifyBattleRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onPracticeNight(event: PracticeNight) {
+        if (event.api_result == 1) {
+            setHps(event.api_data?.api_e_nowhps, event.api_data?.api_e_maxhps)
+
+            calcTargetDamage(event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+
+            mRank = calcRank()
+
             notifyBattleRefresh()
         }
     }
