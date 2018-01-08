@@ -16,7 +16,7 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_port/port", Port::class.java)
         sPairMap.put("/kcsapi/api_get_member/require_info", RequireInfo::class.java)
 
-        sPairMap.put("/kcsapi/api_get_member/mapinfo", MapInfo::class.java)
+//        sPairMap.put("/kcsapi/api_get_member/mapinfo", MapInfo::class.java)
         sPairMap.put("/kcsapi/api_get_member/deck", Deck::class.java)
         sPairMap.put("/kcsapi/api_req_hokyu/charge", Charge::class.java)
         sPairMap.put("/kcsapi/api_get_member/ship3", Ship3::class.java)
@@ -27,6 +27,9 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_req_hensei/change", Change::class.java)
         sPairMap.put("/kcsapi/api_get_member/material", Material::class.java)
         sPairMap.put("/kcsapi/api_req_nyukyo/speedchange", SpeedChange::class.java)
+        sPairMap.put("/kcsapi/api_req_kousyou/createitem", CreateItem::class.java)
+        sPairMap.put("/kcsapi/api_req_kousyou/destroyship", DestroyShip::class.java)
+        sPairMap.put("/kcsapi/api_req_kousyou/destroyitem2", DestroyItem::class.java)
 
         sPairMap.put("/kcsapi/api_req_map/start", BattleStart::class.java)
         sPairMap.put("/kcsapi/api_req_map/next", Next::class.java)

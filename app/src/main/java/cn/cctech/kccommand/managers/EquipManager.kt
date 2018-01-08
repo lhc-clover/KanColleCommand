@@ -12,22 +12,31 @@ object EquipManager : IManager() {
 
     private val mEquipMap = SparseArray<Equip>()
 
-    val equipCount: Int
-        get() = mEquipMap.size()
-
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onRequireInfoEvent(event: RequireInfo) {
         if (event.api_result == 1) {
-            for (item in event.api_data.api_slot_item) {
-                val rawEquip = ApiCacheHelper.getSlotItem(item.api_slotitem_id)
-                val equip = Equip(rawEquip, item)
-                mEquipMap.put(item.api_id, equip)
+            event.api_data?.api_slot_item?.forEach {
+                addNewEquip(it.api_id, it.api_slotitem_id)
             }
         }
     }
 
     fun getEquipById(id: Int): Equip? {
         return mEquipMap.get(id)
+    }
+
+    fun addNewEquip(id: Int, slotId: Int) {
+        val rawEquip = ApiCacheHelper.getSlotItem(slotId)
+        val equip = Equip(rawEquip)
+        mEquipMap.put(id, equip)
+    }
+
+    fun removeEquip(id: Int) {
+        if (id > 0) mEquipMap.remove(id)
+    }
+
+    fun getEquipCount(): Int {
+        return mEquipMap.size()
     }
 
 }

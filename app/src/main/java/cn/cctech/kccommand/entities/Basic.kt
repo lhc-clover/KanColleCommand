@@ -40,7 +40,7 @@ class Basic {
         level = entity?.api_data?.api_basic?.api_level ?: 0
         shipCount = entity?.api_data?.api_ship?.size ?: 0
         shipMax = entity?.api_data?.api_basic?.api_max_chara ?: 0
-        slotCount = EquipManager.equipCount
+        slotCount = EquipManager.getEquipCount()
         slotMax = entity?.api_data?.api_basic?.api_max_slotitem ?: 0
         kDockCount = entity?.api_data?.api_basic?.api_count_kdock ?: 0
         nDockCount = entity?.api_data?.api_basic?.api_count_ndock ?: 0

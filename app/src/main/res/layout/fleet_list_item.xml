@@ -75,7 +75,7 @@
         <LinearLayout
             android:id="@+id/ll_fleet_item_eq_bar"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="16dp"
             android:layout_alignTop="@id/tv_fleet_item_name"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="4dp"

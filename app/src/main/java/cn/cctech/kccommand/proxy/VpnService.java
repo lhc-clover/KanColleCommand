@@ -46,7 +46,7 @@ import eu.faircode.netguard.Usage;
 import eu.faircode.netguard.Util;
 
 public class VpnService extends android.net.VpnService {
-    private final static String TAG = "KCAV";
+    private final static String TAG = "CC";
 
     Resources resources;
 
@@ -227,7 +227,7 @@ public class VpnService extends android.net.VpnService {
 
                 startNative(vpn);
             } else {
-                Log.e("KCA", "vpn is not null");
+                Log.e(TAG, "vpn is not null");
             }
         }
 
@@ -334,7 +334,7 @@ public class VpnService extends android.net.VpnService {
             intent.putExtra(EXTRA_COMMAND, enabled ? Command.start : Command.stop);
             cmd = (Command) intent.getSerializableExtra(EXTRA_COMMAND);
         }
-        Log.e("KCA", cmd.toString());
+        Log.e(TAG, cmd.toString());
         String reason = intent.getStringExtra(EXTRA_REASON);
         Log.i(TAG, "Start intent=" + intent + " command=" + cmd + " reason=" + reason +
                 " vpn=" + (vpn != null) + " user=" + (Process.myUid() / 100000));
@@ -656,7 +656,7 @@ public class VpnService extends android.net.VpnService {
 
     // Called from native code
     private void logPacket(Packet packet) {
-        Log.e("KCAV", packet.data);
+        Log.e(TAG, packet.data);
         /*
         Message msg = logHandler.obtainMessage();
         msg.obj = packet;

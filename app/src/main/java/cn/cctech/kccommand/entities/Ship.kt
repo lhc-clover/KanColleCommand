@@ -3,6 +3,7 @@ package cn.cctech.kccommand.entities
 import android.content.Context
 import android.support.v4.content.res.ResourcesCompat
 import cn.cctech.kccommand.R
+import cn.cctech.kccommand.events.api.GetShip
 import cn.cctech.kccommand.events.api.Start
 import cn.cctech.kccommand.managers.DockManager
 import cn.cctech.kccommand.managers.EquipManager
@@ -47,6 +48,27 @@ class Ship {
         soku = portShip.api_soku
         carrys.addAll(portShip.api_onslot)
         scout = portShip.api_sakuteki[0]
+        if (rawShip != null) {
+            maxFuel = rawShip.api_fuel_max
+            maxBullet = rawShip.api_bull_max
+            name = rawShip.api_name
+        }
+    }
+
+    constructor(rawShip: Start.ApiDataEntity.ApiMstShipEntity?, newShip: GetShip.ApiDataBean.ApiShipBean) {
+        id = newShip.api_id
+        sortNum = newShip.api_sortno
+        level = newShip.api_lv
+        nowHp = newShip.api_nowhp
+        maxHp = newShip.api_maxhp
+        nowFuel = newShip.api_fuel
+        nowBullet = newShip.api_bull
+        condition = newShip.api_cond
+        items.addAll(newShip.api_slot)
+        items.add(newShip.api_slot_ex)
+        soku = newShip.api_soku
+        carrys.addAll(newShip.api_onslot)
+        scout = newShip.api_sakuteki[0]
         if (rawShip != null) {
             maxFuel = rawShip.api_fuel_max
             maxBullet = rawShip.api_bull_max

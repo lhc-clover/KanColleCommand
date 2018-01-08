@@ -22,6 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class VpnData {
+    
+    private static final String TAG = "CC";
+    
     public static Handler handler;
 
     private static final int NONE = 0;
@@ -91,7 +94,7 @@ public class VpnData {
         } else if (type == RESPONSE && !kcaServers.contains(saddrstr)) {
             return 0;
         }
-        //Log.e("KCAV", String.format("containsKcaServer[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
+        //Log.e(TAG, String.format("containsKcaServer[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
         return 1;
     }
 
@@ -101,7 +104,7 @@ public class VpnData {
             String s = new String(data);
             String saddrstr = new String(source);
             String taddrstr = new String(target);
-            //Log.e("KCAV", String.format("getDataFromNative[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
+            //Log.e(TAG, String.format("getDataFromNative[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
 
             if (type == REQUEST) {
                 if (s.startsWith("GET") || s.startsWith("POST")) {
@@ -115,7 +118,7 @@ public class VpnData {
                     String[] head_line = portToRequestData.get(sport).toString().split("\r\n");
                     requestUri = head_line[0].split(" ")[1];
                     portToUri.put(sport, requestUri);
-                    Log.e("KCAV", requestUri);
+                    Log.e(TAG, requestUri);
                     if (!checkKcRes(requestUri)) {
                         portToResponseData.put(sport, new Byte[]{});
                         portToResponseHeaderPart.put(sport, "");
@@ -128,13 +131,13 @@ public class VpnData {
                         if (!ignoreResponseList.contains(sport)) {
                             ignoreResponseList.add(sport);
                         }
-                        Log.e("KCAV", ignoreResponseList.toString());
+                        Log.e(TAG, ignoreResponseList.toString());
                     }
                 }
             } else if (type == RESPONSE) {
                 state = RESPONSE;
                 if (ignoreResponseList.contains(tport)) {
-                    Log.e("KCAV", portToUri.get(tport) + " ignored");
+                    Log.e(TAG, portToUri.get(tport) + " ignored");
                     return;
                 }
                 if (portToResponseHeaderPart.get(tport).length() == 0) {
@@ -150,7 +153,7 @@ public class VpnData {
                         for (String line : headers) {
                             if (line.startsWith("Content-Encoding: ")) {
                                 portToGzipped.put(tport, line.contains("gzip"));
-                                Log.e("KCA", String.valueOf(tport) + " gzip " + portToGzipped.get(tport));
+                                Log.e(TAG, String.valueOf(tport) + " gzip " + portToGzipped.get(tport));
                             } else if (line.startsWith("Transfer-Encoding")) {
                                 if (line.contains("chunked")) {
                                     portToLength.put(tport, -1);
@@ -183,19 +186,19 @@ public class VpnData {
                     }
                     byte[] responseData = ArrayUtils.toPrimitive(portToResponseData.get(tport));
                     byte[] responseBody = Arrays.copyOfRange(responseData, portToResponseHeaderLength.get(tport) + 4, responseData.length);
-                    Log.e("KCA", String.valueOf(responseData.length));
-                    Log.e("KCA", String.valueOf(portToResponseHeaderPart.get(tport).length()));
-                    Log.e("KCA", "====================================");
+                    Log.e(TAG, String.valueOf(responseData.length));
+                    Log.e(TAG, String.valueOf(portToResponseHeaderPart.get(tport).length()));
+                    Log.e(TAG, "====================================");
                     if (chunkflag) {
-                        Log.e("KCA", Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, 0, 15)));
-                        Log.e("KCA", Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, responseBody.length - 15, responseBody.length)));
+                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, 0, 15)));
+                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, responseBody.length - 15, responseBody.length)));
                         responseBody = unchunkAllData(responseBody, gzipflag);
                     } else if (gzipflag) {
-                        Log.e("KCA", "Ungzip " + String.valueOf(tport));
+                        Log.e(TAG, "Ungzip " + String.valueOf(tport));
                         responseBody = Utils.gzipdecompress(responseBody);
                     }
 
-                    //Log.e("KCA", String.valueOf(responseData.length));
+                    //Log.e(TAG, String.valueOf(responseData.length));
                     String requestUri = portToUri.get(tport);
                     if (checkKcApi(requestUri)) {
                         DataJob job = new DataJob(requestUri, requestBody, responseBody);
@@ -225,14 +228,14 @@ public class VpnData {
             }
             DataJob job = new DataJob(KCA_API_VPN_DATA_ERROR, empty_request.getBytes(), error_data.toString().getBytes());
             executorService.execute(job);
-            Log.e("KCA", Utils.getStringFromException(e));
+            Log.e(TAG, Utils.getStringFromException(e));
         }
     }
 
     private static boolean checkKcApi(String uri) {
         boolean isKcaVer = uri.contains("/kca/version");
         boolean isKcsApi = uri.contains("/kcsapi/api_");
-        //Log.e("KCA", uri + " " + String.valueOf(isKcaVer || isKcsApi));
+        //Log.e(TAG, uri + " " + String.valueOf(isKcaVer || isKcsApi));
         return (isKcaVer || isKcsApi);
     }
 
@@ -241,14 +244,14 @@ public class VpnData {
         boolean isKcaRes = uri.contains("/kc") && uri.contains("/resources");
         boolean isKcsSound = uri.contains("/kcs/sound");
         boolean isKcsWorld = uri.contains("/api_world/get_id/");
-        //Log.e("KCA", uri + " " + String.valueOf(isKcaVer || isKcsApi));
+        //Log.e(TAG, uri + " " + String.valueOf(isKcaVer || isKcsApi));
         return (isKcsSwf || isKcaRes || isKcsSound || isKcsWorld);
     }
 
     private static byte[] unchunkAllData(byte[] data, boolean gzipped) throws IOException {
         byte[] rawdata = Utils.unchunkdata(data);
         if (gzipped) rawdata = Utils.gzipdecompress(rawdata);
-        //Log.e("KCA", new String(rawdata));
+        //Log.e(TAG, new String(rawdata));
         return rawdata;
     }
 

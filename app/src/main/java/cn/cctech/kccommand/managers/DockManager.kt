@@ -5,7 +5,6 @@ import cn.cctech.kccommand.entities.Expedition
 import cn.cctech.kccommand.entities.RepairDock
 import cn.cctech.kccommand.events.api.*
 import cn.cctech.kccommand.events.ui.DockRefresh
-import cn.cctech.kccommand.events.ui.FleetRefresh
 import com.orhanobut.logger.Logger
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -34,10 +33,15 @@ object DockManager : IManager() {
         event.dispatch()
     }
 
-    private fun notifyFleetRefresh() {
-        val event = FleetRefresh()
-        event.dispatch()
-    }
+//    private fun notifyFleetRefresh() {
+//        val event = FleetRefresh()
+//        event.dispatch()
+//    }
+//
+//    private fun notifyBasicRefresh() {
+//        val event = BasicRefresh()
+//        event.dispatch()
+//    }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPort(event: Port) {
@@ -78,7 +82,6 @@ object DockManager : IManager() {
             repairDockList.clear()
             event.api_data.mapTo(repairDockList) { RepairDock(it) }
             notifyDockRefresh()
-            notifyFleetRefresh()
         }
     }
 
@@ -98,7 +101,7 @@ object DockManager : IManager() {
             val repairDock = repairDockList[index]
             val shipId = repairDock.shipId
             repairDock.clear()
-            ShipManager.setShipRepaired(shipId)
+            ShipManager.setShipRecovery(shipId)
             notifyDockRefresh()
         }
     }

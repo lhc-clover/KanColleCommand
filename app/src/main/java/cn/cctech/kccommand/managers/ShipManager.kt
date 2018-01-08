@@ -101,7 +101,7 @@ object ShipManager : IManager() {
         return getFleet(index).orEmpty().count { DockManager.isShipRepairing(getShipById(it)?.id ?: -1) } > 0
     }
 
-    private fun notifyFleetRefresh() {
+    fun notifyFleetRefresh() {
         val fleetRefreshEvent = FleetRefresh()
         fleetRefreshEvent.dispatch()
     }
@@ -125,10 +125,24 @@ object ShipManager : IManager() {
         mShipMap.put(shipId, ship)
     }
 
-    fun setShipRepaired(shipId: Int) {
+    fun setShipRecovery(shipId: Int) {
         val ship = mShipMap[shipId]
         ship.nowHp = ship.maxHp
         notifyFleetRefresh()
+    }
+
+    fun addNewShip(newShip: GetShip.ApiDataBean.ApiShipBean) {
+        val rawShip = ApiCacheHelper.getShip(newShip.api_ship_id)
+        val ship = Ship(rawShip, newShip)
+        mShipMap.put(newShip.api_id, ship)
+    }
+
+    fun removeShip(shipId: Int) {
+        if (shipId > 0) mShipMap.remove(shipId)
+    }
+
+    fun getShipCount(): Int {
+        return mShipMap.size()
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -356,6 +370,24 @@ object ShipManager : IManager() {
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
                     event.api_data?.api_hougeki?.api_at_eflag)
+            notifyFleetRefresh()
+        }
+    }
+
+//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+//    fun onGetShip(event: GetShip) {
+//        if (event.api_result == 1) {
+//            val shipData = event.api_data.api_ship
+//            val rawShip = ApiCacheHelper.getShip(shipData.api_ship_id)
+//            val ship = Ship(rawShip, shipData)
+//            mShipMap.put(shipData.api_id, ship)
+//            BasicManager.notifyBasicRefresh()
+//        }
+//    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onNdock(event: Ndock) {
+        if (event.api_result == 1) {
             notifyFleetRefresh()
         }
     }

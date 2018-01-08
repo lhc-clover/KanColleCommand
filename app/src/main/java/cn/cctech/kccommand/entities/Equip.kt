@@ -1,5 +1,6 @@
 package cn.cctech.kccommand.entities
 
+import cn.cctech.kccommand.events.api.GetShip
 import cn.cctech.kccommand.events.api.RequireInfo
 import cn.cctech.kccommand.events.api.Start
 import cn.cctech.kccommand.utils.*
@@ -24,6 +25,15 @@ class Equip {
         }
         mastery = portEquip.api_alv
         level = portEquip.api_level
+    }
+
+    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?) {
+        if (rawEquip != null) {
+            name = rawEquip.api_name
+            type = rawEquip.api_type[3]
+            aac = rawEquip.api_tyku
+            scout = rawEquip.api_saku
+        }
     }
 
     fun calcLevelAAC(): Double {

@@ -193,6 +193,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
     inner class EventObserver {
 
+        @Suppress("unused", "UNUSED_PARAMETER")
         @Subscribe(threadMode = ThreadMode.MAIN)
         fun onFleetRefresh(event: BasicRefresh) {
             mInfoPanelBinding?.basic = BasicManager.basic

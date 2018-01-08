@@ -101,7 +101,7 @@ object BattleManager : IManager() {
         var friendNowSum = 0
         var friendSunkCount = 0
         var friendAfterSum = 0
-        var friendFlagshipCritical = false
+//        var friendFlagshipCritical = false
         val fleet = ShipManager.getFleet(mFleet)
         if (fleet != null) {
             friendCount = fleet.size
@@ -111,7 +111,7 @@ object BattleManager : IManager() {
             }
             friendNowSum = shipList.sumBy { it?.maxHp ?: 0 }
             friendAfterSum = shipList.sumBy { it?.getHpFixed() ?: 0 }
-            friendFlagshipCritical = shipList[0]?.getHpFixed()?.times(4) ?: 0 <= shipList[0]?.maxHp ?: 0
+//            friendFlagshipCritical = shipList[0]?.getHpFixed()?.times(4) ?: 0 <= shipList[0]?.maxHp ?: 0
         }
         val enemyCount = mEnemyList.size
         val enemySunkCount = mEnemyList.count { it.getHpFixed() <= 0 }
@@ -121,28 +121,29 @@ object BattleManager : IManager() {
 
         val friendDamageRate = (friendNowSum - friendAfterSum) * 100 / friendNowSum
         val enemyDamageRate = (enemyNowSum - enemyAfterSum) * 100 / enemyNowSum
-        var rank = ""
-        if (friendSunkCount == 0) {
+        val rank = if (friendSunkCount == 0) {
             if (enemySunkCount == enemyCount) {
-                rank = if (friendAfterSum >= friendNowSum)
+                if (friendAfterSum >= friendNowSum)
                     "SS"
                 else
                     "S"
             } else if (enemyCount > 1 && enemySunkCount >= Math.floor(0.7 * enemyCount).toInt()) {
-                rank = "A"
+                "A"
+            } else if (enemyFlagShipSunk && friendSunkCount < enemySunkCount) {
+                "B"
+            } /*else if (friendCount == 1 && friendFlagshipCritical) {
+                rank = "D"
+            }*/ else if (enemyDamageRate * 2 > friendDamageRate * 5) {
+                "B"
+            } else if (enemyDamageRate * 10 > friendDamageRate * 9) {
+                "C"
+            } else {
+                "D"
             }
-        } else if (enemyFlagShipSunk && friendSunkCount < enemySunkCount) {
-            rank = "B"
-        } else if (friendCount == 1 && friendFlagshipCritical) {
-            rank = "D"
-        } else if (enemyDamageRate * 2 > friendDamageRate * 5) {
-            rank = "B"
-        } else if (enemyDamageRate * 10 > friendDamageRate * 9) {
-            rank = "C"
-        } else if (friendSunkCount > 0 && (friendCount - friendSunkCount) == 1) {
-            rank = "E"
+        } else if (friendCount - friendSunkCount == 1) {
+            "E"
         } else {
-            rank = "D"
+            "D"
         }
         Logger.d("Calc rank : $rank")
         return rank
@@ -280,7 +281,7 @@ object BattleManager : IManager() {
         if (event.api_result == 1) {
             mGet = event.api_data?.api_get_ship?.api_ship_name ?: ""
             Logger.d("Get ship $mGet")
-            mRank = event.api_data?.api_win_rank ?: "D"
+//            mRank = event.api_data?.api_win_rank ?: "D"
             notifyBattleRefresh()
         }
     }
