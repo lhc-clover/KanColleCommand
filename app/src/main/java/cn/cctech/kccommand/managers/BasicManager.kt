@@ -17,6 +17,11 @@ object BasicManager : IManager() {
         event.dispatch()
     }
 
+    fun recountSlotItem() {
+        basic.slotCount = EquipManager.getEquipCount()
+        notifyBasicRefresh()
+    }
+
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPort(event: Port) {
         if (event.api_result == 1) {
@@ -100,8 +105,12 @@ object BasicManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onDestroyShip(event: DestroyShip) {
         if (event.api_result == 1) {
-            val shipId = event.paramMap?.get("api_ship_id")?.toInt() ?: -1
-            if (shipId > 0) {
+            event.paramMap?.get("api_ship_id")?.split("%2C")?.forEach {
+                val shipId = try {
+                    it.toInt()
+                } catch (e: Exception) {
+                    -1
+                }
                 val withSlot = event.paramMap?.get("api_slot_dest_flag") == "1"
                 if (withSlot) {
                     val ship = ShipManager.getShipById(shipId)

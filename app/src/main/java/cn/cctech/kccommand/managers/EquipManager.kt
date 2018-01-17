@@ -4,6 +4,7 @@ import android.util.SparseArray
 import cn.cctech.kccommand.cache.ApiCacheHelper
 import cn.cctech.kccommand.entities.Equip
 import cn.cctech.kccommand.events.api.RequireInfo
+import cn.cctech.kccommand.events.api.SlotItem
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -15,9 +16,21 @@ object EquipManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onRequireInfoEvent(event: RequireInfo) {
         if (event.api_result == 1) {
+            clearEquipMap()
             event.api_data?.api_slot_item?.forEach {
                 addNewEquip(it.api_id, it.api_slotitem_id)
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSlotItem(event: SlotItem) {
+        if (event.api_result == 1) {
+            clearEquipMap()
+            event.api_data?.forEach {
+                addNewEquip(it.api_id, it.api_slotitem_id)
+            }
+            BasicManager.recountSlotItem()
         }
     }
 
@@ -37,6 +50,10 @@ object EquipManager : IManager() {
 
     fun getEquipCount(): Int {
         return mEquipMap.size()
+    }
+
+    private fun clearEquipMap() {
+        mEquipMap.clear()
     }
 
 }

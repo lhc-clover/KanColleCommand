@@ -30,6 +30,9 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_req_kousyou/createitem", CreateItem::class.java)
         sPairMap.put("/kcsapi/api_req_kousyou/destroyship", DestroyShip::class.java)
         sPairMap.put("/kcsapi/api_req_kousyou/destroyitem2", DestroyItem::class.java)
+        sPairMap.put("/kcsapi/api_req_kaisou/slot_deprive", SlotDeprive::class.java)
+        sPairMap.put("/kcsapi/api_req_kaisou/powerup", PowerUp::class.java)
+        sPairMap.put("/kcsapi/api_get_member/slot_item", SlotItem::class.java)
 
         sPairMap.put("/kcsapi/api_req_map/start", BattleStart::class.java)
         sPairMap.put("/kcsapi/api_req_map/next", Next::class.java)
@@ -38,7 +41,7 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_req_sortie/battleresult", BattleResult::class.java)
         sPairMap.put("/kcsapi/api_req_practice/battle", Practice::class.java)
         sPairMap.put("/kcsapi/api_req_practice/midnight_battle", PracticeNight::class.java)
-        sPairMap.put("/kcsapi/api_req_practice/battle_result", PracticeResult::class.java)
+        sPairMap.put("/kcsapi/api_req_practice/battle_result", PowerUp::class.java)
     }
 
     fun dispatch(url: String, requestBody: ByteArray, responseBody: ByteArray) {

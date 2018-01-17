@@ -374,20 +374,58 @@ object ShipManager : IManager() {
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-//    fun onGetShip(event: GetShip) {
-//        if (event.api_result == 1) {
-//            val shipData = event.api_data.api_ship
-//            val rawShip = ApiCacheHelper.getShip(shipData.api_ship_id)
-//            val ship = Ship(rawShip, shipData)
-//            mShipMap.put(shipData.api_id, ship)
-//            BasicManager.notifyBasicRefresh()
-//        }
-//    }
-
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onNdock(event: Ndock) {
         if (event.api_result == 1) {
+            notifyFleetRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onSlotDeprive(event: SlotDeprive) {
+        if (event.api_result == 1) {
+            val destBean = event.api_data.api_ship_data.api_set_ship
+            val shipDest = getShipById(destBean.api_id)
+            shipDest?.items?.clear()
+            shipDest?.items?.addAll(destBean.api_slot)
+            shipDest?.items?.add(destBean.api_slot_ex)
+            setShip(destBean.api_id, shipDest)
+            val srcBean = event.api_data.api_ship_data.api_unset_ship
+            val shipSrc = getShipById(srcBean.api_id)
+            shipSrc?.items?.clear()
+            shipSrc?.items?.addAll(srcBean.api_slot)
+            shipSrc?.items?.add(srcBean.api_slot_ex)
+            setShip(srcBean.api_id, shipSrc)
+            notifyFleetRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onPowerUp(event: PowerUp) {
+        if (event.api_result == 1) {
+            event.paramMap?.get("api_id_items")?.split("%2C")?.forEach {
+                val shipId = try {
+                    it.toInt()
+                } catch (e: Exception) {
+                    -1
+                }
+                if (shipId > 0) {
+                    val ship = ShipManager.getShipById(shipId)
+                    ship?.items?.forEach { EquipManager.removeEquip(it) }
+                    BasicManager.basic.slotCount = EquipManager.getEquipCount()
+                    ShipManager.removeShip(shipId)
+                    BasicManager.basic.shipCount = ShipManager.getShipCount()
+                    BasicManager.notifyBasicRefresh()
+                }
+            }
+            if (event.api_data?.api_powerup_flag == 1) {
+                val shipId = event.api_data?.api_ship?.api_id ?: -1
+                ShipManager.getShipById(shipId)?.powerUp(event.api_data?.api_ship)
+            }
+            event.api_data?.api_deck?.forEachIndexed { index, apiDeckBean ->
+                mFleets.put(index, apiDeckBean.api_ship as ArrayList<Int>?)
+                mNames.put(index, apiDeckBean.api_name)
+            }
             notifyFleetRefresh()
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.content.res.ResourcesCompat
 import cn.cctech.kccommand.R
 import cn.cctech.kccommand.events.api.GetShip
+import cn.cctech.kccommand.events.api.PowerUp
 import cn.cctech.kccommand.events.api.Start
 import cn.cctech.kccommand.managers.DockManager
 import cn.cctech.kccommand.managers.EquipManager
@@ -173,6 +174,12 @@ class Ship {
 
     fun getShipNameFixed(): String {
         return if (yomi.contains("flagship") || yomi.contains("elite")) "$name $yomi" else name
+    }
+
+    fun powerUp(entity: PowerUp.ApiDataBean.ApiShipBean?) {
+        if (entity != null) {
+            maxHp = entity.api_maxhp
+        }
     }
 
 }

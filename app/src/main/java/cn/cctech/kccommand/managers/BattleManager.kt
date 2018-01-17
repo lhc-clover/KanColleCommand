@@ -132,7 +132,7 @@ object BattleManager : IManager() {
             } else if (enemyFlagShipSunk && friendSunkCount < enemySunkCount) {
                 "B"
             } /*else if (friendCount == 1 && friendFlagshipCritical) {
-                rank = "D"
+                "D"
             }*/ else if (enemyDamageRate * 2 > friendDamageRate * 5) {
                 "B"
             } else if (enemyDamageRate * 10 > friendDamageRate * 9) {
