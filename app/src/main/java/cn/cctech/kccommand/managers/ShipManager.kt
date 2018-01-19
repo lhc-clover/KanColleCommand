@@ -403,7 +403,7 @@ object ShipManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPowerUp(event: PowerUp) {
         if (event.api_result == 1) {
-            event.paramMap?.get("api_id_items")?.split("%2C")?.forEach {
+            event.paramMap["api_id_items"]?.split("%2C")?.forEach {
                 val shipId = try {
                     it.toInt()
                 } catch (e: Exception) {
