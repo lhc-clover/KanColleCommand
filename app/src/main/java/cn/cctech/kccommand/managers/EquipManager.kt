@@ -18,7 +18,7 @@ object EquipManager : IManager() {
         if (event.api_result == 1) {
             clearEquipMap()
             event.api_data?.api_slot_item?.forEach {
-                addNewEquip(it.api_id, it.api_slotitem_id)
+                addNewEquip(it.api_id, it.api_slotitem_id, it)
             }
         }
     }
@@ -38,9 +38,9 @@ object EquipManager : IManager() {
         return mEquipMap.get(id)
     }
 
-    fun addNewEquip(id: Int, slotId: Int) {
+    fun addNewEquip(id: Int, slotId: Int, portItem: RequireInfo.ApiDataEntity.ApiSlotItemEntity? = null) {
         val rawEquip = ApiCacheHelper.getSlotItem(slotId)
-        val equip = Equip(rawEquip)
+        val equip = Equip(rawEquip, portItem)
         mEquipMap.put(id, equip)
     }
 

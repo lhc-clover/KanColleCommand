@@ -68,17 +68,17 @@
                 android:layout_height="wrap_content"
                 android:ems="6"
                 android:gravity="left"
-                android:text='@{"舰娘：" + basic.shipCount + "/" + basic.shipMax}'
+                android:text='@{@string/main_info_ship_count(basic.shipCount, basic.shipMax)}'
                 android:textColor="@color/defaultSecondaryTextColor" />
 
             <TextView
                 style="@style/MainInfoMaterial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:ems="6"
                 android:gravity="left"
-                android:text='@{"装备：" + basic.slotCount + "/" + basic.slotMax}'
+                android:text='@{@string/main_info_item_count(basic.slotCount, basic.slotMax)}'
                 android:textColor="@color/defaultSecondaryTextColor" />
         </LinearLayout>
 

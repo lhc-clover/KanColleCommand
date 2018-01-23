@@ -123,7 +123,7 @@ class Ship {
         return ResourcesCompat.getColor(context.resources, colorResId, context.theme)
     }
 
-    fun getAirPower(): Int {
+    fun getAirPower(): Pair<Int, Int> {
         val totalAAC = intArrayOf(0, 0)
         for ((index, equipId) in items.withIndex()) {
             val carry = try {
@@ -139,7 +139,7 @@ class Ship {
                 totalAAC[1] += Math.floor(baseAAC + masteryAAC[1]).toInt()
             }
         }
-        return totalAAC[0]
+        return Pair(totalAAC[0], totalAAC[1])
     }
 
     private fun calcBasicAAC(type: Int, aac: Double, carry: Int): Double {

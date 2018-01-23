@@ -48,11 +48,16 @@ object ShipManager : IManager() {
         return fleetLevel
     }
 
-    fun getFleetAirPower(index: Int): Int {
-        var fleetSum = 0
+    fun getFleetAirPower(index: Int): Pair<Int, Int> {
+        var min = 0
+        var max = 0
         val fleet = getFleet(index)
-        fleet?.map { getShipById(it) }?.forEach { fleetSum += it?.getAirPower() ?: 0 }
-        return fleetSum
+        fleet?.map { getShipById(it) }?.forEach {
+            val valuePair = it?.getAirPower()
+            min += valuePair?.first ?: 0
+            max += valuePair?.second ?: 0
+        }
+        return Pair(min, max)
     }
 
     fun getFleetScout(index: Int): Double {

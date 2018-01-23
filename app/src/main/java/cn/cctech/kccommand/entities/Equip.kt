@@ -1,14 +1,14 @@
 package cn.cctech.kccommand.entities
 
-import cn.cctech.kccommand.events.api.GetShip
 import cn.cctech.kccommand.events.api.RequireInfo
 import cn.cctech.kccommand.events.api.Start
 import cn.cctech.kccommand.utils.*
 
 class Equip {
 
-    var name: String? = null
-    var type: Int = 0
+    var name: String = ""
+    var type: Int = 0 //分类
+    var typeCalc: Int = 0 //计算分类
     var aac: Int = 0 //对空
     var mastery: Int = 0 //熟练度
     var level: Int = 0 //改修
@@ -16,28 +16,28 @@ class Equip {
 
     constructor()
 
-    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?, portEquip: RequireInfo.ApiDataEntity.ApiSlotItemEntity) {
-        if (rawEquip != null) {
-            name = rawEquip.api_name
-            type = rawEquip.api_type[3]
-            aac = rawEquip.api_tyku
-            scout = rawEquip.api_saku
-        }
-        mastery = portEquip.api_alv
-        level = portEquip.api_level
+    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?, portEquip: RequireInfo.ApiDataEntity.ApiSlotItemEntity?) {
+        name = rawEquip?.api_name ?: ""
+        type = rawEquip?.api_type?.get(3) ?: 0
+        typeCalc = rawEquip?.api_type?.get(2) ?: 0
+        aac = rawEquip?.api_tyku ?: 0
+        scout = rawEquip?.api_saku ?: 0
+        mastery = portEquip?.api_alv ?: 0
+        level = portEquip?.api_level ?: 0
     }
 
-    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?) {
-        if (rawEquip != null) {
-            name = rawEquip.api_name
-            type = rawEquip.api_type[3]
-            aac = rawEquip.api_tyku
-            scout = rawEquip.api_saku
-        }
-    }
+//    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?) {
+//        if (rawEquip != null) {
+//            name = rawEquip.api_name
+//            type = rawEquip.api_type[3]
+//            typeCalc = rawEquip.api_type[2]
+//            aac = rawEquip.api_tyku
+//            scout = rawEquip.api_saku
+//        }
+//    }
 
     fun calcLevelAAC(): Double {
-        return when (type) {
+        return when (typeCalc) {
             FIGHTER -> aac + 0.2 * level
             BOMBER, JET_BOMBER -> if (aac > 0) {
                 aac + 0.25 * level
@@ -54,7 +54,7 @@ class Equip {
             minMastery = 0
         }
         val rangeAAC = doubleArrayOf(0.0, 0.0)
-        when (type) {
+        when (typeCalc) {
             FIGHTER, SEA_FIGHTER -> {
                 rangeAAC[0] += kFighterMasteryBonus[minMastery].toDouble()
                 rangeAAC[1] += kFighterMasteryBonus[mastery].toDouble()
@@ -80,7 +80,7 @@ class Equip {
     }
 
     fun calcScout(): Double {
-        return when (type) {
+        return when (typeCalc) {
             TORPEDO_BOMBER -> 0.8 * scout
             SCOUT -> 1.0 * scout
             SCOUT_II -> 1.0 * scout

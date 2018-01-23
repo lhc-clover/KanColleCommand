@@ -24,6 +24,8 @@
     <string name="ship_level">Lv. %1$d</string>
     <string name="main_info_none">-</string>
     <string name="main_info_count">%1$d / %2$d</string>
+    <string name="main_info_ship_count">舰娘：%1$d / %2$d</string>
+    <string name="main_info_item_count">装备：%1$d / %2$d</string>
     <string name="expedition_count_down">%1$02d:%2$02d:%3$02d</string>
 
     <string name="formation_1">单纵</string>
@@ -73,6 +75,7 @@
     <string name="fleet_speed_fast">高速</string>
     <string name="fleet_speed_slow">低速</string>
     <string name="fleet_air_power">制空:%1$d</string>
+    <string name="fleet_air_power_range">制空:%1$d-%2$d</string>
     <string name="fleet_scout">索敌:%1$.2f</string>
     <string name="fleet_lock">未开放</string>
 </resources>

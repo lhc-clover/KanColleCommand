@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
+@Suppress("unused", "UNUSED_PARAMETER")
 class FleetPageFragment : BaseFragment() {
 
     private var mIndex = -1
@@ -78,7 +79,9 @@ class FleetPageFragment : BaseFragment() {
             Speed.SLOW -> getString(R.string.fleet_speed_slow)
             else -> getString(R.string.fleet_speed_fast)
         }
-        val fleetAirPower = getString(R.string.fleet_air_power, ShipManager.getFleetAirPower(mIndex))
+        val airPowerPair = ShipManager.getFleetAirPower(mIndex)
+        val fleetAirPower = getString(R.string.fleet_air_power, airPowerPair.first)
+//        val fleetAirPower = getString(R.string.fleet_air_power_range, airPowerPair.first, airPowerPair.second)
         val fleetScout = getString(R.string.fleet_scout, Math.floor(ShipManager.getFleetScout(mIndex) * 100) / 100)
         return StringUtils.join(arrayOf(fleetLevel, fleetSpeed, fleetAirPower, fleetScout), "/")
     }
