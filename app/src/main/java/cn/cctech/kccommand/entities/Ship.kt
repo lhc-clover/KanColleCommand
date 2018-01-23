@@ -102,12 +102,12 @@ class Ship {
     }
 
     fun getHpColor(context: Context): Int {
-        val percent: Double = getHpFixed().toDouble().div(maxHp)
+        val percent = getHpFixed().toDouble().div(maxHp)
         val colorResId = when (percent) {
-            in SLIGHT_DAMAGE..1.0 -> R.color.bloodBarColorNoDamage
-            in HALF_DAMAGE..SLIGHT_DAMAGE -> R.color.bloodBarColorSlightDamage
-            in BADLY_DAMAGE..HALF_DAMAGE -> R.color.bloodBarColorHalfDamage
             in 0.0..BADLY_DAMAGE -> R.color.bloodBarColorBadlyDamage
+            in BADLY_DAMAGE..HALF_DAMAGE -> R.color.bloodBarColorHalfDamage
+            in HALF_DAMAGE..SLIGHT_DAMAGE -> R.color.bloodBarColorSlightDamage
+            in SLIGHT_DAMAGE..1.0 -> R.color.bloodBarColorNoDamage
             else -> R.color.bloodBarColorNoDamage
         }
         return ResourcesCompat.getColor(context.resources, colorResId, context.theme)
@@ -115,9 +115,9 @@ class Ship {
 
     fun getCondColor(context: Context): Int {
         val colorResId = when (condition) {
-            in 50..100 -> R.color.condColorKira
-            in 20..29 -> R.color.condColorOrange
             in 0..19 -> R.color.condColorRed
+            in 20..29 -> R.color.condColorOrange
+            in 50..100 -> R.color.condColorKira
             else -> R.color.condColorNormal
         }
         return ResourcesCompat.getColor(context.resources, colorResId, context.theme)

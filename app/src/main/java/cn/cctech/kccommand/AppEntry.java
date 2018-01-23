@@ -44,24 +44,16 @@ public class AppEntry extends AppCompatActivity {
     private static final String LOG_TAG = "AppEntry";
     private static final String RESOURCE_BUTTON_EXIT = "string.button_exit";
     private static final String RESOURCE_BUTTON_INSTALL = "string.button_install";
-    private static final String RESOURCE_CLASS = "com.dmm.dmmlabo.kancolle.R";
+    private static final String RESOURCE_CLASS = "cn.cctech.kccommand.R";
     private static final String RESOURCE_TEXT_RUNTIME_REQUIRED = "string.text_runtime_required";
     private static final String RESOURCE_TITLE_ADOBE_AIR = "string.title_adobe_air";
-    private static String AIR_PING_URL = null;
-    private static String RUNTIME_PACKAGE_ID;
-    private static Object sAndroidActivityWrapper;
+    private static String AIR_PING_URL = "http://airdownload2.adobe.com/air?";
+    private static String RUNTIME_PACKAGE_ID = "com.adobe.air";
+    private static Object sAndroidActivityWrapper = null;
     private static Class sAndroidActivityWrapperClass;
     private static DexClassLoader sDloader;
-    private static boolean sRuntimeClassesLoaded;
-    private static AppEntry sThis;
-
-    static {
-        AppEntry.sRuntimeClassesLoaded = false;
-        AppEntry.sAndroidActivityWrapper = null;
-        AppEntry.sThis = null;
-        AppEntry.RUNTIME_PACKAGE_ID = "com.adobe.air";
-        AppEntry.AIR_PING_URL = "http://airdownload2.adobe.com/air?";
-    }
+    private static boolean sRuntimeClassesLoaded = false;
+    private static AppEntry sThis = null;
 
     public AppEntry() {
         super();

@@ -52,3 +52,4 @@ freeline_project_description.json
 
 # etc
 .DS_Store
+uploadApk.sh

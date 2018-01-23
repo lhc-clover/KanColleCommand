@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.cctech.kccommand"
     android:installLocation="auto"
-    android:versionCode="4"
-    android:versionName="0.1.4">
+    android:versionCode="5"
+    android:versionName="0.1.5">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,9 +11,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name="cn.cctech.kccommand.KccApplication"
@@ -76,6 +76,11 @@
         <service
             android:name="cn.cctech.kccommand.managers.NotifyManager$MyJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="9085c2e489266b67165a2ca2224312ed" >
+        </meta-data>
     </application>
 
 </manifest>

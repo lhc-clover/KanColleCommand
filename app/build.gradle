@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "cn.cctech.kccommand"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 21
         multiDexEnabled true
     }
     signingConfigs {
@@ -67,5 +67,11 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
     implementation group: 'com.google.guava', name: 'guava', version: '20.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt 'com.android.databinding:compiler:3.0.0'
+    kapt 'com.android.databinding:compiler:3.0.1'
+    compile 'com.pgyersdk:sdk:2.8.0'
+}
+
+task pgyer(type: Exec) {
+    commandLine 'sh', '-c', './uploadApk.sh'
+    dependsOn 'assembleRelease'
 }

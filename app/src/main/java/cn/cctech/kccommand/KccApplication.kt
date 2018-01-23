@@ -4,11 +4,13 @@ import android.app.Application
 import com.orhanobut.logger.LogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import com.pgyersdk.crash.PgyCrashManager
 
 class KccApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        PgyCrashManager.register(this)
         Logger.addLogAdapter(object : LogAdapter {
 
             private val formatStrategy = PrettyFormatStrategy.newBuilder().tag("CC").build()

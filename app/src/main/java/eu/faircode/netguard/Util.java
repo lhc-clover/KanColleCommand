@@ -89,9 +89,9 @@ public class Util {
 
     private static native boolean is_numeric_address(String ip);
 
-    static {
-        System.loadLibrary("netguard");
-    }
+//    static {
+//        System.loadLibrary("netguard");
+//    }
 
     public static String getSelfVersionName(Context context) {
         try {

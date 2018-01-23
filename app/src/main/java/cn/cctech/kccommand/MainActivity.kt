@@ -23,6 +23,8 @@ import cn.cctech.kccommand.managers.*
 import cn.cctech.kccommand.proxy.VpnService
 import com.gaodesoft.ecoallogistics.assistant.findView
 import com.orhanobut.logger.Logger
+import com.pgyersdk.crash.PgyCrashManager
+import com.pgyersdk.update.PgyUpdateManager
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -58,6 +60,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PgyCrashManager.register(this)
         ShipManager.setup()
         EquipManager.setup()
         DockManager.setup()
@@ -80,6 +83,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
     override fun onNewIntent(aIntent: Intent?) {
         super.onNewIntent(aIntent)
+        PgyUpdateManager.register(this)
         val authComplete = aIntent?.getBooleanExtra("AuthComplete", false) ?: false
         if (authComplete) {
             startProxy()
