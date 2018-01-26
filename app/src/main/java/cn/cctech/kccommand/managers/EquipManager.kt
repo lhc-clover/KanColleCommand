@@ -18,7 +18,7 @@ object EquipManager : IManager() {
         if (event.api_result == 1) {
             clearEquipMap()
             event.api_data?.api_slot_item?.forEach {
-                addNewEquip(it.api_id, it.api_slotitem_id, it)
+                addNewEquip(it)
             }
         }
     }
@@ -28,7 +28,7 @@ object EquipManager : IManager() {
         if (event.api_result == 1) {
             clearEquipMap()
             event.api_data?.forEach {
-                addNewEquip(it.api_id, it.api_slotitem_id)
+                addNewEquip(it)
             }
             BasicManager.recountSlotItem()
         }
@@ -38,10 +38,22 @@ object EquipManager : IManager() {
         return mEquipMap.get(id)
     }
 
-    fun addNewEquip(id: Int, slotId: Int, portItem: RequireInfo.ApiDataEntity.ApiSlotItemEntity? = null) {
-        val rawEquip = ApiCacheHelper.getSlotItem(slotId)
+    fun addNewEquip(portItem: RequireInfo.ApiDataEntity.ApiSlotItemEntity) {
+        val rawEquip = ApiCacheHelper.getSlotItem(portItem.api_slotitem_id)
         val equip = Equip(rawEquip, portItem)
+        mEquipMap.put(portItem.api_id, equip)
+    }
+
+    fun addNewEquip(id: Int, slotId: Int) {
+        val rawEquip = ApiCacheHelper.getSlotItem(slotId)
+        val equip = Equip(rawEquip)
         mEquipMap.put(id, equip)
+    }
+
+    fun addNewEquip(slotItem: SlotItem.ApiDataBean) {
+        val rawEquip = ApiCacheHelper.getSlotItem(slotItem.api_slotitem_id)
+        val equip = Equip(rawEquip, slotItem)
+        mEquipMap.put(slotItem.api_id, equip)
     }
 
     fun removeEquip(id: Int) {

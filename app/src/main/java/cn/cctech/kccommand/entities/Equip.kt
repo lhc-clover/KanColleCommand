@@ -1,6 +1,7 @@
 package cn.cctech.kccommand.entities
 
 import cn.cctech.kccommand.events.api.RequireInfo
+import cn.cctech.kccommand.events.api.SlotItem
 import cn.cctech.kccommand.events.api.Start
 import cn.cctech.kccommand.utils.*
 
@@ -26,15 +27,23 @@ class Equip {
         level = portEquip?.api_level ?: 0
     }
 
-//    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?) {
-//        if (rawEquip != null) {
-//            name = rawEquip.api_name
-//            type = rawEquip.api_type[3]
-//            typeCalc = rawEquip.api_type[2]
-//            aac = rawEquip.api_tyku
-//            scout = rawEquip.api_saku
-//        }
-//    }
+    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?, slotItem: SlotItem.ApiDataBean?) {
+        name = rawEquip?.api_name ?: ""
+        type = rawEquip?.api_type?.get(3) ?: 0
+        typeCalc = rawEquip?.api_type?.get(2) ?: 0
+        aac = rawEquip?.api_tyku ?: 0
+        scout = rawEquip?.api_saku ?: 0
+        mastery = slotItem?.api_alv ?: 0
+        level = slotItem?.api_level ?: 0
+    }
+
+    constructor(rawEquip: Start.ApiDataEntity.ApiMstSlotitemEntity?) {
+        name = rawEquip?.api_name ?: ""
+        type = rawEquip?.api_type?.get(3) ?: 0
+        typeCalc = rawEquip?.api_type?.get(2) ?: 0
+        aac = rawEquip?.api_tyku ?: 0
+        scout = rawEquip?.api_saku ?: 0
+    }
 
     fun calcLevelAAC(): Double {
         return when (typeCalc) {

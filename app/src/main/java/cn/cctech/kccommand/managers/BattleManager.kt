@@ -109,13 +109,13 @@ object BattleManager : IManager() {
             friendSunkCount = shipList.count {
                 it?.getHpFixed() ?: Int.MAX_VALUE <= 0
             }
-            friendNowSum = shipList.sumBy { it?.maxHp ?: 0 }
+            friendNowSum = shipList.sumBy { it?.nowHp ?: 0 }
             friendAfterSum = shipList.sumBy { it?.getHpFixed() ?: 0 }
 //            friendFlagshipCritical = shipList[0]?.getHpFixed()?.times(4) ?: 0 <= shipList[0]?.maxHp ?: 0
         }
         val enemyCount = mEnemyList.size
         val enemySunkCount = mEnemyList.count { it.getHpFixed() <= 0 }
-        val enemyNowSum = mEnemyList.sumBy { it.maxHp }
+        val enemyNowSum = mEnemyList.sumBy { it.nowHp }
         val enemyAfterSum = mEnemyList.sumBy { it.getHpFixed() }
         val enemyFlagShipSunk = mEnemyList[0].getHpFixed() <= 0
 
@@ -200,7 +200,7 @@ object BattleManager : IManager() {
 
                 val enemies: MutableList<Int>? = event.api_data?.api_ship_ke
                 enemies?.forEachIndexed { index, id ->
-                    kotlin.run {
+                    let {
                         val rawShip = ApiCacheHelper.getShip(id)
                         val ship = Ship(rawShip)
                         ship.level = event.api_data?.api_ship_lv?.get(index) ?: 0
@@ -254,6 +254,45 @@ object BattleManager : IManager() {
                     event.api_data?.api_hougeki?.api_at_eflag)
 
             mRank = calcRank()
+
+            notifyBattleRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onBattleNightSp(event: BattleNightSp) {
+        if (event.api_result == 1) {
+            try {
+                mEnemyList.clear()
+
+                mMineFormation = event.api_data?.api_formation?.get(0) ?: -1
+                mEnemyFormation = event.api_data?.api_formation?.get(1) ?: -1
+                mHeading = event.api_data?.api_formation?.get(2) ?: -1
+
+                val enemies: MutableList<Int>? = event.api_data?.api_ship_ke
+                enemies?.forEachIndexed { index, id ->
+                    let {
+                        val rawShip = ApiCacheHelper.getShip(id)
+                        val ship = Ship(rawShip)
+                        ship.level = event.api_data?.api_ship_lv?.get(index) ?: 0
+                        ship.nowHp = event.api_data?.api_e_nowhps?.get(index) ?: 0
+                        ship.maxHp = event.api_data?.api_e_maxhps?.get(index) ?: 0
+                        ship.items.addAll(event.api_data?.api_eSlot?.get(index) ?: emptyList())
+                        mEnemyList.add(ship)
+                    }
+                }
+            } catch (e: Exception) {
+                Logger.e(e, e.message)
+            }
+
+            calcOrdinalDamage(event.api_data?.api_n_support_info?.api_support_hourai?.api_damage)
+            calcTargetDamage(event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+
+            mRank = calcRank()
+            mNode = mNext
+            mNext = -1
 
             notifyBattleRefresh()
         }

@@ -42,6 +42,7 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_req_practice/battle", Practice::class.java)
         sPairMap.put("/kcsapi/api_req_practice/midnight_battle", PracticeNight::class.java)
         sPairMap.put("/kcsapi/api_req_practice/battle_result", PowerUp::class.java)
+        sPairMap.put("/kcsapi/api_req_battle_midnight/sp_midnight", BattleNightSp::class.java)
     }
 
     fun dispatch(url: String, requestBody: ByteArray, responseBody: ByteArray) {

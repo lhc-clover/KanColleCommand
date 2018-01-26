@@ -312,6 +312,23 @@ object ShipManager : IManager() {
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onBattleNightSp(event: BattleNightSp) {
+        if (event.api_result == 1) {
+            val fleetIndex = try {
+                event.api_data.api_deck_id.toInt() - 1
+            } catch (e: Exception) {
+                null
+            }
+            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+            notifyFleetRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onNext(event: Next) {
         if (event.api_result == 1) {
             try {
