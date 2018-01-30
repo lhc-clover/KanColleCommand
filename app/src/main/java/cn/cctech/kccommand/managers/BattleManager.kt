@@ -59,7 +59,7 @@ object BattleManager : IManager() {
                 for ((j, t) in tArr.withIndex()) {
                     try {
                         val ship = mEnemyList[t]
-                        ship.damage += dArr[j].toInt()
+                        ship.damage[ship.damage.lastIndex] += dArr[j].toInt()
                     } catch (e: Exception) {
                         Logger.e(e, "Can't set enemy damage for ship $i\n")
                     }
@@ -75,7 +75,7 @@ object BattleManager : IManager() {
         for ((i, value) in damageList.withIndex()) {
             try {
                 val ship = mEnemyList[i]
-                ship.damage += value.toInt()
+                ship.damage[ship.damage.lastIndex] += value.toInt()
             } catch (e: Exception) {
                 Logger.e(e, "Can't set edam for ship $i\n")
             }
@@ -89,10 +89,16 @@ object BattleManager : IManager() {
                 val ship = mEnemyList[i]
                 ship.nowHp = value
                 ship.maxHp = maxHps[i]
-                ship.damage = 0
+                ship.saveDamage()
             } catch (e: Exception) {
                 Logger.e(e, "Can't set hps for enemy ship $i\n")
             }
+        }
+    }
+
+    private fun newTurn() {
+        mEnemyList.forEach {
+            it.damage.add(0)
         }
     }
 
@@ -102,6 +108,7 @@ object BattleManager : IManager() {
         var friendSunkCount = 0
         var friendAfterSum = 0
 //        var friendFlagshipCritical = false
+        var friendDamageSum = 0
         val fleet = ShipManager.getFleet(mFleet)
         if (fleet != null) {
             friendCount = fleet.size
@@ -109,21 +116,23 @@ object BattleManager : IManager() {
             friendSunkCount = shipList.count {
                 it?.getHpFixed() ?: Int.MAX_VALUE <= 0
             }
-            friendNowSum = shipList.sumBy { it?.maxHp ?: 0 }
+            friendNowSum = shipList.sumBy { it?.nowHp ?: 0 }
             friendAfterSum = shipList.sumBy { it?.getHpFixed() ?: 0 }
 //            friendFlagshipCritical = shipList[0]?.getHpFixed()?.times(4) ?: 0 <= shipList[0]?.maxHp ?: 0
+            friendDamageSum = shipList.sumBy { it?.damage?.sum() ?: 0 }
         }
         val enemyCount = mEnemyList.size
         val enemySunkCount = mEnemyList.count { it.getHpFixed() <= 0 }
-        val enemyNowSum = mEnemyList.sumBy { it.maxHp }
+        val enemyNowSum = mEnemyList.sumBy { it.nowHp }
         val enemyAfterSum = mEnemyList.sumBy { it.getHpFixed() }
         val enemyFlagShipSunk = mEnemyList[0].getHpFixed() <= 0
+        val enemyDamageSum = mEnemyList.sumBy { it.damage.sum() }
 
-        val friendDamageRate = (friendNowSum - friendAfterSum) * 100 / friendNowSum
-        val enemyDamageRate = (enemyNowSum - enemyAfterSum) * 100 / enemyNowSum
+        val friendDamageRate = friendDamageSum * 100 / friendNowSum
+        val enemyDamageRate = enemyDamageSum * 100 / enemyNowSum
         val rank = if (friendSunkCount == 0) {
             if (enemySunkCount == enemyCount) {
-                if (friendAfterSum >= friendNowSum)
+                if (friendDamageSum == 0) // TODO:使用女神？
                     "SS"
                 else
                     "S"
@@ -200,7 +209,7 @@ object BattleManager : IManager() {
 
                 val enemies: MutableList<Int>? = event.api_data?.api_ship_ke
                 enemies?.forEachIndexed { index, id ->
-                    kotlin.run {
+                    let {
                         val rawShip = ApiCacheHelper.getShip(id)
                         val ship = Ship(rawShip)
                         ship.level = event.api_data?.api_ship_lv?.get(index) ?: 0
@@ -213,6 +222,9 @@ object BattleManager : IManager() {
             } catch (e: Exception) {
                 Logger.e(e, e.message)
             }
+
+            newTurn()
+
             calcOrdinalDamage(event.api_data?.api_kouku?.api_stage3?.api_edam)
             calcOrdinalDamage(event.api_data?.api_air_base_injection?.api_stage3?.api_edam)
             calcOrdinalDamage(event.api_data?.api_injection_kouku?.api_stage3?.api_edam)
@@ -247,13 +259,55 @@ object BattleManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onBattleNight(event: BattleNight) {
         if (event.api_result == 1) {
-            setHps(event.api_data?.api_e_nowhps, event.api_data?.api_e_maxhps)
+//            setHps(event.api_data?.api_e_nowhps, event.api_data?.api_e_maxhps)
+            newTurn()
 
             calcTargetDamage(event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
                     event.api_data?.api_hougeki?.api_at_eflag)
 
             mRank = calcRank()
+
+            notifyBattleRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onBattleNightSp(event: BattleNightSp) {
+        if (event.api_result == 1) {
+            try {
+                mEnemyList.clear()
+
+                mMineFormation = event.api_data?.api_formation?.get(0) ?: -1
+                mEnemyFormation = event.api_data?.api_formation?.get(1) ?: -1
+                mHeading = event.api_data?.api_formation?.get(2) ?: -1
+
+                val enemies: MutableList<Int>? = event.api_data?.api_ship_ke
+                enemies?.forEachIndexed { index, id ->
+                    let {
+                        val rawShip = ApiCacheHelper.getShip(id)
+                        val ship = Ship(rawShip)
+                        ship.level = event.api_data?.api_ship_lv?.get(index) ?: 0
+                        ship.nowHp = event.api_data?.api_e_nowhps?.get(index) ?: 0
+                        ship.maxHp = event.api_data?.api_e_maxhps?.get(index) ?: 0
+                        ship.items.addAll(event.api_data?.api_eSlot?.get(index) ?: emptyList())
+                        mEnemyList.add(ship)
+                    }
+                }
+            } catch (e: Exception) {
+                Logger.e(e, e.message)
+            }
+
+            newTurn()
+
+            calcOrdinalDamage(event.api_data?.api_n_support_info?.api_support_hourai?.api_damage)
+            calcTargetDamage(event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+
+            mRank = calcRank()
+            mNode = mNext
+            mNext = -1
 
             notifyBattleRefresh()
         }
@@ -312,6 +366,9 @@ object BattleManager : IManager() {
             } catch (e: Exception) {
                 Logger.e(e, e.message)
             }
+
+            newTurn()
+
             calcOrdinalDamage(event.api_data?.api_kouku?.api_stage3?.api_edam)
             calcTargetDamage(event.api_data?.api_opening_taisen?.api_df_list,
                     event.api_data?.api_opening_taisen?.api_damage,
@@ -337,7 +394,8 @@ object BattleManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPracticeNight(event: PracticeNight) {
         if (event.api_result == 1) {
-            setHps(event.api_data?.api_e_nowhps, event.api_data?.api_e_maxhps)
+//            setHps(event.api_data?.api_e_nowhps, event.api_data?.api_e_maxhps)
+            newTurn()
 
             calcTargetDamage(event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,

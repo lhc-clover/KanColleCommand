@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.21'
 
     Properties properties = new Properties()
     InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()

@@ -30,8 +30,9 @@ class Ship {
     var soku: Int = 0 //航速
     var carrys = ArrayList<Int>()//搭载
     var scout: Int = 0 //索敌
-    var damage: Int = 0 //本轮损伤
     var yomi: String = "" //舰假名或舰阶
+
+    var damage: MutableList<Int> = arrayListOf() //损伤
 
     constructor()
 
@@ -161,11 +162,12 @@ class Ship {
 
     fun getHpDisplay(): String {
         var display = "${getHpFixed()} / $maxHp"
-        if (damage > 0) display += " (-$damage)"
+        val last = damage.lastOrNull() ?: 0
+        if (last > 0) display += " (-$last)"
         return display
     }
 
-    fun getHpFixed(): Int = maxOf(nowHp - damage, 0)
+    fun getHpFixed(): Int = maxOf(nowHp - damage.sum(), 0)
 
     fun getTagImage(): Int {
         return if (DockManager.isShipRepairing(id)) R.drawable.tag_repair
@@ -180,6 +182,11 @@ class Ship {
         if (entity != null) {
             maxHp = entity.api_maxhp
         }
+    }
+
+    fun saveDamage() {
+        nowHp -= damage.sum()
+        damage.clear()
     }
 
 }

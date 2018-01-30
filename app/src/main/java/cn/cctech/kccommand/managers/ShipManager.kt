@@ -267,7 +267,8 @@ object ShipManager : IManager() {
             } catch (e: Exception) {
                 null
             }
-            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+//            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+            newTurn()
 
             calcOrdinalDamage(fleetIndex, event.api_data?.api_kouku?.api_stage3?.api_fdam)
             calcOrdinalDamage(fleetIndex, event.api_data?.api_air_base_injection?.api_stage3?.api_fdam)
@@ -302,7 +303,26 @@ object ShipManager : IManager() {
             } catch (e: Exception) {
                 null
             }
-            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+//            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+            newTurn()
+
+            calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
+                    event.api_data?.api_hougeki?.api_damage,
+                    event.api_data?.api_hougeki?.api_at_eflag)
+            notifyFleetRefresh()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onBattleNightSp(event: BattleNightSp) {
+        if (event.api_result == 1) {
+            val fleetIndex = try {
+                event.api_data.api_deck_id.toInt() - 1
+            } catch (e: Exception) {
+                null
+            }
+//            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+            newTurn()
 
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
@@ -315,16 +335,7 @@ object ShipManager : IManager() {
     fun onNext(event: Next) {
         if (event.api_result == 1) {
             try {
-                val fleetIndex = BattleManager.getInBattleFleet()
-                val fleet = getFleet(fleetIndex)
-                fleet?.forEach {
-                    val ship = getShipById(it)
-                    if (ship != null) {
-                        ship.nowHp = ship.getHpFixed()
-                        ship.damage = 0
-                        setShip(it, ship)
-                    }
-                }
+                finishTurn()
                 notifyFleetRefresh()
             } catch (e: Exception) {
                 Logger.e(e, "Can't set hp when next.")
@@ -340,7 +351,8 @@ object ShipManager : IManager() {
             } catch (e: Exception) {
                 null
             }
-            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+//            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+            newTurn()
 
             calcOrdinalDamage(fleetIndex, event.api_data?.api_kouku?.api_stage3?.api_fdam)
 
@@ -370,7 +382,8 @@ object ShipManager : IManager() {
             } catch (e: Exception) {
                 null
             }
-            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+//            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
+            newTurn()
 
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
@@ -450,8 +463,8 @@ object ShipManager : IManager() {
                         try {
                             val shipId = fleet[t]
                             val ship = getShipById(shipId)
-                            ship!!.damage += dArr[j].toInt()
-                            setShip(shipId, ship)
+                            ship!!.damage[ship.damage.lastIndex] += dArr[j].toInt()
+//                            setShip(shipId, ship)
                         } catch (e: Exception) {
                             Logger.e(e, "Can't set damage for ship $i in fleet $index\n")
                         }
@@ -472,8 +485,8 @@ object ShipManager : IManager() {
                     try {
                         val shipId = fleet[i]
                         val ship = getShipById(shipId)
-                        ship!!.damage += value.toInt()
-                        setShip(shipId, ship)
+                        ship!!.damage[ship.damage.lastIndex] += value.toInt()
+//                        setShip(shipId, ship)
                     } catch (e: Exception) {
                         Logger.e(e, "Can't set fdam for ship $i in fleet $index\n")
                     }
@@ -495,8 +508,8 @@ object ShipManager : IManager() {
                         val ship = getShipById(shipId)
                         ship?.nowHp = value
                         ship?.maxHp = maxHps[i]
-                        ship?.damage = 0
-                        setShip(shipId, ship)
+//                        ship?.saveDamage()
+//                        setShip(shipId, ship)
                     } catch (e: Exception) {
                         Logger.e(e, "Can't set hps for ship $i in fleet $index\n")
                     }
@@ -504,6 +517,28 @@ object ShipManager : IManager() {
             }
         } catch (e: Exception) {
             Logger.e(e, "Can't set hps for fleet $index\n")
+        }
+    }
+
+    private fun newTurn() {
+        val fleetIndex = BattleManager.getInBattleFleet()
+        val fleet = getFleet(fleetIndex)
+        fleet?.forEach {
+            getShipById(it)?.damage?.add(0)
+        }
+    }
+
+    private fun finishTurn() {
+        val fleetIndex = BattleManager.getInBattleFleet()
+        val fleet = getFleet(fleetIndex)
+        fleet?.forEach {
+            getShipById(it)?.saveDamage()
+//                    val ship = getShipById(it)
+//                    if (ship != null) {
+//                        ship.nowHp = ship.getHpFixed()
+//                        ship.damage = 0
+//                        setShip(it, ship)
+//                    }
         }
     }
 
