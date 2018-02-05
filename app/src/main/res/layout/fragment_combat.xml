@@ -33,11 +33,10 @@
     <TextView
         android:id="@+id/tv_combat_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:ellipsize="marquee"
         android:gravity="center"
-        android:padding="8dp"
-        android:text="未出击"
+        android:text="@string/battle_idle"
         android:textColor="@color/defaultPrimaryTextColor"
         android:textSize="12sp" />
 </LinearLayout>

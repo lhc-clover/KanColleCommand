@@ -4,7 +4,7 @@ import cn.cctech.kccommand.cache.ApiCacheHelper
 import cn.cctech.kccommand.entities.Ship
 import cn.cctech.kccommand.events.api.*
 import cn.cctech.kccommand.events.ui.BattleRefresh
-import cn.cctech.kccommand.utils.COMBINED_FLEET_INDEX
+import cn.cctech.kccommand.utils.*
 import com.orhanobut.logger.Logger
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -19,6 +19,7 @@ object BattleManager : IManager() {
     var mAirCommand: Int = -1
     var mRank: String = ""
     var mNext: Int = -1
+    var mNodeType: Int = -1
     var mGet: String = ""
 
     private var mFleet: Int = -1
@@ -164,7 +165,9 @@ object BattleManager : IManager() {
             try {
                 mArea = event.api_data?.api_maparea_id ?: -1
                 mMap = event.api_data?.api_mapinfo_no ?: -1
+                mNode = event.api_data?.api_from_no ?: -1
                 mNext = event.api_data?.api_no ?: -1
+                mNodeType = event.api_data?.api_color_no ?: StartSpot
                 mFleet = event.paramMap?.get("api_deck_id")?.toInt()?.minus(1) ?: -1
             } catch (e: Exception) {
                 Logger.e(e, e.message)
@@ -179,9 +182,14 @@ object BattleManager : IManager() {
             try {
                 mArea = event.api_data?.api_maparea_id ?: -1
                 mMap = event.api_data?.api_mapinfo_no ?: -1
-//                mNode = event.api_data?.api_no ?: -1
+                when (mNodeType) {
+                    BattleSpot, BossBattle, AirStrike, LongDistanceAerialBattle,
+                    NightBattle, EnemyCombinedFleet -> {
+                    }
+                    else -> mNode = mNext
+                }
                 mNext = event.api_data?.api_no ?: -1
-//                mFleet = event.paramMap?.get("api_deck_id")?.toInt()?.minus(1) ?: -1
+                mNodeType = event.api_data?.api_color_no ?: -1
                 mMineFormation = -1
                 mEnemyFormation = -1
                 mAirCommand = -1
@@ -319,6 +327,8 @@ object BattleManager : IManager() {
         mArea = -1
         mMap = -1
         mNode = -1
+        mNext = -1
+        mNodeType = -1
         mFleet = -1
         mEnemyList.clear()
         mHeading = -1

@@ -51,7 +51,7 @@
     <string name="air_command_4">制空丧失</string>
 
     <string name="battle_get">捞:%1$s</string>
-    <string name="battle_next">Next:%1$s</string>
+    <string name="battle_next">Next: {} %1$s</string>
     <string name="battle_idle">未出击</string>
 
     <string name="dock_expedition_panel_title">远征</string>

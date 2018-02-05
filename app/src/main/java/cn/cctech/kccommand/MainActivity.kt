@@ -15,10 +15,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import cn.cctech.kccommand.databinding.InfoPanelBinding
 import cn.cctech.kccommand.events.ui.BasicRefresh
-import cn.cctech.kccommand.fragments.BattleFragment
-import cn.cctech.kccommand.fragments.DockFragment
-import cn.cctech.kccommand.fragments.FleetFragment
-import cn.cctech.kccommand.fragments.TestFragment
+import cn.cctech.kccommand.fragments.*
 import cn.cctech.kccommand.managers.*
 import cn.cctech.kccommand.proxy.VpnService
 import com.gaodesoft.ecoallogistics.assistant.findView
@@ -68,6 +65,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         BasicManager.setup()
         NotifyManager.setup()
         NotifyManager.callback = this
+        QuestManager.setup()
     }
 
     override fun onDestroy() {
@@ -78,6 +76,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         BattleManager.destroy()
         BasicManager.destroy()
         NotifyManager.destroy()
+        QuestManager.destroy()
         super.onDestroy()
     }
 
@@ -116,6 +115,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
                     0 -> FleetFragment.newInstance()
                     1 -> BattleFragment.newInstance()
                     2 -> DockFragment.newInstance()
+                    3 -> QuestFragment.newInstance()
                     else -> TestFragment.newInstance(position)
                 }
             }

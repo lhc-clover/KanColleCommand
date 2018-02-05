@@ -1,6 +1,7 @@
 package cn.cctech.kccommand
 
 import android.app.Application
+import com.github.megatronking.svg.sample.drawables.SVGLoader
 import com.orhanobut.logger.LogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
@@ -23,6 +24,7 @@ class KccApplication : Application() {
                 formatStrategy.log(priority, tag, message)
             }
         })
+        SVGLoader.load(this)
     }
 
 }

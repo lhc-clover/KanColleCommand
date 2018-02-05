@@ -4,7 +4,9 @@ import android.text.TextUtils
 import cn.cctech.kccommand.events.JsonEvent
 import cn.cctech.kccommand.events.api.*
 import com.google.gson.Gson
+import com.google.gson.stream.JsonReader
 import com.orhanobut.logger.Logger
+import java.io.StringReader
 import java.util.*
 
 object Dispatcher {
@@ -33,6 +35,8 @@ object Dispatcher {
         sPairMap.put("/kcsapi/api_req_kaisou/slot_deprive", SlotDeprive::class.java)
         sPairMap.put("/kcsapi/api_req_kaisou/powerup", PowerUp::class.java)
         sPairMap.put("/kcsapi/api_get_member/slot_item", SlotItem::class.java)
+        sPairMap.put("/kcsapi/api_get_member/questlist", QuestList::class.java)
+        sPairMap.put("/kcsapi/api_req_quest/clearitemget", ClearItemGet::class.java)
 
         sPairMap.put("/kcsapi/api_req_map/start", BattleStart::class.java)
         sPairMap.put("/kcsapi/api_req_map/next", Next::class.java)
@@ -55,7 +59,9 @@ object Dispatcher {
                 val key = findMatchedKey(sPairMap, url)
                 if (!TextUtils.isEmpty(key)) {
                     val value = sPairMap[key]
-                    val jsonEvent = Gson().fromJson(parseContent(responseBody), value) as JsonEvent
+                    val reader = JsonReader(StringReader(parseContent(responseBody)))
+                    reader.isLenient = true
+                    val jsonEvent = Gson().fromJson(reader, value) as JsonEvent
                     jsonEvent.requestBody = params
                     jsonEvent.dispatch()
                 }
