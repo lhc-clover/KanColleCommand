@@ -103,7 +103,9 @@ object ShipManager : IManager() {
     }
 
     private fun fleetMemberInDock(index: Int): Boolean {
-        return getFleet(index).orEmpty().count { DockManager.isShipRepairing(getShipById(it)?.id ?: -1) } > 0
+        return getFleet(index).orEmpty().count {
+            DockManager.isShipRepairing(getShipById(it)?.id ?: -1)
+        } > 0
     }
 
     fun notifyFleetRefresh() {
@@ -268,7 +270,7 @@ object ShipManager : IManager() {
                 null
             }
 //            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
-            newTurn()
+            newTurn(fleetIndex)
 
             calcOrdinalDamage(fleetIndex, event.api_data?.api_kouku?.api_stage3?.api_fdam)
             calcOrdinalDamage(fleetIndex, event.api_data?.api_air_base_injection?.api_stage3?.api_fdam)
@@ -304,7 +306,7 @@ object ShipManager : IManager() {
                 null
             }
 //            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
-            newTurn()
+            newTurn(fleetIndex)
 
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
@@ -322,7 +324,7 @@ object ShipManager : IManager() {
                 null
             }
 //            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
-            newTurn()
+            newTurn(fleetIndex)
 
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
@@ -352,7 +354,7 @@ object ShipManager : IManager() {
                 null
             }
 //            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
-            newTurn()
+            newTurn(fleetIndex)
 
             calcOrdinalDamage(fleetIndex, event.api_data?.api_kouku?.api_stage3?.api_fdam)
 
@@ -383,7 +385,7 @@ object ShipManager : IManager() {
                 null
             }
 //            setHps(fleetIndex, event.api_data?.api_f_nowhps, event.api_data?.api_f_maxhps)
-            newTurn()
+            newTurn(fleetIndex)
 
             calcTargetDamage(fleetIndex, event.api_data?.api_hougeki?.api_df_list,
                     event.api_data?.api_hougeki?.api_damage,
@@ -520,11 +522,12 @@ object ShipManager : IManager() {
         }
     }
 
-    private fun newTurn() {
-        val fleetIndex = BattleManager.getInBattleFleet()
-        val fleet = getFleet(fleetIndex)
-        fleet?.forEach {
-            getShipById(it)?.damage?.add(0)
+    private fun newTurn(fleetIndex: Int?) {
+        if (fleetIndex != null) {
+            val fleet = getFleet(fleetIndex)
+            fleet?.forEach {
+                getShipById(it)?.damage?.add(0)
+            }
         }
     }
 

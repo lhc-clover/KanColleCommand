@@ -30,4 +30,27 @@
     <color name="timerBgNormal">#1183c6</color>
     <color name="timerBgHalf">#bf5a12</color>
     <color name="timerBgDone">#17b458</color>
+
+    <color name="questForm">#2C8D50</color>
+    <color name="questCombat">#E14A4A</color>
+    <color name="questPractice">#9DCD66</color>
+    <color name="questExpedition">#42BCB6</color>
+    <color name="questDock">#E6CB6F</color>
+    <color name="questFactory">#825940</color>
+    <color name="questUpgrade">#CFA9E0</color>
+    <color name="questDefault">#A1A1A1</color>
+
+    <color name="spotDefault">#EFEFEF</color>
+    <color name="spotObtainRes">#B4FE67</color>
+    <color name="spotLoseRes">#B39ED9</color>
+    <color name="spotBattle">#F24546</color>
+    <color name="spotBoss">#9E1313</color>
+    <color name="spotBattleAvoid">#4ECEF3</color>
+    <color name="spotAirStrike">#F24546</color>
+    <color name="spotEscortSuccess">#356824</color>
+    <color name="spotTransportMunitions">#B4FE67</color>
+    <color name="spotLongDistanceAerialBattle">#F24546</color>
+    <color name="spotManualSelection">#4ECEF3</color>
+    <color name="spotNightBattle">#B078E8</color>
+    <color name="spotEnemyCombinedFleet">#F24546</color>
 </resources>

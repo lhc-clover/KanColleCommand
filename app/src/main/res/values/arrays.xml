@@ -4,5 +4,6 @@
         <item>舰队</item>
         <item>战斗</item>
         <item>船坞</item>
+        <item>任务</item>
     </string-array>
 </resources>
