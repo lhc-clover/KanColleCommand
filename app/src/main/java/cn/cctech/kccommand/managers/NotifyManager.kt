@@ -1,10 +1,6 @@
 package cn.cctech.kccommand.managers
 
 import android.app.PendingIntent
-import android.app.job.JobInfo
-import android.app.job.JobParameters
-import android.app.job.JobScheduler
-import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -19,6 +15,10 @@ import cn.cctech.kccommand.events.api.Deck
 import cn.cctech.kccommand.events.api.Kdock
 import cn.cctech.kccommand.events.api.Ndock
 import cn.cctech.kccommand.utils.JNotify
+import com.doist.jobschedulercompat.JobInfo
+import com.doist.jobschedulercompat.JobParameters
+import com.doist.jobschedulercompat.JobScheduler
+import com.doist.jobschedulercompat.JobService
 import com.orhanobut.logger.Logger
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -28,9 +28,9 @@ import java.util.*
 @Suppress("unused")
 object NotifyManager : IManager() {
 
-    private val sExpeditionMask = 100000
-    private val sRepairMask = 500000
-    private val sBuildMask = 900000
+    private const val sExpeditionMask = 100000
+    private const val sRepairMask = 500000
+    private const val sBuildMask = 900000
 
     var callback: Callback? = null
 
@@ -73,7 +73,7 @@ object NotifyManager : IManager() {
     private fun addJob(mask: Int, id: Int, countDown: Int) {
         val jobId = mask + id
         val notifyTimeMillis = Math.max((countDown - 60) * 1000L, 0)
-        val scheduler = callback?.getContext()?.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val scheduler = JobScheduler.get(callback?.getContext())
         val builder = JobInfo.Builder(jobId, ComponentName(callback?.getContext()?.packageName, MyJobService::class.java.name))
                 .setMinimumLatency(notifyTimeMillis)
                 .setOverrideDeadline(notifyTimeMillis + 10 * 1000)
@@ -85,7 +85,7 @@ object NotifyManager : IManager() {
     }
 
     private fun clearPendingJobs(mask: Int) {
-        val scheduler = callback?.getContext()?.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val scheduler = JobScheduler.get(callback?.getContext())
         val jobs: List<JobInfo> = scheduler.allPendingJobs.filter {
             it.id.div(mask) == 1
         }

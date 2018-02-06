@@ -1,13 +1,16 @@
 package cn.cctech.kccommand
 
-import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
+import android.support.multidex.MultiDexApplication
 import com.github.megatronking.svg.sample.drawables.SVGLoader
 import com.orhanobut.logger.LogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import com.pgyersdk.crash.PgyCrashManager
 
-class KccApplication : Application() {
+
+class KccApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -25,6 +28,11 @@ class KccApplication : Application() {
             }
         })
         SVGLoader.load(this)
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
 }
