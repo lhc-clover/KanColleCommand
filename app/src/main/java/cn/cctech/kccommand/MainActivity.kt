@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -191,8 +192,16 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         }
     }
 
-    override fun getContext(): Context {
-        return this
+    override fun getContext(): Context = this
+
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        if (event?.keyCode == KeyEvent.KEYCODE_BACK) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_MAIN
+            intent.addCategory(Intent.CATEGORY_HOME)
+            startActivity(intent)
+        }
+        return true
     }
 
     inner class EventObserver {

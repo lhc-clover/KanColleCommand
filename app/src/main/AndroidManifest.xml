@@ -74,12 +74,11 @@
             </intent-filter>
         </service>
         <service
-            android:name="cn.cctech.kccommand.managers.NotifyManager$MyJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:name="cn.cctech.kccommand.managers.NotifyManager$MyJobService" />
 
         <meta-data
             android:name="PGYER_APPID"
-            android:value="9085c2e489266b67165a2ca2224312ed" >
+            android:value="9085c2e489266b67165a2ca2224312ed">
         </meta-data>
     </application>
 
