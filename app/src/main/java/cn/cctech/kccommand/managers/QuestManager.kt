@@ -6,13 +6,16 @@ import cn.cctech.kccommand.events.api.ClearItemGet
 import cn.cctech.kccommand.events.api.QuestList
 import cn.cctech.kccommand.events.ui.QuestRefresh
 import com.google.gson.Gson
+import org.apache.commons.lang3.time.DateUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object QuestManager : IManager() {
 
     private val questMap: SparseArray<Quest> = SparseArray()
+    private val lastRefresh: Calendar = Calendar.getInstance()
 
     private fun notifyQuestRefresh() {
         val event = QuestRefresh()
@@ -39,6 +42,11 @@ object QuestManager : IManager() {
 //            if (count == execCount) {
 //                setAllQuestClear()
 //            }
+            val nowTime = Calendar.getInstance()
+            if (!DateUtils.isSameDay(lastRefresh, nowTime)) {
+                setAllQuestClear()
+            }
+            lastRefresh.time = nowTime.time
             event.api_data?.api_list?.forEach {
                 val value = try {
                     it.asInt

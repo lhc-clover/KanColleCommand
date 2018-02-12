@@ -75,8 +75,14 @@ dependencies {
     implementation(name: 'JobSchedulerCompat', ext: 'aar')
 }
 
+def releaseNote = ""
+
 task pgyer(type: Exec) {
-    commandLine 'sh', '-c', './uploadApk.sh'
+    if (project.hasProperty('note')) {
+        releaseNote = note
+    }
+    executable 'sh'
+    args "-c", "./uploadApk.sh $releaseNote"
     dependsOn 'assembleRelease'
 }
 
