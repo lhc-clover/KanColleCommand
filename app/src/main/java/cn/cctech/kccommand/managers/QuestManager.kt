@@ -37,16 +37,19 @@ object QuestManager : IManager() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onQuestList(event: QuestList) {
         if (event.api_result == 1) {
-//            val count = event.api_data?.api_count
-//            val execCount = event.api_data?.api_exec_count
-//            if (count == execCount) {
-//                setAllQuestClear()
-//            }
             val nowTime = Calendar.getInstance()
             if (!DateUtils.isSameDay(lastRefresh, nowTime)) {
                 setAllQuestClear()
             }
             lastRefresh.time = nowTime.time
+            val tabId = try {
+                event.paramMap["api_tab_id"]!!.toInt()
+            } catch (e: Exception) {
+                -1
+            }
+            if (tabId == 9) {
+                setAllQuestClear()
+            }
             event.api_data?.api_list?.forEach {
                 val value = try {
                     it.asInt
