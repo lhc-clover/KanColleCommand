@@ -66,9 +66,13 @@ object ShipManager : IManager() {
         val fleet = getFleet(index)
         fleet?.map { getShipById(it) }?.forEach { ship ->
             run {
-                shipScoutSum += Math.sqrt(ship?.scout?.toDouble() ?: 0.0)
+                var shipScout = ship?.scout?.toDouble() ?: 0.0
                 ship?.items?.map { EquipManager.getEquipById(it) }
-                        ?.forEach { equipScoutSum += it?.calcScout() ?: 0.0 }
+                        ?.forEach {
+                            shipScout -= it?.scout?.toDouble() ?: 0.0
+                            equipScoutSum += it?.calcScout() ?: 0.0
+                        }
+                shipScoutSum += Math.sqrt(shipScout)
             }
         }
         return equipScoutSum + shipScoutSum + getCommandLevelPenaltyScout() + getFleetCountBonusScout(index)

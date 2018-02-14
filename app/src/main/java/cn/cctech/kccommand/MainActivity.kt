@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import com.gaodesoft.ecoallogistics.assistant.findView
 import com.orhanobut.logger.Logger
 import com.pgyersdk.crash.PgyCrashManager
 import com.pgyersdk.update.PgyUpdateManager
+import com.pgyersdk.update.UpdateManagerListener
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -39,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode
 class MainActivity : AppEntry(), NotifyManager.Callback {
 
     private val kRequestVpn = 666
+    private val mResetPgyerUpdateStr = "{\"code\":0,\"message\":\"\",\"data\":{\"lastBuild\":\"1\",\"versionCode\":\"1\",\"versionName\":1,\"appUrl\":\"\",\"build\":\"1\",\"releaseNote\":\"\"}}"
 
     private var mTabs: Array<String>? = null
     private var mViewPager: ViewPager? = null
@@ -59,6 +62,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PgyCrashManager.register(this)
+        checkVersion()
         ShipManager.setup()
         EquipManager.setup()
         DockManager.setup()
@@ -83,7 +87,6 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
     override fun onNewIntent(aIntent: Intent?) {
         super.onNewIntent(aIntent)
-        PgyUpdateManager.register(this)
         val authComplete = aIntent?.getBooleanExtra("AuthComplete", false) ?: false
         if (authComplete) {
             startProxy()
@@ -202,6 +205,40 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
             startActivity(intent)
         }
         return true
+    }
+
+    private fun checkVersion() {
+        UpdateManagerListener.updateLocalBuildNumber(mResetPgyerUpdateStr)
+        PgyUpdateManager.register(this, object : UpdateManagerListener() {
+            override fun onUpdateAvailable(result: String?) {
+                Logger.json(result)
+                val localVersion = try {
+                    val packageInfo = packageManager.getPackageInfo(packageName, 0)
+                    packageInfo.versionCode
+                } catch (e: Exception) {
+                    Int.MAX_VALUE
+                }
+                val resultBean = getAppBeanFromString(result)
+                val remoteVersion = try {
+                    resultBean.versionCode.toInt()
+                } catch (e: Exception) {
+                    -1
+                }
+                if (remoteVersion > localVersion) {
+                    AlertDialog.Builder(getContext())
+                            .setTitle(getString(R.string.dialog_update_title, resultBean.versionName))
+                            .setMessage(resultBean.releaseNote)
+                            .setPositiveButton(R.string.dialog_update_positive,
+                                    { _, _ -> startDownloadTask(this@MainActivity, resultBean.downloadURL) })
+                            .setNegativeButton(R.string.dialog_update_negative, null)
+                            .show()
+                }
+            }
+
+            override fun onNoUpdateAvailable() {
+                Logger.d("onNoUpdateAvailable")
+            }
+        })
     }
 
     inner class EventObserver {

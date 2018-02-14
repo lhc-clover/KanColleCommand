@@ -12,13 +12,17 @@
     <string name="text_runtime_required">"This application requires Adobe AIR."</string>
     <string name="text_install_runtime">To continue, install Adobe AIR on this device.</string>
     <string name="text_runtime_on_external_storage">To continue, either install Adobe AIR on this device or exit this application and mount the SD card containing Adobe AIR before re-launching.</string>
-    <string name="text_gamepreview_loading">Loading...</string>
+    <string name="text_gamepreview_loading">Loading&#8230;</string>
     <string name="text_gamepreview_loading_error">Could not load the Game.</string>
     <string name="text_install_gamepreview_app">Install Now</string>
     <string name="text_air_missing_header">Adobe AIR required</string>
     <string name="text_air_missing_text">You need to install Adobe AIR for the game preview to work.</string>
     <string name="button_install_air_from_playstore">Install from Play Store.</string>
     <string name="text_dont_show_again">"Don't show this again."</string>
+
+    <string name="dialog_update_title">新版本v%1$s发布</string>
+    <string name="dialog_update_positive">下载</string>
+    <string name="dialog_update_negative">取消</string>
 
     <string name="ship_condition">\u2605%1$d</string>
     <string name="ship_level">Lv. %1$d</string>

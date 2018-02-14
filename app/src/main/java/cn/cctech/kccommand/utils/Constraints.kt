@@ -2,7 +2,7 @@ package cn.cctech.kccommand.utils
 
 import cn.cctech.kccommand.R
 
-const val MAX_SHIP_COUNT = 7
+const val MAX_SHIP_COUNT = 6
 const val MAX_FLEET_COUNT = 4
 
 const val COMBINED_FLEET_INDEX = 11

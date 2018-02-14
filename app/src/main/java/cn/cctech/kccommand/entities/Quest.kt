@@ -12,6 +12,8 @@ class Quest {
     var state: Int = 0
     var category: Int = 0
 
+    constructor()
+
     constructor(entity: QuestList.ApiDataBean.ApiListBean?) {
         id = entity?.api_no ?: 0
         title = entity?.api_title ?: ""
