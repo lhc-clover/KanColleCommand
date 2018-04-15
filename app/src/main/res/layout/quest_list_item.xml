@@ -4,9 +4,11 @@
 
     <data>
 
+        <import type="cn.cctech.kccommand.utils.ViewUtilKt" />
+
         <variable
             name="quest"
-            type="cn.cctech.kccommand.entities.Quest" />
+            type="cn.cctech.kancolle.oyodo.entities.Quest" />
     </data>
 
     <LinearLayout
@@ -21,7 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@{quest.getTypeColor(context)}" />
+            android:background="@{ViewUtilKt.getQuestTypeColor(context, quest)}" />
 
         <TextView
             android:layout_width="wrap_content"

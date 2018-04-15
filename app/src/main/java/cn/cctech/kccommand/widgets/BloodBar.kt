@@ -3,7 +3,8 @@ package cn.cctech.kccommand.widgets
 import android.content.Context
 import android.databinding.BindingAdapter
 import android.util.AttributeSet
-import cn.cctech.kccommand.entities.Ship
+import cn.cctech.kancolle.oyodo.entities.Ship
+import cn.cctech.kccommand.utils.getHpColor
 
 import com.daimajia.numberprogressbar.NumberProgressBar
 
@@ -28,6 +29,6 @@ fun setProgress(view: BloodBar, progress: Int, max: Int) {
 @BindingAdapter("bar_state")
 fun setBarState(view: BloodBar, ship: Ship?) {
     if (ship != null) {
-        view.reachedBarColor = ship.getHpColor(view.context)
+        view.reachedBarColor = getHpColor(view.context, ship)
     }
 }

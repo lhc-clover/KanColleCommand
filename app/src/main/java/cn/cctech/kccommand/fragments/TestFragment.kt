@@ -12,9 +12,7 @@ class TestFragment : LazyFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mIndex = arguments.getInt(ARG_INDEX)
-        }
+        mIndex = arguments?.getInt(ARG_INDEX) ?: 0
     }
 
     override fun onCreateViewLazy(savedInstanceState: Bundle) {

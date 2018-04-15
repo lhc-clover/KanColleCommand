@@ -37,14 +37,12 @@ class MapSpotHelper private constructor(context: Context) {
         return Gson().fromJson(data, MapSpot::class.java)
     }
 
-    fun getSpotMarker(area: Int, map: Int, point: Int): String {
+    fun getSpotMarker(area: Int, map: Int, route: Int): List<String> {
         return try {
-//            mapSpot.data?.get("$area-$map")?.spots?.keys?.toList()?.get(point)!!
             val mapData = mapSpot.data?.get("$area-$map")
-            val route = mapData?.route?.get("$point")
-            route?.get(1)!!
+            mapData?.route?.get("$route")!!
         } catch (e: Exception) {
-            "$point"
+            listOf("null", "null")
         }
     }
 

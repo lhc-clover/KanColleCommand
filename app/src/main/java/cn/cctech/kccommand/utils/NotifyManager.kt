@@ -1,4 +1,4 @@
-package cn.cctech.kccommand.managers
+package cn.cctech.kccommand.utils
 
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -6,67 +6,46 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.support.v4.content.ContextCompat
+import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.entities.Expedition
+import cn.cctech.kancolle.oyodo.managers.Dock
+import cn.cctech.kancolle.oyodo.managers.Fleet
 import cn.cctech.kccommand.MainActivity
 import cn.cctech.kccommand.R
-import cn.cctech.kccommand.entities.BuildDock
-import cn.cctech.kccommand.entities.Expedition
-import cn.cctech.kccommand.entities.RepairDock
-import cn.cctech.kccommand.events.api.Deck
-import cn.cctech.kccommand.events.api.Kdock
-import cn.cctech.kccommand.events.api.Ndock
-import cn.cctech.kccommand.utils.JNotify
 import com.doist.jobschedulercompat.JobInfo
 import com.doist.jobschedulercompat.JobParameters
 import com.doist.jobschedulercompat.JobScheduler
 import com.doist.jobschedulercompat.JobService
 import com.orhanobut.logger.Logger
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("unused")
-object NotifyManager : IManager() {
+object NotifyManager {
 
     private const val sExpeditionMask = 100000
     private const val sRepairMask = 500000
     private const val sBuildMask = 900000
 
-    var callback: Callback? = null
+    private var callback: Callback? = null
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onNdock(event: Ndock) {
-        if (event.api_result == 1) {
-            clearPendingJobs(sRepairMask)
-            event.api_data.forEach {
-                val repair = RepairDock(it)
-                if (repair.valid())
-                    addJob(sRepairMask, repair.id, repair.countDown)
-            }
+    fun setup(cb: Callback) {
+        callback = cb
+        Dock.repairList.forEach {
+            Oyodo.attention().watch(it, { repair ->
+                if (repair.valid()) addJob(sRepairMask, repair.id, getCountDown(repair.completeTime))
+            })
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onDeck(event: Deck) {
-        if (event.api_result == 1) {
-            clearPendingJobs(sExpeditionMask)
-            event.api_data.forEach {
-                val expedition = Expedition(it)
+        Dock.buildList.forEach {
+            Oyodo.attention().watch(it, { build ->
+                if (build.valid()) addJob(sBuildMask, build.id, getCountDown(build.completeTime))
+            })
+        }
+        Dock.expeditionList.forEach {
+            Oyodo.attention().watch(it, { expedition ->
                 if (expedition.valid())
-                    addJob(sExpeditionMask, expedition.fleetIndex, expedition.countDown)
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onKdock(event: Kdock) {
-        if (event.api_result == 1) {
-            clearPendingJobs(sBuildMask)
-            event.api_data.forEach {
-                val build = BuildDock(it)
-                if (build.valid())
-                    addJob(sBuildMask, build.id, build.countDown)
-            }
+                    addJob(sExpeditionMask, expedition.fleetIndex, getCountDown(expedition.returnTime))
+            })
         }
     }
 
@@ -125,25 +104,23 @@ object NotifyManager : IManager() {
                     1 -> {
                         title = callback!!.getContext().getString(R.string.notify_expedition_title)
                         val id = jobId - sExpeditionMask - 1
-                        val expedition = DockManager.expeditionList[id]
-                        content = callback!!.getContext().getString(R.string.notify_expedition_content,
-                                expedition.fleetIndex, ShipManager.getFleetName(expedition.fleetIndex - 1),
-                                expedition.mission(), expedition.description())
+                        val expedition = Dock.expeditionList[id].value
+                        content = getExpeditionDescription(callback!!.getContext(), expedition)
                         largeIconRes = R.drawable.expedition
                     }
                     5 -> {
                         title = callback!!.getContext().getString(R.string.notify_repair_title)
                         val id = jobId - sRepairMask - 1
-                        val repair = DockManager.repairDockList[id]
-                        val ship = ShipManager.getShipById(repair.shipId)
+                        val repair = Dock.repairList[id]
+                        val ship = Fleet.shipMap[repair.value.shipId]
                         content = callback!!.getContext().getString(R.string.notify_repair_content, ship?.name)
                         largeIconRes = R.drawable.repair
                     }
                     9 -> {
                         title = callback!!.getContext().getString(R.string.notify_build_title)
                         val id = jobId - sBuildMask - 1
-                        val build = DockManager.buildDockList[id]
-                        val ship = ShipManager.getShipById(build.shipId)
+                        val build = Dock.buildList[id]
+                        val ship = Fleet.shipMap[build.value.shipId]
                         content = callback!!.getContext().getString(R.string.notify_build_content, ship?.name)
                         largeIconRes = R.drawable.build
                     }
@@ -165,6 +142,20 @@ object NotifyManager : IManager() {
             }
         }
 
+    }
+
+    fun getExpeditionDescription(context: Context, expedition: Expedition?): String {
+        return expedition?.let {
+            val name = Fleet.deckNames[expedition.fleetIndex - 1].value
+            val num = try {
+                expedition.missionId.toInt()
+            } catch (e: Exception) {
+                0
+            }
+            val description = kExpeditionMap.getOrElse(num, defaultValue = { "" })
+            context.getString(R.string.notify_expedition_content,
+                    expedition.fleetIndex, name, num, description)
+        } ?: ""
     }
 
     interface Callback {

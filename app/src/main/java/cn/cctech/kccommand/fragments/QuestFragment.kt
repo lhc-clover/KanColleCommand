@@ -3,54 +3,65 @@ package cn.cctech.kccommand.fragments
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.entities.Quest
+import cn.cctech.kancolle.oyodo.managers.Mission
 import cn.cctech.kccommand.BR
 import cn.cctech.kccommand.R
-import cn.cctech.kccommand.entities.Quest
-import cn.cctech.kccommand.events.ui.QuestRefresh
-import cn.cctech.kccommand.fragments.base.BaseFragment
-import cn.cctech.kccommand.managers.QuestManager
+import cn.cctech.kccommand.fragments.base.LazyFragment
+import cn.cctech.kccommand.utils.findView
 import cn.cctech.kccommand.widgets.DataBindingHolder
-import com.gaodesoft.ecoallogistics.assistant.findView
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
-class QuestFragment : BaseFragment() {
+class QuestFragment : LazyFragment() {
 
-    private lateinit var mQuestAdapter: QuestAdapter
+    private lateinit var questAdapter: QuestAdapter
 
     override fun onCreateViewLazy(savedInstanceState: Bundle?) {
         super.onCreateViewLazy(savedInstanceState)
         setContentView(R.layout.fragment_quest)
         initList()
+        Oyodo.attention().watch(Mission.questMap, {
+            val quests = it.filter { it.value.state >= 2 }.values.toList()
+            refresh(quests)
+        })
     }
 
-    override fun onResumeLazy() {
-        super.onResumeLazy()
-        refresh()
+    private fun refresh(quests: List<Quest>) {
+        activity?.runOnUiThread {
+            quests.forEach { quest -> Log.d("Oyodo", quest.title) }
+            questAdapter.data = quests
+            questAdapter.notifyDataSetChanged()
+        }
     }
+
+//    override fun onResumeLazy() {
+//        super.onResumeLazy()
+//        refresh()
+//    }
 
     private fun initList() {
         val questListView = findView<UltimateRecyclerView>(R.id.urv_quest)
         questListView.layoutManager = LinearLayoutManager(context)
-        mQuestAdapter = QuestAdapter()
-        questListView.setAdapter(mQuestAdapter)
+        questAdapter = QuestAdapter()
+        questListView.setAdapter(questAdapter)
     }
 
-    @Suppress("unused", "UNUSED_PARAMETER")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onFleetRefresh(event: QuestRefresh) {
-        refresh()
-    }
+//    @Suppress("unused", "UNUSED_PARAMETER")
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onFleetRefresh(event: QuestRefresh) {
+//        refresh()
+//    }
 
-    private fun refresh() {
-        mQuestAdapter.data = QuestManager.getQuestList()
-        mQuestAdapter.notifyDataSetChanged()
-    }
+//    private fun refresh() {
+//        questAdapter.data = QuestManager.getQuestList()
+//        questAdapter.notifyDataSetChanged()
+//    }
 
     private class QuestAdapter : UltimateViewAdapter<DataBindingHolder>() {
 

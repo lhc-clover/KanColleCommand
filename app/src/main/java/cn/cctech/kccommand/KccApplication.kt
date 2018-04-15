@@ -9,7 +9,6 @@ import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import com.pgyersdk.crash.PgyCrashManager
 
-
 class KccApplication : MultiDexApplication() {
 
     override fun onCreate() {
