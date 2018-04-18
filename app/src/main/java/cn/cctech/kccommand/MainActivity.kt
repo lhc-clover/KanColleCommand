@@ -16,6 +16,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.managers.Battle
+import cn.cctech.kancolle.oyodo.managers.Fleet
+import cn.cctech.kancolle.oyodo.managers.isFleetBadlyDamage
 import cn.cctech.kccommand.databinding.InfoPanelBinding
 import cn.cctech.kccommand.entities.Info
 import cn.cctech.kccommand.fragments.*
@@ -49,6 +52,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
     private var mExpandAll: ImageButton? = null
     private var mInfoPanel: View? = null
     private var mMainPanel: View? = null
+    private var mBloodBorder: View? = null
 
     override fun setContentView(view: View) {
         super.setContentView(R.layout.activity_main)
@@ -60,8 +64,6 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         super.onCreate(savedInstanceState)
         PgyCrashManager.register(this)
         checkVersion()
-        NotifyManager.setup(this)
-        Oyodo.attention().init("/data/data/cn.cctech.kccommand/com.dmm.dmmlabo.kancolle/Local Store/apis/api_start2")
     }
 
     override fun onNewIntent(aIntent: Intent?) {
@@ -69,6 +71,8 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         val authComplete = aIntent?.getBooleanExtra("AuthComplete", false) ?: false
         if (authComplete) {
             startProxy()
+            Oyodo.attention().init("/data/data/cn.cctech.kccommand/com.dmm.dmmlabo.kancolle/Local Store/apis/api_start2")
+            NotifyManager.setup(this)
         }
     }
 
@@ -147,6 +151,9 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         mCollapseAll?.setOnClickListener { collapseAll() }
         mExpandAll = findView(R.id.btn_expand_all)
         mExpandAll?.setOnClickListener { expandAll() }
+        mBloodBorder = findView(R.id.blood_border)
+
+        setBloodBorder()
     }
 
     private fun collapseAll() {
@@ -161,6 +168,15 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         mInfoPanel?.visibility = View.VISIBLE
         mMainPanel?.visibility = View.VISIBLE
         mExpandAll?.visibility = View.GONE
+    }
+
+    private fun setBloodBorder() {
+        Oyodo.attention().watch(Fleet.shipWatcher, {
+            val show = Battle.friendIndex > 0 && isFleetBadlyDamage(Battle.friendIndex)
+            runOnUiThread {
+                mBloodBorder!!.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

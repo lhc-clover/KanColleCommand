@@ -4,6 +4,9 @@ import android.content.Context
 import android.support.v4.content.res.ResourcesCompat
 import cn.cctech.kancolle.oyodo.entities.Ship
 import cn.cctech.kancolle.oyodo.managers.*
+import cn.cctech.kancolle.oyodo.utils.BADLY_DAMAGE
+import cn.cctech.kancolle.oyodo.utils.HALF_DAMAGE
+import cn.cctech.kancolle.oyodo.utils.SLIGHT_DAMAGE
 import cn.cctech.kccommand.R
 import com.orhanobut.logger.Logger
 
@@ -17,42 +20,6 @@ fun getFleetTagColor(index: Int): Int {
         isFleetMemberRepair(index) -> R.color.tabBgColorSupply
         else -> R.color.tabBgColorNormal
     }
-}
-
-private fun isFleetInBattle(index: Int): Boolean {
-    return Battle.friendIndex == index
-}
-
-private fun isFleetInExpedition(index: Int): Boolean {
-    val expedition = Dock.expeditionList.find { it?.value?.fleetIndex == index + 1 }
-    return try {
-        expedition?.value?.missionId?.toInt()!! > 0
-    } catch (e: Exception) {
-        false
-    }
-}
-
-private fun isFleetNeedSupply(index: Int): Boolean {
-    return getShips(index).count {
-        (it.nowFuel < it.maxFuel) || (it.nowBullet < it.maxBullet)
-    } > 0
-}
-
-private fun isFleetBadlyDamage(index: Int): Boolean {
-    return getShips(index).count {
-        val percent: Double = it.hp().toDouble().div(it.maxHp)
-        percent in 0.0..BADLY_DAMAGE
-    } > 0
-}
-
-private fun isFleetMemberRepair(index: Int): Boolean {
-    return getShips(index).count { ship ->
-        Dock.repairList.any { ship.id == it.value?.shipId }
-    } > 0
-}
-
-private fun isFleetLock(index: Int): Boolean {
-    return index >= User.deckCount.value
 }
 
 fun getSlotImage(slotId: Int): Int {

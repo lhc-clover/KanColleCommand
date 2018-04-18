@@ -53,13 +53,13 @@ fun getBuildTime(context: Context, build: Build?): String {
     return getFormatCountDown(context, build?.completeTime ?: -1)
 }
 
-private fun getFormatCountDown(context: Context, time: Long): String {
+fun getFormatCountDown(context: Context, time: Long): String {
     return if (time >= 0) {
         val countdown = getCountDown(time)
         val hour = countdown / 3600
         val minute = countdown / 60 - hour * 60
         val second = countdown % 60
-        context.getString(R.string.expedition_count_down, hour, minute, second)
+        context.getString(R.string.time_count_down, hour, minute, second)
     } else {
         ""
     }

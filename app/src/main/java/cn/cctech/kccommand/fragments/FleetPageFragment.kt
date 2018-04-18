@@ -1,6 +1,8 @@
 package cn.cctech.kccommand.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import cn.cctech.kccommand.BR
 import cn.cctech.kccommand.R
 import cn.cctech.kccommand.fragments.base.LazyFragment
 import cn.cctech.kccommand.utils.findView
+import cn.cctech.kccommand.utils.getFormatCountDown
 import cn.cctech.kccommand.widgets.DataBindingHolder
 import cn.cctech.kccommand.widgets.FleetListView
 import cn.cctech.kccommand.widgets.ListDivider
@@ -21,6 +24,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
 import com.orhanobut.logger.Logger
 import io.reactivex.disposables.Disposable
 import org.apache.commons.lang3.StringUtils
+import java.lang.ref.WeakReference
 
 class FleetPageFragment : LazyFragment() {
 
@@ -28,8 +32,10 @@ class FleetPageFragment : LazyFragment() {
     private var mFleet: List<Int> = listOf()
     private var mAdapter: FleetAdapter? = null
     private var mFleetListView: FleetListView? = null
-
     private var watcher: Disposable? = null
+    private var fleetInfo: String = ""
+    private var condTime: Long = 0
+    private val timer = Timer(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +57,7 @@ class FleetPageFragment : LazyFragment() {
     override fun onPauseLazy() {
         super.onPauseLazy()
         watcher?.dispose()
+        timer.removeMessages(TIME_TICK)
     }
 
     private fun initList() {
@@ -82,8 +89,10 @@ class FleetPageFragment : LazyFragment() {
 
     private fun refreshList() {
         activity?.runOnUiThread {
+            fleetInfo = getFleetInfoStr()
+            condTime = getCondRecoveryTime(mIndex)
             mAdapter?.notifyDataSetChanged()
-            mFleetListView?.setFleetInfo(getFleetInfoStr())
+            timer.sendEmptyMessage(TIME_TICK)
         }
     }
 
@@ -98,6 +107,19 @@ class FleetPageFragment : LazyFragment() {
 //        val fleetAirPower = getString(R.string.fleet_air_power_range, airPowerPair.first, airPowerPair.second)
         val fleetScout = getString(R.string.fleet_scout, Math.floor(getFleetScout(mIndex) * 100) / 100)
         return StringUtils.join(arrayOf(fleetLevel, fleetSpeed, fleetAirPower, fleetScout), "/")
+    }
+
+    private fun buildHeaderText(): String {
+        val result = StringBuilder(fleetInfo)
+        if (condTime > 0) {
+            val countDownStr = getFormatCountDown(context!!, condTime)
+            result.append("\n").append(getString(R.string.fleet_cond_recovery, countDownStr))
+        }
+        return result.toString()
+    }
+
+    private fun update() {
+        mFleetListView?.setHeader(buildHeaderText())
     }
 
     private inner class FleetAdapter : UltimateViewAdapter<DataBindingHolder>() {
@@ -142,9 +164,25 @@ class FleetPageFragment : LazyFragment() {
 
     }
 
+    private class Timer(context: FleetPageFragment) : Handler() {
+
+        private val mReference: WeakReference<FleetPageFragment> = WeakReference(context)
+
+        override fun handleMessage(msg: Message?) {
+            if (msg?.what == TIME_TICK) {
+                mReference.get()?.update()
+                val time = mReference.get()?.condTime ?: 0
+                val now = System.currentTimeMillis()
+                if (time >= now) sendEmptyMessageDelayed(TIME_TICK, 1000)
+            }
+        }
+
+    }
+
     companion object {
 
         private const val ARG_INDEX = "index"
+        private const val TIME_TICK = 998
 
         fun newInstance(index: Int): FleetPageFragment {
             val fragment = FleetPageFragment()

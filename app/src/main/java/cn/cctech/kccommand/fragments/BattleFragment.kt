@@ -85,52 +85,54 @@ class BattleFragment : LazyFragment() {
     }
 
     private fun setCombatInfo(phase: Battle.Phase) {
-        fun getHeading(): String {
-            return try {
-                getString(kHeadingMap[Battle.heading]!!)
-            } catch (e: Exception) {
-                "未知航向"
-            }
-        }
-
-        fun getAirCommand(): String {
-            return try {
-                getString(kAirCommandMap[Battle.airCommand]!!)
-            } catch (e: Exception) {
-                "未知制空"
-            }
-        }
-        when (phase) {
-            Battle.Phase.Idle -> mCombatInfo.text = getString(R.string.battle_idle)
+        val info = when (phase) {
+            Battle.Phase.Idle -> getString(R.string.battle_idle)
             Battle.Phase.Start -> {
                 val spotMarker = MapSpotHelper.getInstance(context!!).getSpotMarker(Battle.area, Battle.map, Battle.route)
-                mCombatInfo.text = addCompassSpan("${Battle.area}-${Battle.map}", spotMarker[1])
+                getSpanInfo("${Battle.area}-${Battle.map}", spotMarker[1])
             }
             Battle.Phase.Next -> {
                 val spotMarker = MapSpotHelper.getInstance(context!!).getSpotMarker(Battle.area, Battle.map, Battle.route)
-                mCombatInfo.text = addCompassSpan("${Battle.area}-${Battle.map}-${spotMarker[0]}", spotMarker[1])
+                getSpanInfo("${Battle.area}-${Battle.map}-${spotMarker[0]}", spotMarker[1])
             }
             Battle.Phase.BattleDaytime, Battle.Phase.Practice -> {
-                mCombatInfo.text = TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
+                TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
             }
             Battle.Phase.BattleNight, Battle.Phase.PracticeNight -> {
-                mCombatInfo.text = TextUtils.join("/", listOf(getHeading(), Battle.rank))
+                TextUtils.join("/", listOf(getHeading(), Battle.rank))
             }
             Battle.Phase.BattleNightSp -> {
-                mCombatInfo.text = TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
+                TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
             }
             Battle.Phase.BattleResult, Battle.Phase.PracticeResult -> {
-                mCombatInfo.text = if (TextUtils.isEmpty(Battle.get)) Battle.rank
+                if (TextUtils.isEmpty(Battle.get)) Battle.rank
                 else "${Battle.rank}/${getString(R.string.battle_get, Battle.get)}"
             }
             else -> getString(R.string.battle_idle)
         }
+        mCombatInfo.text = info
     }
 
-    private fun addCompassSpan(base: String, marker: String): SpannableString {
+    private fun getHeading(): String {
+        return try {
+            getString(kHeadingMap[Battle.heading]!!)
+        } catch (e: Exception) {
+            "未知航向"
+        }
+    }
+
+    private fun getAirCommand(): String {
+        return try {
+            getString(kAirCommandMap[Battle.airCommand]!!)
+        } catch (e: Exception) {
+            "未知制空"
+        }
+    }
+
+    private fun getSpanInfo(base: String, marker: String): SpannableString {
         val imageSpan = NextSpotImageSpan(drawNextArrow(Battle.area, Battle.map, Battle.route, Battle.nodeType))
         val next = getString(R.string.battle_next, marker)
-        val source = "$base/$next"
+        val source = TextUtils.join("/", listOf(base, next))
         val spanString = SpannableString(source)
         val spanStart = source.indexOfFirst { it == '{' }
         val spanEnd = source.indexOfLast { it == '}' } + 1
@@ -145,13 +147,13 @@ class BattleFragment : LazyFragment() {
     private fun drawNextArrow(area: Int, map: Int, next: Int, type: Int): Drawable? {
         return if (area != -1 && map != -1 && /*current != -1 &&*/ next != -1 && type != -1) {
             val arrow = SVGDrawable(next_spot(context))
+            arrow.mutate()
+//            arrow.setTint(getSpotColor(context!!, type))
             arrow.setWidth(dp2px(context!!, 16f))
             arrow.setHeight(dp2px(context!!, 16f))
             val rotate = MapSpotHelper.getInstance(context!!).getSpotRotate(area, map, next)
             arrow.rotation = rotate.toFloat()
             Logger.d("rotation : ${arrow.rotation}")
-            arrow.mutate()
-            arrow.setTint(getSpotColor(context!!, type))
             arrow
         } else {
             null

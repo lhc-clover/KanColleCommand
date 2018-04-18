@@ -2,13 +2,6 @@ package cn.cctech.kccommand.utils
 
 import cn.cctech.kccommand.R
 
-/** 小破(75%)  */
-const val SLIGHT_DAMAGE = 0.75
-/** 中破(50%)  */
-const val HALF_DAMAGE = 0.5
-/** 大破(25%)  */
-const val BADLY_DAMAGE = 0.25
-
 /** 低速  */
 const val SPEED_SLOW = 5
 /** 高速  */
@@ -72,3 +65,5 @@ val kExpeditionMap: Map<Int, String> = mapOf(
         110 to "南西方面航空偵察作戦",
         133 to "[E] 前衛支援任務",
         134 to "[E] 艦隊決戦支援任務")
+
+const val CONDITION_NORMAL = 49
