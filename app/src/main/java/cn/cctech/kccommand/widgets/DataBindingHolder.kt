@@ -13,7 +13,7 @@ class DataBindingHolder(v: View, isItem: Boolean) : UltimateRecyclerviewViewHold
 
     init {
         if (isItem) {
-            binding = DataBindingUtil.bind(v)
+            binding = DataBindingUtil.bind(v)!!
         }
     }
 

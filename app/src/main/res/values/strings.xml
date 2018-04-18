@@ -28,9 +28,9 @@
     <string name="ship_level">Lv. %1$d</string>
     <string name="main_info_none">-</string>
     <string name="main_info_count">%1$d / %2$d</string>
-    <string name="main_info_ship_count">舰娘：%1$d / %2$d</string>
-    <string name="main_info_item_count">装备：%1$d / %2$d</string>
-    <string name="expedition_count_down">%1$02d:%2$02d:%3$02d</string>
+    <string name="main_info_ship_count">舰娘：%1$d/%2$d</string>
+    <string name="main_info_item_count">装备：%1$d/%2$d</string>
+    <string name="time_count_down">%1$02d:%2$02d:%3$02d</string>
 
     <string name="formation_1">单纵</string>
     <string name="formation_2">复纵</string>
@@ -70,11 +70,13 @@
     <string name="dock_repair_lock">未解锁</string>
 
     <string name="notify_expedition_title">远征完成</string>
-    <string name="notify_expedition_content">[%1$d]%2$s，远征(%3$02d)%4$s归来</string>
+    <string name="notify_expedition_content">[%1$d]%2$s，(%3$02d)%4$s，远征归来</string>
     <string name="notify_repair_title">入渠完成</string>
-    <string name="notify_repair_content">%1$s入渠完成</string>
+    <string name="notify_repair_content">%1$s，入渠完成</string>
     <string name="notify_build_title">建造完成</string>
-    <string name="notify_build_content">%1$s建造完成</string>
+    <string name="notify_build_content">%1$s，建造完成</string>
+    <string name="notify_cond_title">疲劳回复</string>
+    <string name="notify_cond_content">[%1$d]%2$s，疲劳回复完成</string>
 
     <string name="fleet_speed_fast">高速</string>
     <string name="fleet_speed_slow">低速</string>
@@ -82,5 +84,6 @@
     <string name="fleet_air_power_range">制空:%1$d-%2$d</string>
     <string name="fleet_scout">索敌:%1$.2f</string>
     <string name="fleet_lock">未开放</string>
+    <string name="fleet_cond_recovery">疲劳回复：%1$s</string>
 </resources>
 

@@ -15,12 +15,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.managers.Battle
+import cn.cctech.kancolle.oyodo.managers.Fleet
+import cn.cctech.kancolle.oyodo.managers.isFleetBadlyDamage
 import cn.cctech.kccommand.databinding.InfoPanelBinding
-import cn.cctech.kccommand.events.ui.BasicRefresh
+import cn.cctech.kccommand.entities.Info
 import cn.cctech.kccommand.fragments.*
-import cn.cctech.kccommand.managers.*
 import cn.cctech.kccommand.proxy.VpnService
-import com.gaodesoft.ecoallogistics.assistant.findView
+import cn.cctech.kccommand.utils.NotifyManager
+import cn.cctech.kccommand.utils.findView
 import com.orhanobut.logger.Logger
 import com.pgyersdk.crash.PgyCrashManager
 import com.pgyersdk.update.PgyUpdateManager
@@ -34,9 +38,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.TriangularPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : AppEntry(), NotifyManager.Callback {
 
@@ -46,43 +47,23 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
     private var mTabs: Array<String>? = null
     private var mViewPager: ViewPager? = null
     private var mInfoPanelBinding: InfoPanelBinding? = null
-    private var mEventObserver = EventObserver()
 
     private var mCollapseAll: ImageButton? = null
     private var mExpandAll: ImageButton? = null
     private var mInfoPanel: View? = null
     private var mMainPanel: View? = null
+    private var mBloodBorder: View? = null
 
     override fun setContentView(view: View) {
         super.setContentView(R.layout.activity_main)
-        EventBus.getDefault().register(mEventObserver)
         initViews(view)
+        mInfoPanelBinding?.info = Info()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PgyCrashManager.register(this)
         checkVersion()
-        ShipManager.setup()
-        EquipManager.setup()
-        DockManager.setup()
-        BattleManager.setup()
-        BasicManager.setup()
-        NotifyManager.setup()
-        NotifyManager.callback = this
-        QuestManager.setup()
-    }
-
-    override fun onDestroy() {
-        EventBus.getDefault().unregister(mEventObserver)
-        ShipManager.destroy()
-        EquipManager.destroy()
-        DockManager.destroy()
-        BattleManager.destroy()
-        BasicManager.destroy()
-        NotifyManager.destroy()
-        QuestManager.destroy()
-        super.onDestroy()
     }
 
     override fun onNewIntent(aIntent: Intent?) {
@@ -90,6 +71,8 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         val authComplete = aIntent?.getBooleanExtra("AuthComplete", false) ?: false
         if (authComplete) {
             startProxy()
+            Oyodo.attention().init("/data/data/cn.cctech.kccommand/com.dmm.dmmlabo.kancolle/Local Store/apis/api_start2")
+            NotifyManager.setup(this)
         }
     }
 
@@ -168,6 +151,9 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         mCollapseAll?.setOnClickListener { collapseAll() }
         mExpandAll = findView(R.id.btn_expand_all)
         mExpandAll?.setOnClickListener { expandAll() }
+        mBloodBorder = findView(R.id.blood_border)
+
+        setBloodBorder()
     }
 
     private fun collapseAll() {
@@ -182,6 +168,15 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         mInfoPanel?.visibility = View.VISIBLE
         mMainPanel?.visibility = View.VISIBLE
         mExpandAll?.visibility = View.GONE
+    }
+
+    private fun setBloodBorder() {
+        Oyodo.attention().watch(Fleet.shipWatcher, {
+            val show = Battle.friendIndex > 0 && isFleetBadlyDamage(Battle.friendIndex)
+            runOnUiThread {
+                mBloodBorder!!.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -239,16 +234,6 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
                 Logger.d("onNoUpdateAvailable")
             }
         })
-    }
-
-    inner class EventObserver {
-
-        @Suppress("unused", "UNUSED_PARAMETER")
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        fun onFleetRefresh(event: BasicRefresh) {
-            mInfoPanelBinding?.basic = BasicManager.basic
-            mInfoPanelBinding?.executePendingBindings()
-        }
     }
 
 }

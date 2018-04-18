@@ -4,19 +4,14 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.managers.Dock
 import cn.cctech.kccommand.R
 import cn.cctech.kccommand.databinding.FragmentDockBinding
-import cn.cctech.kccommand.entities.BuildDock
-import cn.cctech.kccommand.entities.Expedition
-import cn.cctech.kccommand.entities.RepairDock
-import cn.cctech.kccommand.events.ui.DockRefresh
-import cn.cctech.kccommand.fragments.base.BaseFragment
-import cn.cctech.kccommand.managers.DockManager
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import cn.cctech.kccommand.fragments.base.LazyFragment
 import java.lang.ref.WeakReference
 
-class DockFragment : BaseFragment() {
+class DockFragment : LazyFragment() {
 
     private lateinit var binding: FragmentDockBinding
     private val mTimer = Timer(this)
@@ -34,11 +29,12 @@ class DockFragment : BaseFragment() {
         super.onCreateViewLazy(savedInstanceState)
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_dock, null, false)
         contentView = binding.root
+        setup()
     }
 
     override fun onResumeLazy() {
         super.onResumeLazy()
-        setup()
+        mTimer.sendEmptyMessage(TIME_TICK)
     }
 
     override fun onPauseLazy() {
@@ -47,27 +43,40 @@ class DockFragment : BaseFragment() {
     }
 
     private fun setup() {
-        binding.expedition1 = DockManager.expeditionList.getOrElse(1, defaultValue = { Expedition() })
-        binding.expedition2 = DockManager.expeditionList.getOrElse(2, defaultValue = { Expedition() })
-        binding.expedition3 = DockManager.expeditionList.getOrElse(3, defaultValue = { Expedition() })
-        binding.repair1 = DockManager.repairDockList.getOrElse(0, defaultValue = { RepairDock() })
-        binding.repair2 = DockManager.repairDockList.getOrElse(1, defaultValue = { RepairDock() })
-        binding.repair3 = DockManager.repairDockList.getOrElse(2, defaultValue = { RepairDock() })
-        binding.repair4 = DockManager.repairDockList.getOrElse(3, defaultValue = { RepairDock() })
-        binding.build1 = DockManager.buildDockList.getOrElse(0, defaultValue = { BuildDock(1) })
-        binding.build2 = DockManager.buildDockList.getOrElse(1, defaultValue = { BuildDock(2) })
-        binding.build3 = DockManager.buildDockList.getOrElse(2, defaultValue = { BuildDock(3) })
-        binding.build4 = DockManager.buildDockList.getOrElse(3, defaultValue = { BuildDock(4) })
+        Dock.expeditionList.forEachIndexed { index, it ->
+            Oyodo.attention().watch(it, { expedition ->
+                when (index) {
+                    1 -> binding.expedition1 = expedition
+                    2 -> binding.expedition2 = expedition
+                    3 -> binding.expedition3 = expedition
+                }
+            })
+        }
+        Dock.repairList.forEachIndexed { index, it ->
+            Oyodo.attention().watch(it, { repair ->
+                when (index) {
+                    0 -> binding.repair1 = repair
+                    1 -> binding.repair2 = repair
+                    2 -> binding.repair3 = repair
+                    3 -> binding.repair4 = repair
+                }
+            })
+        }
+        Dock.buildList.forEachIndexed { index, it ->
+            Oyodo.attention().watch(it, { build ->
+                when (index) {
+                    0 -> binding.build1 = build
+                    1 -> binding.build2 = build
+                    2 -> binding.build3 = build
+                    3 -> binding.build4 = build
+                }
+            })
+        }
         mTimer.sendEmptyMessage(TIME_TICK)
     }
 
     private fun update() {
         binding.invalidateAll()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDockRefresh(event: DockRefresh) {
-        setup()
     }
 
     private class Timer(context: DockFragment) : Handler() {

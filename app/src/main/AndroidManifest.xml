@@ -74,7 +74,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="cn.cctech.kccommand.managers.NotifyManager$MyJobService" />
+            android:name="cn.cctech.kccommand.utils.NotifyManager$MyJobService" />
 
         <meta-data
             android:name="PGYER_APPID"

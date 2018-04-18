@@ -20,7 +20,7 @@ import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview
 class FleetListView : CustomUltimateRecyclerview {
 
     private val mPtrDelay = 2000L
-    private var mFleetInfo: TextView? = null
+    private var mHeaderText: TextView? = null
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -42,7 +42,7 @@ class FleetListView : CustomUltimateRecyclerview {
         layoutManager = LinearLayoutManager(context)
 
         val header = FleetViewHeader(context)
-        mFleetInfo = header.findViewById(R.id.tv_fleet_header_info)
+        mHeaderText = header.findViewById(R.id.tv_fleet_header_info)
         setCustomSwipeToRefresh()
         mPtrFrameLayout.removePtrUIHandler(header)
         mPtrFrameLayout.headerView = header
@@ -58,8 +58,8 @@ class FleetListView : CustomUltimateRecyclerview {
         })
     }
 
-    fun setFleetInfo(infoStr: String) {
-        mFleetInfo?.text = infoStr
+    fun setHeader(header: String) {
+        mHeaderText?.text = header
     }
 
     private inner class FleetViewHeader : LinearLayout, PtrUIHandler {

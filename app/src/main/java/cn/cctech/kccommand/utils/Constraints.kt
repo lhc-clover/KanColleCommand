@@ -2,26 +2,6 @@ package cn.cctech.kccommand.utils
 
 import cn.cctech.kccommand.R
 
-const val MAX_SHIP_COUNT = 6
-const val MAX_FLEET_COUNT = 4
-
-const val COMBINED_FLEET_INDEX = 11
-
-val kBasicMasteryMinBonus = intArrayOf(0, 10, 25, 40, 55, 70, 85, 100)
-val kBasicMasteryMaxBonus = intArrayOf(9, 24, 39, 54, 69, 84, 99, 120)
-
-val kFighterMasteryBonus = intArrayOf(0, 0, 2, 5, 9, 14, 14, 22, 0, 0, 0)
-val kSeaBomberMasteryBonus = intArrayOf(0, 0, 1, 1, 1, 3, 3, 6, 0, 0, 0)
-
-enum class Speed { SLOW, FAST }
-
-/** 小破(75%)  */
-const val SLIGHT_DAMAGE = 0.75
-/** 中破(50%)  */
-const val HALF_DAMAGE = 0.5
-/** 大破(25%)  */
-const val BADLY_DAMAGE = 0.25
-
 /** 低速  */
 const val SPEED_SLOW = 5
 /** 高速  */
@@ -85,3 +65,5 @@ val kExpeditionMap: Map<Int, String> = mapOf(
         110 to "南西方面航空偵察作戦",
         133 to "[E] 前衛支援任務",
         134 to "[E] 艦隊決戦支援任務")
+
+const val CONDITION_NORMAL = 49

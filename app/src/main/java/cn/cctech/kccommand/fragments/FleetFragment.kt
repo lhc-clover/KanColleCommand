@@ -5,13 +5,14 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
+import android.text.TextUtils
 import android.view.View
+import cn.cctech.kancolle.oyodo.Oyodo
+import cn.cctech.kancolle.oyodo.managers.Fleet
 import cn.cctech.kccommand.R
-import cn.cctech.kccommand.events.ui.BattleRefresh
-import cn.cctech.kccommand.events.ui.FleetRefresh
-import cn.cctech.kccommand.fragments.base.BaseFragment
-import cn.cctech.kccommand.managers.ShipManager
-import com.gaodesoft.ecoallogistics.assistant.findView
+import cn.cctech.kccommand.fragments.base.LazyFragment
+import cn.cctech.kccommand.utils.findView
+import cn.cctech.kccommand.utils.getFleetTagColor
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -20,18 +21,25 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.model.PositionData
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
-class FleetFragment : BaseFragment() {
+class FleetFragment : LazyFragment() {
 
     private var mTabs: Array<String> = arrayOf("1", "2", "3", "4")
     private var mMagicIndicator: MagicIndicator? = null
+
+    companion object {
+
+        fun newInstance(): FleetFragment {
+            return FleetFragment()
+        }
+    }
 
     override fun onCreateViewLazy(savedInstanceState: Bundle?) {
         super.onCreateViewLazy(savedInstanceState)
         setContentView(R.layout.fragment_fleet)
         initViews()
+        setTabNames()
+        watchShipMap()
     }
 
     private fun initViews() {
@@ -68,27 +76,23 @@ class FleetFragment : BaseFragment() {
     }
 
     private fun invalidateIndicator() {
-        activity.runOnUiThread { mMagicIndicator?.navigator?.notifyDataSetChanged() }
+        activity?.runOnUiThread { mMagicIndicator?.navigator?.notifyDataSetChanged() }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onFleetRefresh(event: FleetRefresh) {
-        for (index in mTabs.indices) {
-            mTabs[index] = ShipManager.getFleetName(index) ?: getString(R.string.fleet_lock)
+    private fun setTabNames() {
+        Fleet.deckNames.forEachIndexed { index, name ->
+            mTabs[index] = if (TextUtils.isEmpty(name.value)) getString(R.string.fleet_lock) else name.value
+            Oyodo.attention().watch(name, {
+                mTabs[index] = it
+                invalidateIndicator()
+            })
         }
-        invalidateIndicator()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBattleRefresh(event: BattleRefresh) {
-        invalidateIndicator()
-    }
-
-    companion object {
-
-        fun newInstance(): FleetFragment {
-            return FleetFragment()
-        }
+    private fun watchShipMap() {
+        Oyodo.attention().watch(Fleet.shipWatcher, {
+            invalidateIndicator()
+        })
     }
 
     private class FleetIndicator(context: Context?) : View(context), IPagerIndicator {
@@ -130,7 +134,7 @@ class FleetFragment : BaseFragment() {
         }
 
         private fun getColor(index: Int): Int {
-            val colorResId = ShipManager.getFleetTagColor(index)
+            val colorResId = getFleetTagColor(index)
             return ResourcesCompat.getColor(resources, colorResId, context.theme)
         }
     }

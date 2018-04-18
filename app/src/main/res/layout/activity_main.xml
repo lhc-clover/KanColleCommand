@@ -18,6 +18,17 @@
             android:layout_alignParentTop="true"
             app:ratio="0.6" />
 
+        <View
+            android:id="@+id/blood_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/rl_flash"
+            android:layout_alignLeft="@id/rl_flash"
+            android:layout_alignRight="@id/rl_flash"
+            android:layout_alignTop="@id/rl_flash"
+            android:background="@drawable/blood_border"
+            android:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/fl_info_panel"
             android:layout_width="match_parent"

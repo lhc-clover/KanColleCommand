@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="basic"
-            type="cn.cctech.kccommand.entities.Basic" />
+            name="info"
+            type="cn.cctech.kccommand.entities.Info" />
     </data>
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:id="@+id/tv_main_info_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{basic.nickname}"
+            android:text="@{info.nickname}"
             android:textColor="@color/defaultSecondaryTextColor" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_alignBottom="@id/tv_main_info_name"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/tv_main_info_name"
-            android:text='@{"Lv." + basic.level}'
+            android:text='@{"Lv." + info.level}'
             android:textColor="@color/defaultSecondaryTextColor"
             android:textSize="12sp" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:ems="6"
                 android:gravity="left"
-                android:text='@{@string/main_info_ship_count(basic.shipCount, basic.shipMax)}'
+                android:text='@{@string/main_info_ship_count(info.shipCount, info.shipMax)}'
                 android:textColor="@color/defaultSecondaryTextColor" />
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_marginTop="8dp"
                 android:ems="6"
                 android:gravity="left"
-                android:text='@{@string/main_info_item_count(basic.slotCount, basic.slotMax)}'
+                android:text='@{@string/main_info_item_count(info.slotCount, info.slotMax)}'
                 android:textColor="@color/defaultSecondaryTextColor" />
         </LinearLayout>
 
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/material_fuel"
                 android:ems="5"
-                android:text="@{String.valueOf(basic.fuel)}" />
+                android:text="@{String.valueOf(info.fuel)}" />
 
             <TextView
                 style="@style/MainInfoMaterial"
@@ -106,7 +106,7 @@
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/material_bull"
                 android:ems="5"
-                android:text="@{String.valueOf(basic.ammo)}" />
+                android:text="@{String.valueOf(info.ammo)}" />
         </LinearLayout>
 
         <LinearLayout
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/material_steel"
                 android:ems="5"
-                android:text="@{String.valueOf(basic.metal)}" />
+                android:text="@{String.valueOf(info.metal)}" />
 
             <TextView
                 style="@style/MainInfoMaterial"
@@ -133,7 +133,7 @@
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/material_baux"
                 android:ems="5"
-                android:text="@{String.valueOf(basic.bauxite)}" />
+                android:text="@{String.valueOf(info.bauxite)}" />
         </LinearLayout>
 
         <LinearLayout
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/material_develop"
                 android:ems="4"
-                android:text="@{String.valueOf(basic.research)}" />
+                android:text="@{String.valueOf(info.research)}" />
 
             <TextView
                 style="@style/MainInfoMaterial"
@@ -160,7 +160,7 @@
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/material_cons"
                 android:ems="4"
-                android:text="@{String.valueOf(basic.burner)}" />
+                android:text="@{String.valueOf(info.burner)}" />
         </LinearLayout>
 
         <LinearLayout
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/material_repair"
                 android:ems="4"
-                android:text="@{String.valueOf(basic.bucket)}" />
+                android:text="@{String.valueOf(info.bucket)}" />
 
             <TextView
                 style="@style/MainInfoMaterial"
@@ -187,7 +187,7 @@
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/material_improve"
                 android:ems="4"
-                android:text="@{String.valueOf(basic.improve)}" />
+                android:text="@{String.valueOf(info.improve)}" />
         </LinearLayout>
 
     </RelativeLayout>
