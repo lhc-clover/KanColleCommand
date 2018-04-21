@@ -76,6 +76,18 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val checked = try {
+            Oyodo.attention().checkStart()
+        } catch (e: Exception) {
+            false
+        }
+        if (checked && !VpnService.checkOn()) {
+            startProxy()
+        }
+    }
+
     private fun startProxy() {
         try {
             val prepare = VpnService.prepare(this)

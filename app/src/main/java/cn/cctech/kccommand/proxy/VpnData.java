@@ -22,41 +22,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class VpnData {
-    
-    private static final String TAG = "CC";
-    
+
+    private static final String TAG = "VpnData";
+
     public static Handler handler;
 
     private static final int NONE = 0;
     private static final int REQUEST = 1;
     private static final int RESPONSE = 2;
     private static final String KCA_API_VPN_DATA_ERROR = "/kca_api/vpn_data_error";
-
-    private static String[] kcaServerList = {
-            "203.104.209.71",   // Yokosuka
-            "203.104.209.87",   // Kure
-            "125.6.184.16",     // Sasebo
-            "125.6.187.205",    // Maizuru
-            "125.6.187.229",    // Ominato
-            "203.104.209.134",  // Truk
-            "203.104.209.167",  // Ringga
-            "203.104.248.135",  // Rabaul
-            "125.6.189.7",      // Shortland
-            "125.6.189.39",     // Buin
-            "125.6.189.71",     // Tawi-Tawi
-            "125.6.189.103",    // Palau
-            "125.6.189.135",    // Brunei
-            "125.6.189.167",    // Hittokappuman
-            "125.6.189.215",    // Paramushir
-            "125.6.189.247",    // Sukumoman
-            "203.104.209.23",   // Kanoya
-            "203.104.209.39",   // Iwagawa
-            "203.104.209.55",   // Saikiman
-            "203.104.209.102",  // Hashirajima
-
-            "203.104.209.7"     // Kancolle Android Server
+    // Full Server List: http://kancolle.wikia.com/wiki/Servers
+    // 2017.10.18: Truk and Ringga Server was moved.
+    private static String[] kcaServerPrefixList = {
+            "203.104.209", // Yokosuka, Kure, Truk, Ringga, Kanoya, Iwagawa, Saikiman, Hashirajima, Android Server
+            "125.6.189", // Shortland, Buin, Tawi-Tawi, Palau, Brunel, Hittokappuman, Paramushir, Sukumoman
+            "125.6.187", // Maizuru, Ominato
+            "125.6.184", // Sasebo
+            "203.104.248"  // Rabaul
     };
-    private static List<String> kcaServers = new ArrayList<String>(Arrays.asList(kcaServerList));
     public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public static int state = NONE;
@@ -79,7 +62,7 @@ public class VpnData {
     private static SparseBooleanArray portToGzipped = new SparseBooleanArray();
     private static SparseArray<String> portToResponseHeaderPart = new SparseArray<>();
 
-    private static Queue<Integer> ignoreResponseList = EvictingQueue.create(8);
+    private static Queue<Integer> ignoreResponseList = EvictingQueue.create(32);
 
     public static void setHandler(Handler h) {
         handler = h;
@@ -89,13 +72,17 @@ public class VpnData {
     private static int containsKcaServer(int type, byte[] source, byte[] target) {
         String saddrstr = new String(source);
         String taddrstr = new String(target);
-        if (type == REQUEST && !kcaServers.contains(taddrstr)) {
-            return 0;
-        } else if (type == RESPONSE && !kcaServers.contains(saddrstr)) {
-            return 0;
+        if (type == REQUEST) {
+            for (String prefix : kcaServerPrefixList) {
+                if (taddrstr.startsWith(prefix)) return 1;
+            }
+        } else if (type == RESPONSE) {
+            for (String prefix : kcaServerPrefixList) {
+                if (saddrstr.startsWith(prefix)) return 1;
+            }
         }
-        //Log.e(TAG, String.format("containsKcaServer[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
-        return 1;
+        //Log.e(TAG, String.format("containsKcaServer[%d] %s => %s", type, saddrstr, taddrstr));
+        return 0;
     }
 
     // Called from native code
@@ -112,7 +99,9 @@ public class VpnData {
                     state = REQUEST;
                     portToRequestData.put(sport, new StringBuilder());
                 }
-                portToRequestData.get(sport).append(s);
+                if (portToRequestData.get(sport) == null) return;
+                else portToRequestData.get(sport).append(s);
+
                 if (!isRequestUriReady && portToRequestData.get(sport).toString().contains("HTTP/1.1")) {
                     isRequestUriReady = true;
                     String[] head_line = portToRequestData.get(sport).toString().split("\r\n");
@@ -140,7 +129,7 @@ public class VpnData {
                     Log.e(TAG, portToUri.get(tport) + " ignored");
                     return;
                 }
-                if (portToResponseHeaderPart.get(tport).length() == 0) {
+                if (portToResponseHeaderPart.indexOfKey(tport) >= 0 && portToResponseHeaderPart.get(tport).length() == 0) {
                     portToResponseData.put(tport, new Byte[]{});
                     String prevResponseHeaderPart = portToResponseHeaderPart.get(tport);
                     String responseDataStr = new String(data);
@@ -180,12 +169,13 @@ public class VpnData {
                 if (isreadyflag) {
                     String requestStr = portToRequestData.get(tport).toString();
                     String[] requestHeadBody = requestStr.split("\r\n\r\n", 2);
-                    byte[] requestBody = new byte[]{};
-                    if (requestHeadBody[1].length() > 0) {
-                        requestBody = requestHeadBody[1].getBytes();
-                    }
-                    byte[] responseData = ArrayUtils.toPrimitive(portToResponseData.get(tport));
-                    byte[] responseBody = Arrays.copyOfRange(responseData, portToResponseHeaderLength.get(tport) + 4, responseData.length);
+                    if (requestHeadBody.length > 1) {
+                        byte[] requestBody = new byte[]{};
+                        if (requestHeadBody[1].length() > 0) {
+                            requestBody = requestHeadBody[1].getBytes();
+                        }
+                        byte[] responseData = ArrayUtils.toPrimitive(portToResponseData.get(tport));
+                        byte[] responseBody = Arrays.copyOfRange(responseData, portToResponseHeaderLength.get(tport) + 4, responseData.length);
                     Log.e(TAG, String.valueOf(responseData.length));
                     Log.e(TAG, String.valueOf(portToResponseHeaderPart.get(tport).length()));
                     Log.e(TAG, "====================================");
@@ -212,6 +202,7 @@ public class VpnData {
                     portToGzipped.delete(tport);
                     isreadyflag = false;
                 }
+            }
             }
         } catch (IOException e) {
             e.printStackTrace();

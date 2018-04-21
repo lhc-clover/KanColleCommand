@@ -146,37 +146,6 @@ object NotifyManager {
                 val title = extras?.getString(EXTRA_TITLE) ?: ""
                 val content = extras?.getString(EXTRA_CONTENT) ?: ""
                 val largeIconRes = extras?.getInt(EXTRA_ICON) ?: -1
-//                when (jobId.div(100000)) {
-//                    1 -> {
-//                        title = callback!!.getContext().getString(R.string.notify_expedition_title)
-//                        val id = jobId - sExpeditionMask - 1
-//                        val expedition = Dock.expeditionList[id].value
-//                        content = getExpeditionDescription(callback!!.getContext(), expedition)
-//                        largeIconRes = R.drawable.expedition
-//                    }
-//                    3 -> {
-//                        title = callback!!.getContext().getString(R.string.notify_repair_title)
-//                        val id = jobId - sRepairMask - 1
-//                        val repair = Dock.repairList[id]
-//                        val ship = Fleet.shipMap[repair.value.shipId]
-//                        content = callback!!.getContext().getString(R.string.notify_repair_content, ship?.name)
-//                        largeIconRes = R.drawable.repair
-//                    }
-//                    5 -> {
-//                        title = callback!!.getContext().getString(R.string.notify_build_title)
-//                        val id = jobId - sBuildMask - 1
-//                        val build = Dock.buildList[id]
-//                        val ship = Fleet.shipMap[build.value.shipId]
-//                        content = callback!!.getContext().getString(R.string.notify_build_content, ship?.name)
-//                        largeIconRes = R.drawable.build
-//                    }
-//                    7 -> {
-//                        title = callback!!.getContext().getString(R.string.notify_cond_title)
-//                        val id = jobId - sCondMask - 1
-//                        val name = Fleet.deckNames[id].value
-//                        content = callback!!.getContext().getString(R.string.notify_cond_content, id, name)
-//                    }
-//                }
                 val pendingIntent = PendingIntent.getActivity(this, jobId,
                         Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
                 val builder = JNotify.build(callback?.getContext()!!)
