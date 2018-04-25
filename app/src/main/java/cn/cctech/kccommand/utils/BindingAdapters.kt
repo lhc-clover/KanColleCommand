@@ -24,8 +24,13 @@ fun setSlotImages(view: LinearLayout, ship: Ship?) {
 
     val item5 = view.findView<TextView>(R.id.iv_fleet_item_eq_5)
     item5.visibility = if (ship?.items?.size ?: 0 > 4) View.VISIBLE else View.GONE
-    ship?.items?.forEachIndexed { index, slotId ->
-        when (index) {
+    (0 until 5).forEach {
+        val slotId = try {
+            ship!!.items[it]
+        } catch (e: Exception) {
+            -1
+        }
+        when (it) {
             0 -> view.findView<TextView>(R.id.iv_fleet_item_eq_1)
             1 -> view.findView<TextView>(R.id.iv_fleet_item_eq_2)
             2 -> view.findView<TextView>(R.id.iv_fleet_item_eq_3)

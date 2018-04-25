@@ -270,7 +270,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:text="@{DockUtilsKt.getBuildTitle(context, build1)}" />
+                        android:text="@{DockUtilsKt.getBuildTitle(context, build1, 1)}" />
 
                     <TextView
                         style="@style/DockItemStyle"
@@ -291,7 +291,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:text="@{DockUtilsKt.getBuildTitle(context, build2)}" />
+                        android:text="@{DockUtilsKt.getBuildTitle(context, build2, 2)}" />
 
                     <TextView
                         style="@style/DockItemStyle"
@@ -312,7 +312,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:text="@{DockUtilsKt.getBuildTitle(context, build3)}" />
+                        android:text="@{DockUtilsKt.getBuildTitle(context, build3, 3)}" />
 
                     <TextView
                         style="@style/DockItemStyle"
@@ -333,7 +333,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:text="@{DockUtilsKt.getBuildTitle(context, build4)}" />
+                        android:text="@{DockUtilsKt.getBuildTitle(context, build4, 4)}" />
 
                     <TextView
                         style="@style/DockItemStyle"
