@@ -41,9 +41,9 @@ fun getRepairTime(context: Context, repair: Repair?): String {
     return getFormatCountDown(context, repair?.completeTime ?: -1)
 }
 
-fun getBuildTitle(context: Context, build: Build?): String {
+fun getBuildTitle(context: Context, build: Build?, index: Int): String {
     val count = User.kDockCount.value ?: 0
-    return if (build?.id in 1..count) {
+    return if (index in 1..count) {
         Raw.rawShipMap[build?.shipId]?.api_name
                 ?: context.getString(R.string.dock_build_idle)
     } else context.getString(R.string.dock_build_lock)

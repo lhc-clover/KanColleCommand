@@ -34,35 +34,50 @@ object NotifyManager {
         callback = cb
         Dock.repairList.forEach {
             Oyodo.attention().watch(it, { repair ->
-                if (repair.valid()) addJob(sRepairMask, repair.id, getCountDown(repair.completeTime))
+                if (repair.valid()) {
+                    val aheadInterval = 60
+                    val countDown = getCountDown(repair.completeTime)
+                    if (countDown > aheadInterval)
+                        addJob(sRepairMask, repair.id, countDown, aheadInterval)
+                }
             })
         }
         Dock.buildList.forEach {
             Oyodo.attention().watch(it, { build ->
-                if (build.valid()) addJob(sBuildMask, build.id, getCountDown(build.completeTime))
+                if (build.valid()) {
+                    val countDown = getCountDown(build.completeTime)
+                    if (countDown > 0)
+                        addJob(sBuildMask, build.id, countDown, 0)
+                }
             })
         }
         Dock.expeditionList.forEach {
             Oyodo.attention().watch(it, { expedition ->
-                if (expedition.valid())
-                    addJob(sExpeditionMask, expedition.fleetIndex, getCountDown(expedition.returnTime))
+                if (expedition.valid()) {
+                    val aheadInterval = 60
+                    val countDown = getCountDown(expedition.returnTime)
+                    if (countDown > aheadInterval)
+                        addJob(sExpeditionMask, expedition.fleetIndex, countDown, aheadInterval)
+                }
             })
         }
         Oyodo.attention().watch(Fleet.shipWatcher, {
             if (it is Transform.All) {
                 (0 until User.deckCount.value).forEach {
                     val time = getCondRecoveryTime(it)
-                    if (time > 0)
-                        addJob(sCondMask, it + 1, getCountDown(time))
+                    if (time > 0) {
+                        val countDown = getCountDown(time)
+                        if (countDown > 0) addJob(sCondMask, it + 1, countDown, 0)
+                    }
                 }
             }
         })
     }
 
-    private fun addJob(mask: Int, id: Int, countDown: Int) {
+    private fun addJob(mask: Int, id: Int, countDown: Int, ahead: Int) {
         val jobId = mask + id
         clearPendingJob(jobId)
-        val notifyTimeMillis = Math.max((countDown - 60) * 1000L, 0)
+        val notifyTimeMillis = Math.max((countDown - ahead) * 1000L, 0)
         val scheduler = JobScheduler.get(callback?.getContext())
         val builder = JobInfo.Builder(jobId, ComponentName(callback?.getContext()?.packageName, MyJobService::class.java.name))
                 .setMinimumLatency(notifyTimeMillis)
@@ -100,8 +115,8 @@ object NotifyManager {
                 sBuildMask -> {
                     title = context.getString(R.string.notify_build_title)
                     val build = Dock.buildList[index]
-                    val ship = Fleet.shipMap[build.value.shipId]
-                    content = context.getString(R.string.notify_build_content, ship?.name)
+                    val ship = Raw.rawShipMap[build.value.shipId]
+                    content = context.getString(R.string.notify_build_content, ship?.api_name)
                     largeIconRes = R.drawable.build
                 }
                 sCondMask -> {

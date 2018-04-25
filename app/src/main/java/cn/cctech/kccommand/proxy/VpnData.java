@@ -1,8 +1,6 @@
 package cn.cctech.kccommand.proxy;
 
-
 import android.os.Handler;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -14,9 +12,7 @@ import com.google.gson.JsonObject;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -107,7 +103,7 @@ public class VpnData {
                     String[] head_line = portToRequestData.get(sport).toString().split("\r\n");
                     requestUri = head_line[0].split(" ")[1];
                     portToUri.put(sport, requestUri);
-                    Log.e(TAG, requestUri);
+//                    Log.e(TAG, requestUri);
                     if (!checkKcRes(requestUri)) {
                         portToResponseData.put(sport, new Byte[]{});
                         portToResponseHeaderPart.put(sport, "");
@@ -120,13 +116,13 @@ public class VpnData {
                         if (!ignoreResponseList.contains(sport)) {
                             ignoreResponseList.add(sport);
                         }
-                        Log.e(TAG, ignoreResponseList.toString());
+//                        Log.e(TAG, ignoreResponseList.toString());
                     }
                 }
             } else if (type == RESPONSE) {
                 state = RESPONSE;
                 if (ignoreResponseList.contains(tport)) {
-                    Log.e(TAG, portToUri.get(tport) + " ignored");
+//                    Log.e(TAG, portToUri.get(tport) + " ignored");
                     return;
                 }
                 if (portToResponseHeaderPart.indexOfKey(tport) >= 0 && portToResponseHeaderPart.get(tport).length() == 0) {
@@ -142,7 +138,7 @@ public class VpnData {
                         for (String line : headers) {
                             if (line.startsWith("Content-Encoding: ")) {
                                 portToGzipped.put(tport, line.contains("gzip"));
-                                Log.e(TAG, String.valueOf(tport) + " gzip " + portToGzipped.get(tport));
+//                                Log.e(TAG, String.valueOf(tport) + " gzip " + portToGzipped.get(tport));
                             } else if (line.startsWith("Transfer-Encoding")) {
                                 if (line.contains("chunked")) {
                                     portToLength.put(tport, -1);
@@ -176,33 +172,33 @@ public class VpnData {
                         }
                         byte[] responseData = ArrayUtils.toPrimitive(portToResponseData.get(tport));
                         byte[] responseBody = Arrays.copyOfRange(responseData, portToResponseHeaderLength.get(tport) + 4, responseData.length);
-                    Log.e(TAG, String.valueOf(responseData.length));
-                    Log.e(TAG, String.valueOf(portToResponseHeaderPart.get(tport).length()));
-                    Log.e(TAG, "====================================");
-                    if (chunkflag) {
-                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, 0, 15)));
-                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, responseBody.length - 15, responseBody.length)));
-                        responseBody = unchunkAllData(responseBody, gzipflag);
-                    } else if (gzipflag) {
-                        Log.e(TAG, "Ungzip " + String.valueOf(tport));
-                        responseBody = Utils.gzipdecompress(responseBody);
-                    }
+//                    Log.e(TAG, String.valueOf(responseData.length));
+//                    Log.e(TAG, String.valueOf(portToResponseHeaderPart.get(tport).length()));
+//                    Log.e(TAG, "====================================");
+                        if (chunkflag) {
+//                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, 0, 15)));
+//                        Log.e(TAG, Utils.byteArrayToHex(Arrays.copyOfRange(responseBody, responseBody.length - 15, responseBody.length)));
+                            responseBody = unchunkAllData(responseBody, gzipflag);
+                        } else if (gzipflag) {
+//                        Log.e(TAG, "Ungzip " + String.valueOf(tport));
+                            responseBody = Utils.gzipdecompress(responseBody);
+                        }
 
-                    //Log.e(TAG, String.valueOf(responseData.length));
-                    String requestUri = portToUri.get(tport);
-                    if (checkKcApi(requestUri)) {
-                        DataJob job = new DataJob(requestUri, requestBody, responseBody);
-                        executorService.execute(job);
+                        //Log.e(TAG, String.valueOf(responseData.length));
+                        String requestUri = portToUri.get(tport);
+                        if (checkKcApi(requestUri)) {
+                            DataJob job = new DataJob(requestUri, requestBody, responseBody);
+                            executorService.execute(job);
+                        }
+                        portToUri.delete(tport);
+                        portToRequestData.delete(tport);
+                        portToResponseData.delete(tport);
+                        portToResponseHeaderLength.delete(tport);
+                        portToLength.delete(tport);
+                        portToGzipped.delete(tport);
+                        isreadyflag = false;
                     }
-                    portToUri.delete(tport);
-                    portToRequestData.delete(tport);
-                    portToResponseData.delete(tport);
-                    portToResponseHeaderLength.delete(tport);
-                    portToLength.delete(tport);
-                    portToGzipped.delete(tport);
-                    isreadyflag = false;
                 }
-            }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -219,7 +215,7 @@ public class VpnData {
             }
             DataJob job = new DataJob(KCA_API_VPN_DATA_ERROR, empty_request.getBytes(), error_data.toString().getBytes());
             executorService.execute(job);
-            Log.e(TAG, Utils.getStringFromException(e));
+//            Log.e(TAG, Utils.getStringFromException(e));
         }
     }
 

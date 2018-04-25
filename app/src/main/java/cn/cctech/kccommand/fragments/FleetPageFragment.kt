@@ -85,9 +85,13 @@ class FleetPageFragment : LazyFragment() {
         Oyodo.attention().watch(Fleet.shipWatcher, {
             refreshList()
         })
+        Oyodo.attention().watch(Fleet.slotWatcher, {
+            if (it is Transform.All) refreshList()
+        })
     }
 
     private fun refreshList() {
+        Logger.d("refreshList")
         activity?.runOnUiThread {
             fleetInfo = getFleetInfoStr()
             condTime = getCondRecoveryTime(mIndex)

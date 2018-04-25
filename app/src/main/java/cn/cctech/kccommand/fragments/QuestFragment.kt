@@ -40,28 +40,12 @@ class QuestFragment : LazyFragment() {
         }
     }
 
-//    override fun onResumeLazy() {
-//        super.onResumeLazy()
-//        refresh()
-//    }
-
     private fun initList() {
         val questListView = findView<UltimateRecyclerView>(R.id.urv_quest)
         questListView.layoutManager = LinearLayoutManager(context)
         questAdapter = QuestAdapter()
         questListView.setAdapter(questAdapter)
     }
-
-//    @Suppress("unused", "UNUSED_PARAMETER")
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onFleetRefresh(event: QuestRefresh) {
-//        refresh()
-//    }
-
-//    private fun refresh() {
-//        questAdapter.data = QuestManager.getQuestList()
-//        questAdapter.notifyDataSetChanged()
-//    }
 
     private class QuestAdapter : UltimateViewAdapter<DataBindingHolder>() {
 
