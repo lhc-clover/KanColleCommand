@@ -46,8 +46,8 @@
             android:id="@+id/tv_fleet_item_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/tv_fleet_item_name"
             android:layout_below="@id/tv_fleet_item_name"
+            android:layout_alignLeft="@id/tv_fleet_item_name"
             android:lines="1"
             android:text="@{@string/ship_level(ship.level)}"
             android:textColor="@color/defaultSecondaryTextColor"
@@ -57,8 +57,8 @@
             android:id="@+id/tv_fleet_item_cond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@id/tv_fleet_item_level"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="4dp"
             android:maxLines="1"
             android:text="@{@string/ship_condition(ship.condition)}"
@@ -69,8 +69,8 @@
             android:id="@+id/iv_fleet_item_tag"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@id/tv_fleet_item_name"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="4dp"
             android:src="@{FleetUtilsKt.getTagImage(ship)}" />
 
@@ -83,7 +83,7 @@
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/iv_fleet_item_tag"
             android:layout_toRightOf="@id/tv_fleet_item_name"
-            app:ship_entity="@{ship}">
+            app:set_slots="@{ship}">
 
             <TextView
                 android:id="@+id/iv_fleet_item_eq_1"
@@ -120,20 +120,24 @@
                 android:layout_weight="1"
                 android:textColor="@color/defaultSecondaryTextColor" />
 
-            <TextView
-                android:id="@+id/iv_fleet_item_eq_ex"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@color/defaultSecondaryTextColor" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/iv_fleet_item_eq_ex"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_alignTop="@id/tv_fleet_item_level"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/tv_fleet_item_cond"
+            android:textColor="@color/defaultSecondaryTextColor"
+            app:set_slot_ex="@{ship}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/ll_fleet_item_eq_bar"
             android:layout_alignTop="@id/tv_fleet_item_level"
-            android:layout_toLeftOf="@id/tv_fleet_item_cond"
+            android:layout_toLeftOf="@id/iv_fleet_item_eq_ex"
             android:text='@{ship.hp + " / " + ship.maxHp}'
             android:textColor="@color/defaultSecondaryTextColor"
             android:textSize="12sp" />

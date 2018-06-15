@@ -27,7 +27,7 @@ class QuestFragment : LazyFragment() {
         setContentView(R.layout.fragment_quest)
         initList()
         Oyodo.attention().watch(Mission.questMap, {
-            val quests = it.filter { it.value.state >= 2 }.values.toList()
+            val quests = it.filter { it.value.state >= 2 }.values.toList().sortedBy { it.id }
             refresh(quests)
         })
     }
