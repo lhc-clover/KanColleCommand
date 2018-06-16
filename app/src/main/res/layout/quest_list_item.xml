@@ -1,39 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="cn.cctech.kccommand.utils.ViewUtilKt" />
 
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="quest"
             type="cn.cctech.kancolle.oyodo.entities.Quest" />
     </data>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         tools:ignore="RtlHardcoded">
 
         <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@{ViewUtilKt.getQuestTypeColor(context, quest)}" />
+            android:id="@+id/questIndicator"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@{ViewUtilKt.getQuestTypeColor(context, quest)}"
+            app:layout_constraintBottom_toBottomOf="@id/questTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/questTitle" />
 
         <TextView
+            android:id="@+id/questProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text='@{quest.current + "/" + quest.max}'
+            android:textColor="@color/defaultPrimaryTextColor"
+            android:textSize="12sp"
+            android:visibility="@{quest.max == 0 ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBaseline_toBaselineOf="@id/questTitle"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="1/10" />
+
+        <TextView
+            android:id="@+id/questTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{quest.title}"
             android:textColor="@color/defaultPrimaryTextColor"
             android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/questIndicator"
+            app:layout_constraintRight_toLeftOf="@id/questProgress"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="任务标题" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/questDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{quest.description}"
+            android:textColor="@color/defaultSecondaryTextColor"
+            android:textSize="12sp"
+            android:visibility="@{TextUtils.isEmpty(quest.description) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintLeft_toLeftOf="@id/questTitle"
+            app:layout_constraintRight_toRightOf="@id/questTitle"
+            app:layout_constraintTop_toBottomOf="@id/questTitle"
+            tools:text="任务描述" />
+    </android.support.constraint.ConstraintLayout>
+
 </layout>

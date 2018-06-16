@@ -53,42 +53,64 @@
         <!--android:text="Next."-->
         <!--android:textColor="@color/defaultSecondaryTextColor"-->
         <!--android:textSize="12sp" />-->
-
-        <LinearLayout
-            android:id="@+id/ll_main_info_cell_1"
+        <TextView
+            android:id="@+id/tv_main_info_ship_count"
+            style="@style/MainInfoMaterial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_main_info_name"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            android:layout_alignBottom="@id/tv_main_info_name"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/tv_main_info_level"
+            android:ems="6"
+            android:text='@{@string/main_info_ship_count(info.shipCount, info.shipMax)}'
+            android:textColor="@color/defaultSecondaryTextColor" />
 
-            <TextView
-                style="@style/MainInfoMaterial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="6"
-                android:gravity="left"
-                android:text='@{@string/main_info_ship_count(info.shipCount, info.shipMax)}'
-                android:textColor="@color/defaultSecondaryTextColor" />
+        <TextView
+            android:id="@+id/tv_main_info_slot_count"
+            style="@style/MainInfoMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_main_info_name"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/tv_main_info_ship_count"
+            android:ems="6"
+            android:text='@{@string/main_info_item_count(info.slotCount, info.slotMax)}'
+            android:textColor="@color/defaultSecondaryTextColor" />
 
-            <TextView
-                style="@style/MainInfoMaterial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="6"
-                android:gravity="left"
-                android:text='@{@string/main_info_item_count(info.slotCount, info.slotMax)}'
-                android:textColor="@color/defaultSecondaryTextColor" />
-        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:id="@+id/ll_main_info_cell_1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/tv_main_info_name"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--style="@style/MainInfoMaterial"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="6"-->
+        <!--android:gravity="left"-->
+        <!--android:text='@{@string/main_info_ship_count(info.shipCount, info.shipMax)}'-->
+        <!--android:textColor="@color/defaultSecondaryTextColor" />-->
+
+        <!--<TextView-->
+        <!--style="@style/MainInfoMaterial"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:ems="6"-->
+        <!--android:gravity="left"-->
+        <!--android:text='@{@string/main_info_item_count(info.slotCount, info.slotMax)}'-->
+        <!--android:textColor="@color/defaultSecondaryTextColor" />-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/ll_main_info_cell_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/ll_main_info_cell_1"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@id/ll_main_info_cell_1"
+            android:layout_below="@id/tv_main_info_name"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <TextView

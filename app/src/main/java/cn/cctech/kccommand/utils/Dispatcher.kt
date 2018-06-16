@@ -10,12 +10,11 @@ object Dispatcher {
             if (url.contains("kcsapi")) {
                 Oyodo.attention().api(url, requestBody, responseBody)
                 Logger.d("url:$url\nparams:${String(requestBody)}")
-                Logger.json(String(responseBody).replace("svdata=", ""))
+                Logger.d(String(responseBody))
             }
         } catch (e: Exception) {
             Logger.e(e, e.message)
         }
-
     }
 
 }

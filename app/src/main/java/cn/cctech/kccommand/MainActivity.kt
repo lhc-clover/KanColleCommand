@@ -184,7 +184,7 @@ class MainActivity : AppEntry(), NotifyManager.Callback {
 
     private fun setBloodBorder() {
         Oyodo.attention().watch(Fleet.shipWatcher, {
-            val show = Battle.friendIndex > 0 && isFleetBadlyDamage(Battle.friendIndex)
+            val show = Battle.friendIndex >= 0 && isFleetBadlyDamage(Battle.friendIndex)
             runOnUiThread {
                 mBloodBorder!!.visibility = if (show) View.VISIBLE else View.GONE
             }
