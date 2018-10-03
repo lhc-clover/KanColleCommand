@@ -4,9 +4,7 @@ import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import cn.cctech.kancolle.oyodo.entities.Ship
 import cn.cctech.kccommand.R
 
@@ -51,4 +49,15 @@ private fun slotDrawable(view: View, slotId: Int): Drawable? {
 fun setSrc(view: ImageView, resId: Int) {
     if (resId == -1) view.setImageDrawable(null)
     else view.setImageResource(resId)
+}
+
+@BindingAdapter("itemHpVisible")
+fun setCombatItemVisibility(view: RelativeLayout, item: Ship?) {
+    view.visibility = if (item == null) View.GONE else View.VISIBLE
+}
+
+
+@BindingAdapter("combatItem1", "combatItem2")
+fun setCombatItemGapVisibility(gap: Space, item1: Ship?, item2: Ship?) {
+    gap.visibility = if (item1 != null && item2 != null) View.VISIBLE else View.GONE
 }

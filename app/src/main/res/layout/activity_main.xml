@@ -1,9 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/defaultBackground"
-    android:baselineAligned="false">
+    android:background="@android:color/black"
+    android:baselineAligned="false"
+    tools:ignore="RtlHardcoded">
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -22,10 +24,10 @@
             android:id="@+id/blood_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/rl_flash"
             android:layout_alignLeft="@id/rl_flash"
-            android:layout_alignRight="@id/rl_flash"
             android:layout_alignTop="@id/rl_flash"
+            android:layout_alignRight="@id/rl_flash"
+            android:layout_alignBottom="@id/rl_flash"
             android:background="@drawable/blood_border"
             android:visibility="gone" />
 
@@ -33,15 +35,16 @@
             android:id="@+id/fl_info_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/rl_flash"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/rl_flash" />
+            android:background="@color/defaultBackground" />
 
         <ImageButton
             android:id="@+id/btn_collapse_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/fl_info_panel"
             android:layout_alignTop="@id/fl_info_panel"
+            android:layout_alignRight="@+id/fl_info_panel"
             android:background="@android:color/transparent"
             android:padding="4dp"
             android:src="@drawable/btn_collapse" />
@@ -50,8 +53,8 @@
             android:id="@+id/btn_expand_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/rl_flash"
             android:layout_alignRight="@+id/rl_flash"
+            android:layout_alignBottom="@id/rl_flash"
             android:alpha="0.6"
             android:background="@color/defaultBackground"
             android:padding="4dp"
@@ -63,7 +66,8 @@
         android:id="@+id/rl_main_panel"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:background="@color/defaultBackground">
 
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/main_indicator"

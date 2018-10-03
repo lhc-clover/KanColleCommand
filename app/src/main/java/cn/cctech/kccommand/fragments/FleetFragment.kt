@@ -93,6 +93,7 @@ class FleetFragment : LazyFragment() {
         Oyodo.attention().watch(Fleet.shipWatcher, {
             invalidateIndicator()
         })
+        Fleet.deckShipIds.forEach { Oyodo.attention().watch(it, { invalidateIndicator() }) }
     }
 
     private class FleetIndicator(context: Context?) : View(context), IPagerIndicator {

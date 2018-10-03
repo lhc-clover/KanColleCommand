@@ -97,9 +97,8 @@ fun getShipNameFixed(ship: Ship?): String {
 fun getHpDisplay(ship: Ship?): String {
     return ship?.let {
         var display = "${ship.hp()} / ${ship.maxHp}"
-        val damage = ship.damage.sum()
+        val damage = ship.damage.lastOrNull() ?: 0
         if (damage > 0) display += " (-$damage)"
         display
     } ?: ""
-
 }

@@ -57,6 +57,7 @@
     <string name="battle_get">捞:%1$s</string>
     <string name="battle_next">Next: {} %1$s</string>
     <string name="battle_idle">未出击</string>
+    <string name="battle_unknown">未知</string>
 
     <string name="dock_expedition_panel_title">远征</string>
     <string name="dock_repair_panel_title">入渠</string>

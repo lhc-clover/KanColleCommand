@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.support.annotation.ColorInt
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 
 class ListDivider
 /**
@@ -35,7 +36,7 @@ class ListDivider
         mOrientation = orientation
     }
 
-    override fun onDraw(c: Canvas?, parent: RecyclerView?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent)
         } else {
@@ -43,12 +44,12 @@ class ListDivider
         }
     }
 
-    fun drawVertical(c: Canvas?, parent: RecyclerView?) {
+    private fun drawVertical(c: Canvas?, parent: RecyclerView?) {
         val left = parent!!.paddingLeft
         val right = parent.width - parent.paddingRight
 
         val childCount = parent.childCount
-        val totalItemCount = parent.adapter.itemCount
+        val totalItemCount = parent.adapter?.itemCount ?: 0
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
@@ -66,12 +67,12 @@ class ListDivider
         }
     }
 
-    fun drawHorizontal(c: Canvas?, parent: RecyclerView?) {
+    private fun drawHorizontal(c: Canvas?, parent: RecyclerView?) {
         val top = parent!!.paddingTop
         val bottom = parent.height - parent.paddingBottom
 
         val childCount = parent.childCount
-        val totalItemCount = parent.adapter.itemCount
+        val totalItemCount = parent.adapter?.itemCount ?: 0
         for (i in mStartOffset until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
@@ -89,8 +90,9 @@ class ListDivider
         }
     }
 
-    override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView?) {
-        val totalItemCount = parent!!.adapter.itemCount
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        val itemPosition = parent.getChildAdapterPosition(view)
+        val totalItemCount = parent.adapter?.itemCount ?: 0
         if (itemPosition < mStartOffset || itemPosition > totalItemCount - mEndOffset) return
         if (mOrientation == VERTICAL_LIST) {
             outRect.set(0, 0, 0, mThickness)
