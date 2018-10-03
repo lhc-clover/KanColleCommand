@@ -47,12 +47,12 @@ class FleetPageFragment : LazyFragment() {
         setContentView(R.layout.fragment_fleet_page)
         initList()
         watchShipMap()
-    }
-
-    override fun onResumeLazy() {
-        super.onResumeLazy()
         setFleet()
     }
+
+//    override fun onResumeLazy() {
+//        super.onResumeLazy()
+//    }
 
     override fun onPauseLazy() {
         super.onPauseLazy()
@@ -91,7 +91,6 @@ class FleetPageFragment : LazyFragment() {
     }
 
     private fun refreshList() {
-        Logger.d("refreshList")
         activity?.runOnUiThread {
             fleetInfo = getFleetInfoStr()
             condTime = getCondRecoveryTime(mIndex)
@@ -162,8 +161,8 @@ class FleetPageFragment : LazyFragment() {
 
         }
 
-        private fun getItem(position: Int): Ship {
-            return Fleet.shipMap[mFleet[position]]!!
+        private fun getItem(position: Int): Ship? {
+            return Fleet.shipMap[mFleet[position]]
         }
 
     }

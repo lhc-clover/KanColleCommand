@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="128dp"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:ignore="RtlHardcoded">
+
+    <TextView
+        android:id="@+id/tvShipDetailName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxEms="5"
+        android:maxLines="1"
+        android:textColor="@color/defaultPrimaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="Italia" />
+
+    <TextView
+        android:id="@+id/tvShipDetailLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/defaultSecondaryTextColor"
+        app:layout_constraintTop_toBottomOf="@id/tvShipDetailName"
+        tools:text="Lv 99" />
+
+    <TextView
+        android:id="@+id/tvShipDetailExp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/defaultSecondaryTextColor"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvShipDetailLevel"
+        app:layout_constraintLeft_toRightOf="@id/tvShipDetailLevel"
+        tools:text="next:123" />
+
+    <TextView
+        android:id="@+id/tvShipDetailClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/defaultSecondaryTextColor"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvShipDetailName"
+        app:layout_constraintLeft_toRightOf="@id/tvShipDetailName"
+        tools:text="戦艦" />
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/npbShipDetailHpBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvShipDetailLevel"
+        app:progress_reached_bar_height="16dp"
+        app:progress_text_visibility="invisible"
+        app:progress_unreached_bar_height="16dp" />
+
+    <TextView
+        android:id="@+id/tvShipDetailHpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/defaultPrimaryTextColor"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/npbShipDetailHpBar"
+        app:layout_constraintLeft_toLeftOf="@id/npbShipDetailHpBar"
+        app:layout_constraintRight_toRightOf="@id/npbShipDetailHpBar"
+        app:layout_constraintTop_toTopOf="@id/npbShipDetailHpBar"
+        tools:text="92/92" />
+
+    <TextView
+        android:id="@+id/tvShipDetailCond"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="2"
+        android:gravity="center_vertical|end"
+        android:textColor="@color/defaultPrimaryTextColor"
+        app:layout_constraintBottom_toBottomOf="@id/npbShipDetailAmmoBar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/npbShipDetailFuelBar"
+        tools:text="*49" />
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/npbShipDetailFuelBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tvShipDetailCond"
+        app:layout_constraintTop_toBottomOf="@id/npbShipDetailHpBar"
+        app:progress_reached_bar_height="8dp"
+        app:progress_text_visibility="invisible"
+        app:progress_unreached_bar_height="8dp" />
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/npbShipDetailAmmoBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toLeftOf="@id/npbShipDetailFuelBar"
+        app:layout_constraintRight_toRightOf="@id/npbShipDetailFuelBar"
+        app:layout_constraintTop_toBottomOf="@id/npbShipDetailFuelBar"
+        app:progress_reached_bar_height="8dp"
+        app:progress_text_visibility="invisible"
+        app:progress_unreached_bar_height="8dp" />
+
+    <TextView
+        android:id="@+id/tvShipDetailSlot1Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/defaultPrimaryTextColor"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/npbShipDetailAmmoBar"
+        tools:drawableLeft="@drawable/slot_1"
+        tools:text="12.7cm连装炮" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:textColor="@color/defaultPrimaryTextColor"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toLeftOf="@id/tvShipDetailSlot1Title"
+        app:layout_constraintTop_toBottomOf="@id/tvShipDetailSlot1Title"
+        tools:text="+4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:textColor="@color/defaultPrimaryTextColor"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toLeftOf="@id/tvShipDetailSlot1Title"
+        app:layout_constraintTop_toBottomOf="@id/tvShipDetailSlot1Title"
+        tools:text=">>" />
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:text="装备2" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:text="装备3" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:text="装备4" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:text="装备5" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--tools:text="装备ex" />-->
+
+</android.support.constraint.ConstraintLayout>

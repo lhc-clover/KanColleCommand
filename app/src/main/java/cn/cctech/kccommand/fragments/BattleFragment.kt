@@ -19,7 +19,6 @@ import cn.cctech.kancolle.oyodo.managers.getShips
 import cn.cctech.kccommand.BR
 import cn.cctech.kccommand.R
 import cn.cctech.kccommand.cache.MapSpotHelper
-import cn.cctech.kccommand.cache.getSpotColor
 import cn.cctech.kccommand.fragments.base.LazyFragment
 import cn.cctech.kccommand.utils.dp2px
 import cn.cctech.kccommand.utils.findView
@@ -34,6 +33,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
 import com.orhanobut.logger.Logger
 import net.lucode.hackware.magicindicator.buildins.UIUtil
+import kotlin.math.max
 
 class BattleFragment : LazyFragment() {
 
@@ -45,7 +45,7 @@ class BattleFragment : LazyFragment() {
         super.onCreateViewLazy(savedInstanceState)
         setContentView(R.layout.fragment_combat)
         initList()
-        Oyodo.attention().watch(Battle.phase, { activity?.runOnUiThread { refreshBattle(it) } })
+        Oyodo.attention().watch(Battle.phase) { activity?.runOnUiThread { refreshBattle(it) } }
     }
 
     private fun initList() {
@@ -67,20 +67,46 @@ class BattleFragment : LazyFragment() {
     }
 
     private fun refreshBattle(phase: Battle.Phase) {
-        setMineFleet()
-        setEnemyFleet()
+        setMineFleet(phase)
+        setEnemyFleet(phase)
         setCombatInfo(phase)
     }
 
-    private fun setMineFleet() {
-        val fleetIndex = Battle.friendIndex
-        val list = getShips(fleetIndex)
-        mMineAdapter.data = list
+    private fun setMineFleet(phase: Battle.Phase) {
+        when (phase) {
+            Battle.Phase.Start, Battle.Phase.Next, Battle.Phase.Idle -> {
+                mMineAdapter.fleet1 = emptyList()
+                mMineAdapter.fleet2 = emptyList()
+            }
+            else -> {
+                if (Battle.friendCombined) {
+                    mMineAdapter.fleet1 = getShips(0)
+                    mMineAdapter.fleet2 = getShips(1)
+                } else {
+                    val fleetIndex = Battle.friendIndex
+                    val list = getShips(fleetIndex)
+                    mMineAdapter.fleet1 = list
+                }
+            }
+        }
         mMineAdapter.notifyDataSetChanged()
     }
 
-    private fun setEnemyFleet() {
-        mEnemyAdapter.data = Battle.enemyList
+    private fun setEnemyFleet(phase: Battle.Phase) {
+        when (phase) {
+            Battle.Phase.Start, Battle.Phase.Next, Battle.Phase.Idle -> {
+                mEnemyAdapter.fleet2 = emptyList()
+                mEnemyAdapter.fleet1 = emptyList()
+            }
+            else -> {
+                if (Battle.enemyCombined) {
+                    mEnemyAdapter.fleet2 = Battle.enemyList
+                    mEnemyAdapter.fleet1 = Battle.subEnemyList
+                } else {
+                    mEnemyAdapter.fleet1 = Battle.enemyList
+                }
+            }
+        }
         mEnemyAdapter.notifyDataSetChanged()
     }
 
@@ -95,20 +121,23 @@ class BattleFragment : LazyFragment() {
                 val spotMarker = MapSpotHelper.getInstance(context!!).getSpotMarker(Battle.area, Battle.map, Battle.route)
                 getSpanInfo("${Battle.area}-${Battle.map}-${spotMarker[0]}", spotMarker[1])
             }
-            Battle.Phase.BattleDaytime, Battle.Phase.Practice -> {
+            Battle.Phase.BattleDaytime, Battle.Phase.Practice, Battle.Phase.BattleCombined,
+            Battle.Phase.BattleCombinedWater, Battle.Phase.BattleCombinedEach,
+            Battle.Phase.BattleAir, Battle.Phase.BattleCombinedAir,
+            Battle.Phase.BattleCombinedWaterEach, Battle.Phase.BattleCombinedEc -> {
                 TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
             }
-            Battle.Phase.BattleNight, Battle.Phase.PracticeNight -> {
+            Battle.Phase.BattleNight, Battle.Phase.PracticeNight, Battle.Phase.BattleCombinedNight -> {
                 TextUtils.join("/", listOf(getHeading(), Battle.rank))
             }
             Battle.Phase.BattleNightSp -> {
                 TextUtils.join("/", listOf(getHeading(), getAirCommand(), Battle.rank))
             }
-            Battle.Phase.BattleResult, Battle.Phase.PracticeResult -> {
+            Battle.Phase.BattleResult, Battle.Phase.PracticeResult, Battle.Phase.BattleCombinedResult -> {
                 if (TextUtils.isEmpty(Battle.get)) Battle.rank
                 else "${Battle.rank}/${getString(R.string.battle_get, Battle.get)}"
             }
-            else -> getString(R.string.battle_idle)
+            else -> getString(R.string.battle_unknown)
         }
         mCombatInfo.text = info
     }
@@ -162,7 +191,8 @@ class BattleFragment : LazyFragment() {
 
     private class CombatAdapter : UltimateViewAdapter<DataBindingHolder>() {
 
-        var data: List<Ship>? = emptyList()
+        var fleet1: List<Ship>? = emptyList()
+        var fleet2: List<Ship>? = emptyList()
 
         override fun newFooterHolder(view: View): DataBindingHolder {
             return DataBindingHolder(view, false)
@@ -179,7 +209,7 @@ class BattleFragment : LazyFragment() {
 
         override fun getAdapterItemCount(): Int {
             return try {
-                data!!.size
+                max(fleet1!!.size, fleet2!!.size)
             } catch (e: Exception) {
                 0
             }
@@ -190,8 +220,8 @@ class BattleFragment : LazyFragment() {
         }
 
         override fun onBindViewHolder(holder: DataBindingHolder, position: Int) {
-            holder.binding.setVariable(BR.ship1, getItem(position))
-            holder.binding.setVariable(BR.combined, false)
+            holder.binding.setVariable(BR.ship1, getItem(fleet1, position))
+            holder.binding.setVariable(BR.ship2, getItem(fleet2, position))
             holder.binding.executePendingBindings()
         }
 
@@ -203,9 +233,9 @@ class BattleFragment : LazyFragment() {
 
         }
 
-        private fun getItem(position: Int): Ship? {
+        private fun getItem(fleet: List<Ship>?, position: Int): Ship? {
             return try {
-                data!![position]
+                fleet!![position]
             } catch (e: Exception) {
                 null
             }
