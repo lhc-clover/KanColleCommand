@@ -10,6 +10,7 @@ import com.orhanobut.logger.LogStrategy
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import com.pgyersdk.crash.PgyCrashManager
+import com.tencent.smtt.sdk.QbSdk
 
 class KccApplication : MultiDexApplication() {
 
@@ -32,6 +33,7 @@ class KccApplication : MultiDexApplication() {
             }
         })
         SVGLoader.load(this)
+        QbSdk.initX5Environment(applicationContext, null)
     }
 
     override fun attachBaseContext(base: Context) {
