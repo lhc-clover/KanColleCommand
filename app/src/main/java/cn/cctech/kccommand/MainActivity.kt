@@ -12,8 +12,10 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.View.LAYER_TYPE_HARDWARE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -34,7 +36,7 @@ import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse
-import com.tencent.smtt.sdk.WebSettings.LOAD_DEFAULT
+import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import net.lucode.hackware.magicindicator.MagicIndicator
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
     private var mInfoPanel: View? = null
     private var mMainPanel: View? = null
     private var mBloodBorder: View? = null
-    private var mWebView: com.tencent.smtt.sdk.WebView? = null
+    private var mWebView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,10 +117,25 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
         val gameContainer = findView<ViewGroup>(R.id.rl_flash)
         mWebView = WebView(getContext())
         gameContainer.addView(mWebView, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT))
+        //设置支持js
         mWebView?.settings?.javaScriptEnabled = true
-        mWebView?.settings?.cacheMode = LOAD_DEFAULT
+        //设置渲染效果优先级，高
+        mWebView?.settings?.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        //设置缓存模式
+        mWebView?.settings?.cacheMode = WebSettings.LOAD_DEFAULT
+        //设置数据库缓存路径
+        mWebView?.settings?.databaseEnabled = true
+        mWebView?.settings?.databasePath = cacheDir.absolutePath + "/cc_db"
+        //开启 应用缓存 功能
         mWebView?.settings?.setAppCacheEnabled(true)
+        //设置 应用 缓存目录
+        mWebView?.settings?.setAppCachePath(cacheDir.absolutePath + "/cc_cache")
         mWebView?.settings?.setAppCacheMaxSize(Long.MAX_VALUE)
+        //开启 DOM 存储功能
+        mWebView?.settings?.domStorageEnabled = true
+        //开启 数据库 存储功能
+        mWebView?.settings?.databaseEnabled = true
+        mWebView?.setLayerType(LAYER_TYPE_HARDWARE, null)
         mWebView?.webViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -128,7 +145,7 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
             }
 
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-//                Log.d("Intercept2", request?.url?.toString())
+                Log.d("Intercept2", request?.url?.toString())
                 if (gameLoaded(request?.url?.toString())) {
                     gameStart(view)
                 }
