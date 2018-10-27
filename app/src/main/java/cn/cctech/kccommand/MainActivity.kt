@@ -12,7 +12,6 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.LAYER_TYPE_HARDWARE
@@ -28,15 +27,13 @@ import cn.cctech.kccommand.databinding.InfoPanelBinding
 import cn.cctech.kccommand.entities.Info
 import cn.cctech.kccommand.fragments.*
 import cn.cctech.kccommand.proxy.VpnService
-import cn.cctech.kccommand.utils.NotifyManager
-import cn.cctech.kccommand.utils.findView
+import cn.cctech.kccommand.utils.*
 import com.orhanobut.logger.Logger
 import com.pgyersdk.crash.PgyCrashManager
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse
-import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import net.lucode.hackware.magicindicator.MagicIndicator
@@ -48,6 +45,9 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.TriangularPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
+import okhttp3.OkHttpClient
+import java.io.ByteArrayInputStream
+import java.io.File
 
 class MainActivity : AppCompatActivity(), NotifyManager.Callback {
 
@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
     private var mTabs: Array<String>? = null
     private var mViewPager: ViewPager? = null
     private var mInfoPanelBinding: InfoPanelBinding? = null
+    private var mClient: OkHttpClient = OkHttpClient()
 
     private var mCollapseAll: ImageButton? = null
     private var mExpandAll: ImageButton? = null
@@ -117,37 +118,33 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
         val gameContainer = findView<ViewGroup>(R.id.rl_flash)
         mWebView = WebView(getContext())
         gameContainer.addView(mWebView, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT))
-        //设置支持js
         mWebView?.settings?.javaScriptEnabled = true
-        //设置渲染效果优先级，高
-        mWebView?.settings?.setRenderPriority(WebSettings.RenderPriority.HIGH)
-        //设置缓存模式
-        mWebView?.settings?.cacheMode = WebSettings.LOAD_DEFAULT
-        //设置数据库缓存路径
-        mWebView?.settings?.databaseEnabled = true
-        mWebView?.settings?.databasePath = cacheDir.absolutePath + "/cc_db"
-        //开启 应用缓存 功能
-        mWebView?.settings?.setAppCacheEnabled(true)
-        //设置 应用 缓存目录
-        mWebView?.settings?.setAppCachePath(cacheDir.absolutePath + "/cc_cache")
-        mWebView?.settings?.setAppCacheMaxSize(Long.MAX_VALUE)
-        //开启 DOM 存储功能
-        mWebView?.settings?.domStorageEnabled = true
-        //开启 数据库 存储功能
-        mWebView?.settings?.databaseEnabled = true
         mWebView?.setLayerType(LAYER_TYPE_HARDWARE, null)
         mWebView?.webViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-//                Log.d("Override2", request?.url?.toString())
                 view?.loadUrl(request?.url?.toString())
                 return true
             }
 
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-                Log.d("Intercept2", request?.url?.toString())
-                if (gameLoaded(request?.url?.toString())) {
-                    gameStart(view)
+                request?.let {
+                    if (gameLoaded(it.url.toString())) {
+                        gameStart(view)
+                    }
+
+                    try {
+                        if (it.method.equals("GET", true) && shouldCache(it.url)) {
+                            val cacheDir = getCachePath(getContext())
+                            var file = getCachedFile(cacheDir, it.url)
+                            if (file.isNullOrBlank()) {
+                                file = caching(mClient, cacheDir, request)
+                            }
+                            if (file != null && file.isNotBlank()) return createWebResponse(file)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
                 return super.shouldInterceptRequest(view, request)
             }
@@ -159,6 +156,28 @@ class MainActivity : AppCompatActivity(), NotifyManager.Callback {
                 view?.post { view.loadUrl(script) }
                 startProxy()
             }
+
+            private fun createWebResponse(cacheFilePath: String): WebResourceResponse? {
+                val mimeType = when {
+                    cacheFilePath.endsWith("js") -> "application/javascript"
+                    cacheFilePath.endsWith("json") -> "application/json"
+                    cacheFilePath.endsWith("mp3") -> "audio/mpeg"
+                    cacheFilePath.endsWith("png") -> "image/png"
+                    else -> "*/*"
+                }
+                val file = File(cacheFilePath)
+                val fileByteArray = file.readBytes()
+                val map = mapOf(
+                        "Server" to "nginx",
+                        "Content-Type" to mimeType,
+                        "Content-Length" to "${fileByteArray.size}",
+                        "Connection" to "keep-alive",
+                        "Pragma" to "public",
+                        "Cache-Control" to "no-cache",
+                        "Accept-Ranges" to "bytes")
+                return WebResourceResponse(mimeType, "utf-8", 200, "OK", map, ByteArrayInputStream(fileByteArray))
+            }
+
         }
         mWebView?.loadUrl("http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/")
         mTabs = resources.getStringArray(R.array.main_tabs)
