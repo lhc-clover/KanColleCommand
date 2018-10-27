@@ -1,6 +1,7 @@
 package cn.cctech.kccommand.proxy;
 
 import android.os.Handler;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -87,7 +88,7 @@ public class VpnData {
             String s = new String(data);
             String saddrstr = new String(source);
             String taddrstr = new String(target);
-            //Log.e(TAG, String.format("getDataFromNative[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
+//            Log.e(TAG, String.format("getDataFromNative[%d] %s:%d => %s:%d", type, saddrstr, sport, taddrstr, tport));
 
             if (type == REQUEST) {
                 if (s.startsWith("GET") || s.startsWith("POST")) {
@@ -215,7 +216,7 @@ public class VpnData {
             }
             DataJob job = new DataJob(KCA_API_VPN_DATA_ERROR, empty_request.getBytes(), error_data.toString().getBytes());
             executorService.execute(job);
-//            Log.e(TAG, Utils.getStringFromException(e));
+            Log.e(TAG, Utils.getStringFromException(e));
         }
     }
 
@@ -231,8 +232,9 @@ public class VpnData {
         boolean isKcaRes = uri.contains("/kc") && uri.contains("/resources");
         boolean isKcsSound = uri.contains("/kcs/sound");
         boolean isKcsWorld = uri.contains("/api_world/get_id/");
+        boolean isKcsImg = uri.contains("/kc") && uri.contains("/img");
         //Log.e(TAG, uri + " " + String.valueOf(isKcaVer || isKcsApi));
-        return (isKcsSwf || isKcaRes || isKcsSound || isKcsWorld);
+        return (isKcsSwf || isKcaRes || isKcsSound || isKcsWorld || isKcsImg);
     }
 
     private static byte[] unchunkAllData(byte[] data, boolean gzipped) throws IOException {

@@ -16,7 +16,7 @@
         <cn.cctech.kccommand.widgets.RatioLayout
             android:id="@+id/rl_flash"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             app:ratio="0.6" />
 
